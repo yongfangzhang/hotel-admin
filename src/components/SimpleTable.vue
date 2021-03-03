@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex flex-column justify-content-between simple-table-container"
-      :class="{ 'h-100': autoFill }">
+       :class="{ 'h-100': autoFill }">
     <slot name="header" />
     <el-table v-show="visible"
               :id="id"
@@ -27,14 +27,12 @@
               @current-change="handleCurrentChange"
               @selection-change="handleSelectionChange">
       <slot name="expand" />
-      <el-table-column
-        v-if="sequenced"
-        label="序号"
-        :resizable="false"
-        :fixed="sequencedFixed"
-        align="center"
-        :width="colWidth.xxs"
-      >
+      <el-table-column v-if="sequenced"
+                       label="序号"
+                       :resizable="false"
+                       :fixed="sequencedFixed"
+                       align="center"
+                       :width="colWidth.xxs">
         <template slot-scope="{ row, $index }">
           <span>{{ toFullIndex($index, pageData, row) }}</span>
         </template>
@@ -42,17 +40,18 @@
       <slot name="columns" />
     </el-table>
     <slot name="footer" />
-    <div v-show="visible" :class="paginationAlign" class="py-3" style="display: flex; justify-content: space-between; align-items: center;">
+    <div v-show="visible"
+         :class="paginationAlign"
+         class="py-3"
+         style="display: flex; justify-content: space-between; align-items: center;">
       <slot name="pagination-left" />
-      <pagination
-        v-show="pageData.totalCount > 0"
-        :total="pageData.totalCount"
-        :page.sync="pageData.currPage"
-        :limit.sync="pageData.pageSize"
-        :hide-on-single-page="false"
-        class="p-0 mt-0 flex-fill"
-        @pagination="fetchPageData"
-      />
+      <pagination v-show="pageData.totalCount > 0"
+                  :total="pageData.totalCount"
+                  :page.sync="pageData.currPage"
+                  :limit.sync="pageData.pageSize"
+                  :hide-on-single-page="false"
+                  class="p-0 mt-0 flex-fill"
+                  @pagination="fetchPageData" />
     </div>
   </div>
 </template>
@@ -76,7 +75,7 @@ export default {
     autoFill: { type: Boolean, default: false },
     rowKey: { type: String, default: '' },
     expandRowKeys: { type: Array, default: null },
-    highlightCurrentRow: {type: Boolean, default: true},
+    highlightCurrentRow: { type: Boolean, default: true },
     headerClass: {
       type: Function,
       default() {
@@ -171,9 +170,9 @@ export default {
     },
     toggleRowExpansion(row, closeOther) {
       if (closeOther) {
-        this.pageData.list.forEach(data => {
-          this.$refs[this.tableName].toggleRowExpansion(data, false)
-        })
+        this.pageData.list.forEach((data) => {
+          this.$refs[this.tableName].toggleRowExpansion(data, false);
+        });
       }
       this.$refs[this.tableName].toggleRowExpansion(row);
     },
@@ -200,10 +199,10 @@ export default {
           },
           params
         )
-      ).then(d => {
-        if(this.afterFetch) {
+      ).then((d) => {
+        if (this.afterFetch) {
           this.pageData = this.afterFetch(d);
-        }else {
+        } else {
           this.pageData = d;
         }
         this.$emit('total', d.totalCount);

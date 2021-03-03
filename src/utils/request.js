@@ -7,8 +7,7 @@ import {
   TenantKey,
   getTenant,
   DeviceKey,
-  getUserDevice,
-  UserAgentKey
+  getUserDevice
 } from './auth';
 import { ERROR_CODE } from './constant';
 import logger from './logger';
@@ -36,7 +35,6 @@ service.interceptors.request.use(
     // do something before request is sent
     config.headers[TenantKey] = getTenant();
     config.headers[DeviceKey] = getUserDevice();
-    config.headers[UserAgentKey] = navigator.userAgent;
 
     if (getToken()) {
       // let each request carry token

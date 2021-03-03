@@ -1,23 +1,23 @@
-import { TokenKey, getToken } from '@/utils/auth';
-import { objectMerge, getValueByKeys } from './index';
-import { EMPTY_TEXT, PAGE_SIZE, PARSE_TIME_TYPE } from './constant';
-import { obj2Str, parseTime } from '@/utils/index';
-import { MUTATIONS, MODULE, ACTIONS, EVENT, eventBiz } from '@/store/constant';
-import { mapMutations } from 'vuex';
 import {
-  getResource,
-  getAreaItem,
-  getProvince,
-  getCity,
-  getArea
-} from '@/api/pub/index';
-import { setLocal, getLocal } from '@/utils/storage';
+  getAreaInfo,
+  getAreaList,
+  getCityList,
+  getProvinceList
+} from '@/api/pub/address';
+import { getResource } from '@/api/pub/resource';
+import { ACTIONS, EVENT, eventBiz, MODULE, MUTATIONS } from '@/store/constant';
+import { getToken, TokenKey } from '@/utils/auth';
+import { obj2Str, parseTime } from '@/utils/index';
+import { getLocal, setLocal } from '@/utils/storage';
+import { mapGetters, mapMutations } from 'vuex';
+import { EMPTY_TEXT, PAGE_SIZE, PARSE_TIME_TYPE } from './constant';
+import { getValueByKeys, objectMerge } from './index';
 import sync from './sync';
-import Driver from 'driver.js'; // import driver.js
-import 'driver.js/dist/driver.min.css'; // import driver.js css
 
 const BASE_API = process.env.VUE_APP_BASE_API;
-export const UPLOAD_URL = `${BASE_API}${process.env.VUE_APP_CONTEXT_PATH_PUB}/upload`;
+export const UPLOAD_URL = `${BASE_API}${
+  process.env.VUE_APP_CONTEXT_PATH_PUB
+}/upload`;
 
 export const RES_PREFIX = `${BASE_API}/files`;
 
@@ -29,13 +29,7 @@ export const baseMixin = {
       requestHeaders: {
         [TokenKey]: getToken()
       },
-      dateTimePattern: PARSE_TIME_TYPE.DATETIME,
-      driver: new Driver({
-        doneBtnText: '完成',
-        closeBtnText: '关闭',
-        nextBtnText: '下一个',
-        prevBtnText: '上一个'
-      })
+      dateTimePattern: PARSE_TIME_TYPE.DATETIME
     };
   },
   computed: {
@@ -126,7 +120,9 @@ export const baseMixin = {
       if (!res) return this.fakeImage();
       if (res.url) return res.url;
       if (typeof res === 'string' && res.length === 32) {
-        return `${BASE_API}${process.env.VUE_APP_CONTEXT_PATH_PUB}/resource/res/${res}`;
+        return `${BASE_API}${
+          process.env.VUE_APP_CONTEXT_PATH_PUB
+        }/resource/res/${res}`;
       }
       return this.fakeImage();
     },
@@ -141,13 +137,24 @@ export const baseMixin = {
     formatMoney(s) {
       if (s == null) return '';
       s = parseFloat((s + '').replace(/[^\d\.-]/g, '')).toFixed(2) + '';
-      const l = s.split('.')[0].split('').reverse();
+      const l = s
+        .split('.')[0]
+        .split('')
+        .reverse();
       const r = s.split('.')[1];
       let t = '';
       for (let i = 0; i < l.length; i++) {
         t += l[i] + ((i + 1) % 3 === 0 && i + 1 !== l.length ? ',' : '');
       }
-      return '￥' + t.split('').reverse().join('') + '.' + r;
+      return (
+        '￥' +
+        t
+          .split('')
+          .reverse()
+          .join('') +
+        '.' +
+        r
+      );
     },
     formatText(text, defaultText) {
       if (this.isEmpty(text)) {
@@ -180,7 +187,9 @@ export const baseMixin = {
         },
         opts
       );
-      return `https://fakeimg.pl/${options.width}x${options.height}/${options.background}/${options.color}?text=${options.text}`;
+      return `https://fakeimg.pl/${options.width}x${options.height}/${
+        options.background
+      }/${options.color}?text=${options.text}`;
     },
     invalidId(id) {
       return +id === 0;
@@ -198,13 +207,6 @@ export const baseMixin = {
       // x.y.@0.s
       if (this.isEmpty(obj)) return d;
       return this.formatText(getValueByKeys(obj, k), d);
-    },
-    handleGuide() {
-      this.driver.defineSteps(this.driverStep);
-      this.driver.start();
-    },
-    findKey(obj, value, compare = (a, b) => a == b) {
-      return Object.keys(obj).find((k) => compare(obj[k], value));
     }
   }
 };
@@ -266,17 +268,17 @@ export const baseTableMixin = {
         this._mParam.module,
         ACTIONS.DELETE_ITEM,
         row[this._mParam.primaryKey]
-      ).then((d) => {
+      ).then(d => {
         this.refresh();
       });
     },
     saveRow(row) {
       if (this.vDisabled) return Promise.resolve();
-      return new Promise((resolve) => {
+      return new Promise(resolve => {
         const method = row[this._mParam.primaryKey]
           ? ACTIONS.UPDATE_ITEM
           : ACTIONS.CREATE_ITEM;
-        this.doAction(this._mParam.module, method, row).then((d) => {
+        this.doAction(this._mParam.module, method, row).then(d => {
           this.refresh();
           return resolve(d);
         });
@@ -336,7 +338,7 @@ export const formEditMixin = {
     validateForm() {
       if (this.customerValidateForm) return this.customerValidateForm();
       if (!this.$refs.form) return Promise.resolve(true);
-      return new Promise((resolve) => this.$refs.form.validate(resolve));
+      return new Promise(resolve => this.$refs.form.validate(resolve));
     },
     getDefaultTitle() {
       let title = null;
@@ -361,22 +363,20 @@ export const formEditMixin = {
       const k = this._mParam.paramMode
         ? this.queryRoute(this._mParam.primaryKey)
         : this.pk;
-      this.doAction(this._mParam.module, ACTIONS.FETCH_VIEW_INFO, k).then(
-        (d) => {
-          if (typeof this.afterFetch === 'function') {
-            this.afterFetch(d);
-          }
+      this.doAction(this._mParam.module, ACTIONS.FETCH_VIEW_INFO, k).then(d => {
+        if (typeof this.afterFetch === 'function') {
+          this.afterFetch(d);
         }
-      );
+      });
     },
     createOrUpdate(cb, ignoreDisabled) {
       if (!ignoreDisabled && this.vDisabled) return;
-      this.validateForm().then((v) => {
+      this.validateForm().then(v => {
         if (!v) return;
         const method = this.getPrimaryValue()
           ? ACTIONS.UPDATE_ITEM
           : ACTIONS.CREATE_ITEM;
-        this.doAction(this._mParam.module, method, this.viewInfo).then((d) => {
+        this.doAction(this._mParam.module, method, this.viewInfo).then(d => {
           if (typeof cb === 'function') return cb(d);
           if (this._mParam.autoClose) {
             eventBiz.$emit(EVENT.CLOSE_SELECTED_TAG);
@@ -409,7 +409,7 @@ export const resourceMixin = {
   },
   computed: {
     srcList() {
-      const arr = this.fileList.map((f) => f.url);
+      const arr = this.fileList.map(f => f.url);
       return arr;
     },
     limitOneSrc() {
@@ -417,7 +417,7 @@ export const resourceMixin = {
       return this.srcList[0];
     },
     fileNames() {
-      return this.fileList.map((f) => f.name);
+      return this.fileList.map(f => f.name);
     }
   },
   mounted() {
@@ -428,8 +428,8 @@ export const resourceMixin = {
       if (!files) return [];
       if (!Array.isArray(files)) files = [files];
       return files
-        .filter((file) => !!file && typeof file === 'object')
-        .map((file) => {
+        .filter(file => !!file && typeof file === 'object')
+        .map(file => {
           return {
             uuid: file.uuid,
             name: file.fileName,
@@ -441,7 +441,7 @@ export const resourceMixin = {
     },
     initResource(uuids) {
       if (!uuids) return;
-      getResource(uuids).then((res) => {
+      getResource(uuids).then(res => {
         this.fileList = this.resourceFiles2ElList(res);
       });
     }
@@ -504,7 +504,7 @@ export const addressMixin = {
         return;
       }
       // 取区域列表
-      this.fetchAreaList(v).then((list) => {
+      this.fetchAreaList(v).then(list => {
         if (
           !this.currentValue ||
           v.substring(0, 4) !== this.currentValue.substring(0, 4)
@@ -520,7 +520,7 @@ export const addressMixin = {
         return;
       }
       // 取市列表
-      this.fetchCityList(v).then((list) => {
+      this.fetchCityList(v).then(list => {
         if (
           !this.cityCode ||
           v.substring(0, 2) !== this.cityCode.substring(0, 2)
@@ -540,7 +540,7 @@ export const addressMixin = {
       this.cityCode = `${areaCode.substring(0, 4)}00`;
       const areaItem = this.areaCodeMap[areaCode];
       if (areaItem) return Promise.resolve(areaItem);
-      return getAreaItem(areaCode).then((item) => {
+      return getAreaInfo(areaCode).then(item => {
         this.$set(this.areaCodeMap, areaCode, item);
         setLocal(ADDR_LOCAL_KEY.AREA_CODE_MAP, this.areaCodeMap);
         return Promise.resolve(item);
@@ -548,7 +548,7 @@ export const addressMixin = {
     },
     fetchProvinceList() {
       if (this.provinceList) return Promise.resolve(this.provinceList);
-      return getProvince().then((provinces) => {
+      return getProvinceList().then(provinces => {
         this.provinceList = provinces;
         setLocal(ADDR_LOCAL_KEY.PROVINCE_LIST, this.provinceList);
         return Promise.resolve(this.provinceList);
@@ -558,7 +558,7 @@ export const addressMixin = {
       if (!province) return Promise.reject('no province selected');
       const cityList = this.provinceCityMap[province];
       if (cityList) return Promise.resolve(cityList);
-      return getCity(province).then((cities) => {
+      return getCityList(province).then(cities => {
         this.$set(this.provinceCityMap, province, cities);
         setLocal(ADDR_LOCAL_KEY.PROVINCE_CITY_MAP, this.provinceCityMap);
         return Promise.resolve(cities);
@@ -568,7 +568,7 @@ export const addressMixin = {
       if (!city) return Promise.reject('no city selected');
       const areaList = this.cityAreaMap[city];
       if (areaList) return Promise.resolve(areaList);
-      return getArea(city).then((areas) => {
+      return getAreaList(city).then(areas => {
         this.$set(this.cityAreaMap, city, areas);
         setLocal(ADDR_LOCAL_KEY.CITY_AREA_MAP, this.cityAreaMap);
         return Promise.resolve(areas);

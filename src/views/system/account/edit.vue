@@ -12,15 +12,6 @@
       <el-row>
         <el-col :xs="24"
                 :sm="12">
-          <el-form-item label="员工"
-                        prop="employeeUuid">
-            <selector-emp v-model="viewInfo.employeeUuid"
-                          :list="allOfficeList"
-                          :is-view="!newAdded"
-                          :view-name="employeeData.name"
-                          :view-uuid="employeeData.uuid"
-                          placeholder="请选择账号对应的员工" />
-          </el-form-item>
           <m-form-item v-for="item in accountFormItems.left"
                        :key="item.key"
                        :label="item.label"
@@ -71,17 +62,13 @@ import { formEditMixin } from '@/utils/mixins';
 import { emailValidator, mobileValidator } from '@/utils/validate';
 import { mapActions } from 'vuex';
 import { toastWarning } from '@/utils/message';
-import { getQuickEmp } from '@/api/overview/index';
-import { getAllOfficeMap } from '@/utils/map/emp';
 export default {
   name: 'SystemAccountEdit',
   mixins: [formEditMixin],
   data() {
     return {
       addedRoles: [],
-      allRoles: [],
-      allOfficeList: [],
-      employeeData: {}
+      allRoles: []
     };
   },
   computed: {
@@ -147,26 +134,12 @@ export default {
   watch: {
     viewInfo() {
       this.initAddedRoles();
-    },
-    'viewInfo.employeeUuid'(nv) {
-      if (!this.newAdded) return;
-      this.$set(
-        this.viewInfo.info,
-        'name',
-        nv ? this.allOfficeList.find((o) => o.uuid == nv).name : ''
-      );
     }
   },
   mounted() {
     this.doAction(MODULE.SYSTEM_ROLE, ACTIONS.FETCH_LIST).then((d) => {
       this.allRoles = d;
     });
-    if (this.newAdded) {
-      // 获取所有没有ERP账号的员工
-      getAllOfficeMap({ _ne_accountType: 14 }, true).then((list) => {
-        this.allOfficeList = list;
-      });
-    }
   },
   methods: {
     ...mapActions(MODULE.SYSTEM_ACCOUNT, [
@@ -183,18 +156,8 @@ export default {
     fallBackTransfer(keys) {
       this.addedRoles = this.addedRoles.filter((r) => keys.indexOf(r) < 0);
     },
-    afterFetch() {
-      if (!this.viewInfo.uuid) return;
-      getQuickEmp(this.viewInfo.employeeUuid).then((data) => {
-        this.employeeData = data;
-      });
-    },
     handleChange(value, direction, movedKeys) {
       if (this.newAdded) {
-        // this.addedRoles = [];
-        // this.createOrUpdate(() => {
-        //   this.handleChange(value, direction, movedKeys);
-        // });
         return toastWarning('请先添加账号');
       }
       switch (direction) {
@@ -225,8 +188,7 @@ export default {
         gender: v.info.gender,
         mobile: v.info.mobile,
         email: v.info.email,
-        roleList: v.roles,
-        employeeUuid: v.employeeUuid
+        roleList: v.roles
       };
       return accountForm;
     },

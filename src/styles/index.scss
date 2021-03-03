@@ -1,11 +1,11 @@
-@import "../../../ui-parent/element-ui/src/styles/bv4/utilities.scss";
+@import "./bv4/utilities.scss";
 @import "./variables.scss";
 @import "./mixin.scss";
 @import "./transition.scss";
 @import "./element-ui.scss";
 @import "./sidebar.scss";
 @import "./btn.scss";
-@import "../../../ui-parent/element-ui/src/styles/override/index.scss";
+@import "./override/index.scss";
 
 body {
   height: 100%;

@@ -4,7 +4,6 @@ import { EMPTY_TEXT } from './constant';
 export const TokenKey = 'Access-Token';
 export const TenantKey = 'Tenant';
 export const DeviceKey = 'User-Device';
-export const UserAgentKey = 'User-Agent';
 
 export function getToken() {
   return Cookies.get(TokenKey);

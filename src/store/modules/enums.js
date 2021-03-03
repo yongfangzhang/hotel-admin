@@ -1,6 +1,6 @@
 import { ACTIONS, MUTATIONS } from '@/store/constant';
 import { getLocal, setLocal } from '@/utils/storage';
-import { getEnums } from '@/api/pub';
+import { getEnum } from '@/api/pub/enum';
 
 const LOCAL_KEY = {
   ENUM: '_yhkz_enum',
@@ -25,7 +25,7 @@ export default {
   },
   actions: {
     [ACTIONS.FETCH_ENUM]({ commit }) {
-      return getEnums().then((d) => {
+      return getEnum().then((d) => {
         commit(MUTATIONS.SET_ENUM, d);
       });
     }
