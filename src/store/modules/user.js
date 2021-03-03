@@ -32,7 +32,7 @@ const actions = {
   // get user info
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
-      getInfo(state.token)
+      getInfo()
         .then((data) => {
           if (!data) {
             reject('验证失败，请重新登录.');
@@ -56,7 +56,7 @@ const actions = {
   // user logout
   logout({ commit, state }) {
     return new Promise((resolve, reject) => {
-      logout(state.token)
+      logout()
         .then(() => {
           removeToken();
           resetRouter();

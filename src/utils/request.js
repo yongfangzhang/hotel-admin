@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { Message } from 'element-ui';
-import store from '@/store';
 import {
   TokenKey,
   getToken,
@@ -8,7 +7,8 @@ import {
   TenantKey,
   getTenant,
   DeviceKey,
-  getUserDevice
+  getUserDevice,
+  UserAgentKey
 } from './auth';
 import { ERROR_CODE } from './constant';
 import logger from './logger';
@@ -31,7 +31,7 @@ const service = axios.create({
 
 // request interceptor
 service.interceptors.request.use(
-  (config) => {
+  config => {
     if (!config.disableLoading) startProgress();
     // do something before request is sent
     config.headers[TenantKey] = getTenant();
@@ -46,7 +46,7 @@ service.interceptors.request.use(
     }
     return config;
   },
-  (error) => {
+  error => {
     stopProgress();
     // do something with request error
     console.log(error); // for debug
@@ -66,11 +66,12 @@ service.interceptors.response.use(
    * Here is just an example
    * You can also judge the status by HTTP Status Code
    */
-  (response) => {
+  response => {
     if (!response.config.disableLoading) stopProgress();
     const res = response.data;
-    if (typeof res !== 'object' || typeof res.code === 'undefined')
+    if (typeof res !== 'object' || typeof res.code === 'undefined') {
       return Promise.resolve(res);
+    }
     if (response.config.handleCode) {
       if (res.code === ERROR_CODE.ACCESS_DENIED) {
         return redirectLogin();
@@ -91,7 +92,7 @@ service.interceptors.response.use(
       return Promise.resolve(res.data);
     }
   },
-  (error) => {
+  error => {
     stopProgress();
     if (error.response.status === ERROR_CODE.ACCESS_DENIED) {
       return redirectLogin();
