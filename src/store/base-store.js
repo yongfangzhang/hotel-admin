@@ -1,16 +1,16 @@
-import { ACTIONS, MUTATIONS } from '@/store/constant';
-import { toastSuccess, confirmMessage } from '@/utils/message';
 import {
-  getModulePage,
-  getModuleList,
-  getModuleXsList,
-  getModuleInfo,
   // getModuleInfoByParams,
   createModule,
-  updateModule,
-  deleteModule
+  deleteModule,
+  getModuleInfo,
+  getModuleList,
+  getModulePage,
+  getModuleXsList,
+  updateModule
 } from '@/api/base-api';
-import { isNotBlank, objectMerge } from '@/utils/index';
+import { ACTIONS, MUTATIONS } from '@/store/constant';
+import { deepExtend, isNotBlank, objectMerge } from '@/utils/index';
+import { confirmMessage, toastSuccess } from '@/utils/message';
 
 export const createBaseStore = (store, options) => {
   // eslint-disable-next-line object-curly-spacing
@@ -51,7 +51,7 @@ export const createBaseStore = (store, options) => {
         return getModulePage(
           options.contextPath,
           objectMerge(params, options.orderParams)
-        ).then((d) => {
+        ).then(d => {
           if (options.formatPageData) {
             d = options.formatPageData(d);
           }
@@ -66,7 +66,7 @@ export const createBaseStore = (store, options) => {
         return getModuleList(
           options.contextPath,
           objectMerge(params, options.orderParams)
-        ).then((d) => {
+        ).then(d => {
           if (options.formatList) {
             d = options.formatList(d);
           }
@@ -94,7 +94,7 @@ export const createBaseStore = (store, options) => {
           commit(MUTATIONS.SET_VIEW_INFO, d);
           return Promise.resolve(d);
         }
-        return getModuleInfo(options.contextPath, id).then((d) => {
+        return getModuleInfo(options.contextPath, id).then(d => {
           if (options.cutAfterGet) {
             d = options.cutAfterGet(d);
           }
@@ -108,7 +108,7 @@ export const createBaseStore = (store, options) => {
         }
         model.remark = null;
         return createModule(options.contextPath, model, options.remainPK).then(
-          (d) => {
+          d => {
             if (options.formatUpdateGet && options.cutAfterGet) {
               d = options.cutAfterGet(d);
             }
@@ -123,7 +123,7 @@ export const createBaseStore = (store, options) => {
           model = options.cutBeforeUpdate(model);
         }
         model.remark = null;
-        return updateModule(options.contextPath, model).then((d) => {
+        return updateModule(options.contextPath, model).then(d => {
           if (options.formatUpdateGet && options.cutAfterGet) {
             d = options.cutAfterGet(d);
           }
@@ -134,10 +134,10 @@ export const createBaseStore = (store, options) => {
       },
       [ACTIONS.DELETE_ITEM](ctx, id) {
         return confirmMessage('是否确认删除?')
-          .then((_) => {
+          .then(_ => {
             return deleteModule(options.contextPath, id);
           })
-          .then((_) => {
+          .then(_ => {
             toastSuccess();
             return Promise.resolve(_);
           });

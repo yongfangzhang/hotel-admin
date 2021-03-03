@@ -1,5 +1,5 @@
 import { createBaseStore } from '@/store/base-store';
-import { objectMerge, isNotBlank } from '@/utils/index';
+import { objectMerge } from '@/utils/index';
 
 export const createModel = (model = {}) => {
   const target = {

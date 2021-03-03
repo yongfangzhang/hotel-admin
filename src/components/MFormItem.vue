@@ -23,7 +23,7 @@
             :multiple="item.multiple"
             :on-preview="onPreview"
             :extral="item.extral"
-            :is-view="item.isView != undefined ? item.isView : isView "/>
+            :is-view="item.isView != undefined ? item.isView : isView " />
     <slot name="after" />
   </el-form-item>
 </template>

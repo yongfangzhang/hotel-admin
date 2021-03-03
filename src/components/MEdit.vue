@@ -1,6 +1,6 @@
 <template>
   <div v-if="type === 'text'">
-    <span v-if="isView" v-text="currentValue ? currentValue + (extral && extral.append  ? extral.append : '') : '--'" />
+    <span v-if="isView" v-text="currentValue ? currentValue + (extral && extral.append ? extral.append : '') : '--'" />
     <el-input v-else
               v-model="currentValue"
               v-bind="originProps"
@@ -30,13 +30,13 @@
               :rows="extral.rows || 3"
               :placeholder="placeholder"
               :disabled="disabled"
-              @keyup.native.enter="onEnter"/>
+              @keyup.native.enter="onEnter" />
   </div>
   <div v-else-if="type == 'date' || type == 'datetime' || type === 'datetimerange' || type === 'daterange'">
     <span v-if="isView" v-text="currentValue || '--'" />
     <el-date-picker v-else
-                    class="w-100"
                     v-model="currentValue"
+                    class="w-100"
                     :type="type"
                     :value-format="valueFormat"
                     :disabled="disabled"
@@ -68,8 +68,8 @@
   <div v-else-if="type === 'boolean'">
     <span v-if="isView" v-text="currentValue ? '是' : '否'" />
     <el-checkbox v-else
-                v-model="currentValue"
-                :disabled="disabled" />
+                 v-model="currentValue"
+                 :disabled="disabled" />
   </div>
   <el-switch v-else-if="type === 'switch'"
              v-model="currentValue"

@@ -61,7 +61,7 @@ export default {
       default: ''
     },
     isConfirm: {
-      type:Boolean,
+      type: Boolean,
       default: false
     },
     confirmText: {
@@ -91,13 +91,13 @@ export default {
       this.$refs.drawer.closeDrawer();
     },
     handleClose(done) {
-      if(this.isConfirm) {
+      if (this.isConfirm) {
         this.$confirm(this.confirmText, '提示', {
-        type: 'warning'
-      }).then(_ => {
+          type: 'warning'
+        }).then(_ => {
           done();
         }).catch(_ => {});
-      }else {
+      } else {
         done();
       }
     }
