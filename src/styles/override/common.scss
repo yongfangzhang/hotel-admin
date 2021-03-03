@@ -1,0 +1,44 @@
+//html {
+//  @include media-breakpoint-up(xxl) {
+//    font-size: $font-size-xxl;
+//  }
+//
+//  font-size: $font-size-xl;
+//}
+.view-label {
+  display: inline-block;
+  width: 90px !important;
+  color: $text-muted;
+}
+
+.portrait-panel {
+  $portrait-size-md: 3rem;
+  display: inline-block;
+  width: $portrait-size-md;
+  min-width: $portrait-size-md;
+  height: $portrait-size-md;
+  line-height: $portrait-size-md;
+  text-align: center;
+  border-radius: $portrait-size-md;
+  overflow: hidden;
+  background: #ddd;
+  img {
+    width: 100%;
+    display: inline-block;
+    border-radius: $portrait-size-md;
+  }
+  .user-avatar.svg-icon {
+    width: 0.5 * $portrait-size-md;
+    height: 0.5 * $portrait-size-md;
+    vertical-align: middle;
+  }
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.scrollable-y {
+  overflow-y: auto;
+  overflow-x: hidden;
+}

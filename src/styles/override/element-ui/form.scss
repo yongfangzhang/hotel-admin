@@ -1,0 +1,39 @@
+.el-form-item.is-required:not(.is-no-asterisk) > .el-form-item__label {
+  &::before {
+    content: ' ';
+    margin: 0;
+  }
+  &:after {
+    content: '*';
+    color: $--color-danger;
+    margin-left: 3px;
+  }
+}
+.el-checkbox-group .el-checkbox {
+  margin-right: $spacer;
+  margin-left: 0;
+}
+// 将表单错误移动到末尾
+.el-form-item--mini {
+  margin-bottom: 14px;
+  // .el-form-item__error {
+  // display: none;
+  //   margin: 0
+  //   padding: 0;
+  //   left: unset;
+  //   right: 10px;
+  //   top: 10px;
+  // }
+}
+.cus-form-mini {
+  .el-form-item__label {
+    font-size: $font-size-sm;
+  }
+  .el-form-item--mini {
+    margin-bottom: 4px;
+    .el-form-item__error {
+      display: none;
+    }
+  }
+}
+

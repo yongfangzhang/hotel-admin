@@ -1,0 +1,347 @@
+@import "../../../ui-parent/element-ui/src/styles/bv4/utilities.scss";
+@import "./variables.scss";
+@import "./mixin.scss";
+@import "./transition.scss";
+@import "./element-ui.scss";
+@import "./sidebar.scss";
+@import "./btn.scss";
+@import "../../../ui-parent/element-ui/src/styles/override/index.scss";
+
+body {
+  height: 100%;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB,
+    Microsoft YaHei, Arial, sans-serif;
+}
+
+label {
+  font-weight: 700;
+}
+
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+#app {
+  height: 100%;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+.no-padding {
+  padding: 0px !important;
+}
+
+.padding-content {
+  padding: 4px 0;
+}
+
+a:focus,
+a:active {
+  outline: none;
+}
+
+a,
+a:focus,
+a:hover {
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+}
+
+div:focus {
+  outline: none;
+}
+
+.fr {
+  float: right;
+}
+
+.fl {
+  float: left;
+}
+
+.pr-5 {
+  padding-right: 5px;
+}
+
+.pl-5 {
+  padding-left: 5px;
+}
+
+.block {
+  display: block;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.inlineBlock {
+  display: block;
+}
+
+.clearfix {
+  &:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+  }
+}
+
+aside {
+  background: #eef1f6;
+  padding: 8px 24px;
+  margin-bottom: 20px;
+  border-radius: 2px;
+  display: block;
+  line-height: 32px;
+  font-size: 16px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  color: #2c3e50;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  a {
+    color: #337ab7;
+    cursor: pointer;
+
+    &:hover {
+      color: rgb(32, 160, 255);
+    }
+  }
+}
+
+//main-container全局样式
+.app-container {
+  padding: 20px;
+}
+.app-main {
+  height: 100%;
+  $title-height: 2 * $spacer + $font-size-lg;
+  .app-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: $title-height;
+    min-height: $title-height;
+    padding: 0 $spacer;
+    h3 {
+      margin: 0;
+    }
+  }
+
+  .app-body {
+    height: calc(100% - #{$title-height});
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+
+    .main-content {
+      height: 100%;
+    }
+
+    .sub-title {
+      padding-bottom: $spacer;
+
+      + .main-content {
+        height: calc(100% - #{2.5 * $spacer});
+      }
+    }
+  }
+}
+
+.components-container {
+  margin: 30px 50px;
+  position: relative;
+}
+
+.pagination-container {
+  margin-top: 30px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.sub-navbar {
+  height: 50px;
+  line-height: 50px;
+  position: relative;
+  width: 100%;
+  text-align: right;
+  padding-right: 20px;
+  transition: 600ms ease position;
+  background: linear-gradient(
+    90deg,
+    rgba(32, 182, 249, 1) 0%,
+    rgba(32, 182, 249, 1) 0%,
+    rgba(33, 120, 241, 1) 100%,
+    rgba(33, 120, 241, 1) 100%
+  );
+
+  .subtitle {
+    font-size: 20px;
+    color: #fff;
+  }
+
+  &.draft {
+    background: #d0d0d0;
+  }
+
+  &.deleted {
+    background: #d0d0d0;
+  }
+}
+
+.link-type,
+.link-type:focus {
+  color: #337ab7;
+  cursor: pointer;
+
+  &:hover {
+    color: rgb(32, 160, 255);
+  }
+}
+
+.filter-container {
+  padding-bottom: 10px;
+  font-size: 12px;
+  .filter-title {
+    display: inline-block;
+    width: 5rem;
+  }
+  .el-input--mini.sm {
+    width: 100px;
+    .el-input__inner {
+      width: 100px;
+    }
+  }
+  .el-input--mini.md {
+    .el-input__inner {
+      width: 140px;
+    }
+  }
+  .el-select--mini.sm {
+    width: 100px;
+  }
+  .el-select--mini.xs {
+    width: 90px;
+  }
+  .el-date-editor--daterange.el-input__inner {
+    width: 220px;
+  }
+  .filter-item {
+    display: inline-block;
+    vertical-align: middle;
+    margin-bottom: 10px;
+  }
+}
+
+//refine vue-multiselect plugin
+.multiselect {
+  line-height: 16px;
+}
+
+.multiselect--active {
+  z-index: 1000 !important;
+}
+
+.flex-tab-panel {
+  .el-tabs__content {
+    flex: 1;
+    .el-tab-pane {
+      height: 100%;
+    }
+  }
+  .el-tabs__header {
+    margin-bottom: 0;
+  }
+}
+
+.right-tab {
+  .el-tabs__nav.is-top {
+    float: right;
+    margin-right: 1rem;
+  }
+}
+.left-tab {
+  .el-tabs__nav.is-top {
+    float: left;
+    margin-left: 1rem;
+  }
+}
+.m-collapse {
+  .el-collapse-item__header {
+    background: $gray-100;
+  }
+  .el-collapse-item__content {
+    padding: 0;
+    // padding-bottom: $spacer/2; 底部是form error提示时会贴边
+  }
+  .el-collapse-item__arrow.el-icon-arrow-right {
+    margin-right: $spacer;
+  }
+}
+
+.mini-button.el-button--mini {
+  padding: 0.4rem 0.8rem;
+}
+
+.fixed-dialog {
+  margin: 2rem auto !important;
+  height: calc(100% - 4rem) !important;
+  display: flex;
+  flex-direction: column;
+  .el-dialog__body {
+    flex: 1;
+    height: 100%;
+    overflow: auto;
+  }
+}
+
+.management-collapse {
+  .el-collapse-item__header {
+    background: $gray-100;
+    padding-left: 1rem;
+    font-size: 14px !important;
+  }
+  .el-collapse-item__content {
+    .el-form-item__label,
+    .el-radio__label,
+    .el-checkbox__label {
+      font-size: 1rem;
+    }
+    .el-form--label-top .el-form-item__label {
+      padding-bottom: 0;
+    }
+    h3 {
+      font-size: 14px;
+    }
+    padding: $spacer/2; //底部是form error提示时会贴边
+    padding-left: $spacer;
+  }
+  &.fixed-input-width {
+    .el-input--mini {
+      width: 200px;
+    }
+  }
+  .el-collapse-item__arrow.el-icon-arrow-right {
+    margin-right: $spacer;
+  }
+}
+.el-input-number.text-left {
+  .el-input__inner {
+    text-align: left;
+  }
+}

@@ -1,0 +1,204 @@
+//覆盖一些element-ui样式
+#app {
+  .el-breadcrumb__inner,
+  .el-breadcrumb__inner a {
+    font-weight: 400 !important;
+  }
+
+  .el-upload {
+    input[type='file'] {
+      display: none !important;
+    }
+  }
+
+  .el-upload__input {
+    display: none;
+  }
+
+  .cell {
+    .el-tag {
+      margin-right: 0px;
+    }
+  }
+
+  .small-padding {
+    .cell {
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+  }
+
+  .fixed-width {
+    .el-button--mini {
+      padding: 7px 10px;
+      width: 60px;
+    }
+  }
+
+  .status-col {
+    .cell {
+      padding: 0 10px;
+      text-align: center;
+
+      .el-tag {
+        margin-right: 0px;
+      }
+    }
+  }
+
+  //暂时性解决dialog 问题 https://github.com/ElemeFE/element/issues/2461
+  .el-dialog {
+    transform: none;
+    left: 0;
+    position: relative;
+    margin: 0 auto;
+  }
+
+  //文章页textarea修改样式
+  .article-textarea {
+    textarea {
+      padding-right: 40px;
+      resize: none;
+      border: none;
+      border-radius: 0px;
+      border-bottom: 1px solid #bfcbd9;
+    }
+  }
+
+  //element ui upload
+  .upload-container {
+    .el-upload {
+      width: 100%;
+
+      .el-upload-dragger {
+        width: 100%;
+        height: 200px;
+      }
+    }
+  }
+
+  //dropdown
+  .el-dropdown-menu {
+    a {
+      display: block;
+    }
+  }
+
+  .el-drawer{
+    transition: width .3s;
+    will-change: width;
+
+    .fold-btn {
+      position: absolute;
+      left: 0;
+      margin: auto 0;
+      top: 0;
+      bottom: 0;
+      height: 40px;
+      width: 20px;
+      padding: 0;
+      border-radius: 0 4px 4px 0;
+    }
+  }
+}
+#app {
+  // .m-form-item {
+  //   .el-form-item--mini {
+  //     margin-bottom: $spacer-xl * 0.75;
+  //   }
+  // }
+  $font-size-xs: 12px;
+  $font-size-sm: .7rem;
+  $font-size-md: .8rem;
+  $font-size-lg: .9rem;
+  $font-size-xl: 1rem;
+
+  $spacer-xs: 0.6rem;
+  $spacer-sm: 0.7rem;
+  $spacer-md: 0.8rem;
+  $spacer-lg: 0.9rem;
+  $spacer-xl: 1rem;
+
+
+  $color-theme: #42B983;
+  $color-active: #409eff;
+  $color-title: #222;
+  $color-sub-title: #333;
+  $color-sub: #606266;
+  $color-content: #666;
+  $color-subText: #999999;
+  $color-disable: #b2b2b2;
+  $color-remind: #F39C12;
+  $color-inner-footer: #A0A0A0;
+  $color-theme-active-back: #E8F1FA; // 活跃的主题背景色
+  // chat
+  $color-chat-box: #ECF5FF;
+  // border
+  $color-border: #D8D8D8;
+  // background
+  $color-background: rgb(245, 245, 245);
+
+
+  .m-form-item.el-form-item--mini {
+    .el-form-item__label {
+      overflow: hidden;
+      color: $color-content;
+    }
+  }
+
+  .m-form-item.el-form-item--mini,
+  .m-view-item {
+    // margin-bottom: 14px;
+    @include media-breakpoint-size($px-14);
+    // .el-form-item__label,
+    .label {
+      margin-right: $spacer-xl * 0.75;
+      // text-align: justify;
+      float: left;
+      width: 5.5rem;
+      height: 2rem;
+      overflow: hidden;
+      line-height: 2rem;
+      font-weight: bold;
+      color: $color-sub-title;
+      &:after {
+        content: '';
+        width: 100%;
+        display: inline-block;
+        height: 0;
+      }
+    }
+    .content {
+      white-space: normal;
+      line-height: 2rem;
+      color: $color-content;
+      display: inline-block;
+      vertical-align: top;
+    }
+  }
+
+  .form-group-title {
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: $color-title;
+  }
+}
+#app {
+  .el-collapse-item.is-disabled {
+    .el-collapse-item__header {
+      color: inherit;
+    }
+    .el-collapse-item__arrow.el-icon-arrow-right {
+      // visibility: hidden;
+      display: none;
+    }
+  }
+}
+#app {
+  .el-upload {
+    display: inline;
+  }
+  .el-upload-list--picture .el-upload-list__item:first-child {
+    margin-top: 0;
+  }
+}

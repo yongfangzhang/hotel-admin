@@ -1,0 +1,47 @@
+.font-size-lg {
+  font-size: $font-size-lg;
+}
+
+.font-12 {
+  @include media-breakpoint-size($px-12);
+}
+
+.font-14 {
+  @include media-breakpoint-size($px-14);
+}
+
+.font-16 {
+  @include media-breakpoint-size($px-16);
+}
+
+.font-18 {
+  @include media-breakpoint-size($px-18);
+}
+
+.font-20 {
+  @include media-breakpoint-size($px-20);
+}
+
+.font-24 {
+  @include media-breakpoint-size($px-24);
+}
+
+.font-26 {
+  @include media-breakpoint-size($px-26);
+}
+
+.font-30 {
+  @include media-breakpoint-size($px-30);
+}
+
+.font-36 {
+  @include media-breakpoint-size($px-36);
+}
+
+.font-48 {
+  @include media-breakpoint-size($px-48);
+}
+
+.font-60 {
+  @include media-breakpoint-size($px-60);
+}
