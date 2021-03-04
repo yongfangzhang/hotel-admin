@@ -34,12 +34,6 @@
                             value-format="yyyy-MM-dd HH:mm:ss"
                             @change="timeOnChange" />
           </el-form-item>
-          <el-form-item label="内容">
-            <el-input v-model="queries.content"
-                      placeholder="请输入"
-                      clearable
-                      @keydown.enter.native="doFilter" />
-          </el-form-item>
         </el-form>
         <div class="text-nowrap">
           <query-button type="query"

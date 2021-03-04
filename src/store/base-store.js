@@ -9,10 +9,8 @@ import {
   updateModule
 } from '@/api/base-api';
 import { ACTIONS, MUTATIONS } from '@/store/constant';
-import { deepExtend, isNotBlank, objectMerge } from '@/utils/index';
+import { deepExtend, validateId, objectMerge } from '@/utils/index';
 import { confirmMessage, toastSuccess } from '@/utils/message';
-
-const validateId = id => isNotBlank(id) && +id !== 0;
 
 export const createBaseStore = (store, options) => {
   // eslint-disable-next-line object-curly-spacing

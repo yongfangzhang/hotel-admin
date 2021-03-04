@@ -22,7 +22,7 @@
                        :key="item.key"
                        :label="item.label"
                        :item="item"
-                       :entity="viewInfo.info"
+                       :entity="viewInfo.user"
                        :disabled="item.disabled" />
         </el-col>
         <el-col :xs="24"
@@ -31,7 +31,7 @@
                        :key="item.key"
                        :label="item.label"
                        :item="item"
-                       :entity="viewInfo.info"
+                       :entity="viewInfo.user"
                        :disabled="item.disabled" />
           <m-form-item v-for="item in accountFormItems.right"
                        :key="item.key"
@@ -41,14 +41,15 @@
                        :disabled="item.disabled" />
         </el-col>
       </el-row>
-      <el-transfer v-model="addedRoles"
+      <el-transfer v-show="!newAdded"
+                   v-model="addedRoles"
                    class="m-transfer"
                    :data="allRoles"
                    filterable
                    :titles="['所有', '已添加']"
                    :button-texts="['删除', '添加']"
                    :format="{ noChecked: '${total}', hasChecked: '${checked}/${total}' }"
-                   :props="{ key: 'id', label: 'name' }"
+                   :props="{ key: 'uuid', label: 'name' }"
                    @change="handleChange">
         <span slot-scope="{ option }">{{ option.name }}</span>
       </el-transfer>
@@ -59,9 +60,9 @@
 <script>
 import { MODULE, ACTIONS } from '@/store/constant';
 import { formEditMixin } from '@/utils/mixins';
-import { emailValidator, mobileValidator } from '@/utils/validate';
-import { mapActions } from 'vuex';
+import { mobileValidator } from '@/utils/validate';
 import { toastWarning } from '@/utils/message';
+import { validateId } from '@/utils/index';
 export default {
   name: 'SystemAccountEdit',
   mixins: [formEditMixin],
@@ -81,19 +82,13 @@ export default {
       };
     },
     newAdded() {
-      return !this.viewInfo || !isNaN(+this.viewInfo.uuid);
+      return !this.viewInfo || !validateId(this.viewInfo.uuid);
     },
     accountFormItems() {
       return {
         left: [
           { key: 'account', label: '账号' },
-          { key: 'password', prop: 'password', label: '密码' },
-          {
-            key: 'state',
-            label: '状态',
-            type: 'selector',
-            map: this.USER_STATE_MAP
-          }
+          { key: 'password', prop: 'password', label: '密码' }
         ],
         right: [{ key: 'remarkContent', label: '备注', type: 'remark' }]
       };
@@ -109,16 +104,12 @@ export default {
             label: '用户性别',
             type: 'selector',
             map: this.GENDER_MAP
-          },
-          { key: 'email', prop: 'user.email', label: '邮箱' }
+          }
         ]
       };
     },
     formRules() {
       return {
-        employeeUuid: [
-          { required: true, message: '员工不能为空', trigger: 'blur' }
-        ],
         account: [{ required: true, message: '账号不能为空', trigger: 'blur' }],
         'user.name': [
           { required: true, message: '用户名称不能为空', trigger: 'blur' }
@@ -126,8 +117,7 @@ export default {
         'user.mobile': [
           { required: true, message: '手机号不能为空', trigger: 'blur' },
           { validator: mobileValidator, trigger: 'blur' }
-        ],
-        'user.email': [{ validator: emailValidator, trigger: 'blur' }]
+        ]
       };
     }
   },
@@ -142,15 +132,11 @@ export default {
     });
   },
   methods: {
-    ...mapActions(MODULE.SYSTEM_ACCOUNT, [
-      ACTIONS.BATCH_ADD_ROLES,
-      ACTIONS.BATCH_DELETE_ROLES
-    ]),
     initAddedRoles() {
       if (!this.viewInfo) {
         this.addedRoles = [];
       } else {
-        this.addedRoles = this.viewInfo.roles.map((r) => +r.id);
+        this.addedRoles = this.viewInfo.roles.map((r) => +r.uuid);
       }
     },
     fallBackTransfer(keys) {
@@ -162,35 +148,20 @@ export default {
       }
       switch (direction) {
         case 'right':
-          this[ACTIONS.BATCH_ADD_ROLES]({
-            uuid: this.viewInfo.uuid,
-            roleIds: movedKeys
-          }).catch((_) => this.fallBackTransfer(movedKeys));
+          // this[ACTIONS.BATCH_ADD_ROLES]({
+          //   uuid: this.viewInfo.uuid,
+          //   roleIds: movedKeys
+          // }).catch((_) => this.fallBackTransfer(movedKeys));
           break;
         case 'left':
-          this[ACTIONS.BATCH_DELETE_ROLES]({
-            uuid: this.viewInfo.uuid,
-            roleIds: movedKeys
-          }).catch((_) => this.fallBackTransfer(movedKeys));
+          // this[ACTIONS.BATCH_DELETE_ROLES]({
+          //   uuid: this.viewInfo.uuid,
+          //   roleIds: movedKeys
+          // }).catch((_) => this.fallBackTransfer(movedKeys));
           break;
         default:
           break;
       }
-    },
-    convertToAccountForm() {
-      const v = this.viewInfo;
-      if (this.getPrimaryValue()) return v;
-      const accountForm = {
-        account: v.account,
-        password: v.password,
-        state: v.state,
-        name: v.user.name,
-        gender: v.user.gender,
-        mobile: v.user.mobile,
-        email: v.user.email,
-        roleList: v.roles
-      };
-      return accountForm;
     },
     cusSave() {
       if (this.vDisabled) return;
@@ -199,12 +170,11 @@ export default {
         const method = this.getPrimaryValue()
           ? ACTIONS.UPDATE_ITEM
           : ACTIONS.CREATE_ITEM;
-        this.doAction(
-          MODULE.SYSTEM_ACCOUNT,
-          method,
-          this.convertToAccountForm()
-        ).then((d) => {
-          this.$router.back();
+        this.doAction(MODULE.SYSTEM_ACCOUNT, method, {
+          account: this.viewInfo,
+          user: this.viewInfo.user
+        }).then((d) => {
+          // this.$router.back();
         });
       });
     }

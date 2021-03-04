@@ -52,10 +52,7 @@ export const ACTIONS = {
   FETCH_ENUM: createActions(),
   // 角色
   BATCH_ADD_ROUTES: createActions(),
-  BATCH_DELETE_ROUTES: createActions(),
-  // 账号
-  BATCH_ADD_ROLES: createActions(),
-  BATCH_DELETE_ROLES: createActions()
+  BATCH_DELETE_ROUTES: createActions()
 };
 
 export const EVENT = {

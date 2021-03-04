@@ -1,6 +1,5 @@
-import { batchAddRoles, batchDeleteRoles } from '@/api/system/role-route';
 import { createBaseStore } from '@/store/base-store';
-import { ACTIONS } from '@/store/constant';
+import { ACCOUNT_TYPE } from '@/utils/constant';
 import { deepClone, objectMerge } from '@/utils/index';
 
 export const createModel = (model = {}) => {
@@ -13,9 +12,15 @@ export const createModel = (model = {}) => {
     stateName: null,
     device: null,
     lastLoginAt: null,
-    user: {},
+    user: {
+      mobile: null,
+      name: null,
+      gender: null,
+      genderName: null
+    },
     tenant: {},
     roles: [],
+    routes: [],
     remark: [],
     remarkContent: null
   };
@@ -28,14 +33,6 @@ export default createBaseStore(
       defaultInfo: {
         password: ''
       }
-    },
-    actions: {
-      [ACTIONS.BATCH_ADD_ROLES](ctx, { uuid, roleIds }) {
-        return batchAddRoles(uuid, roleIds);
-      },
-      [ACTIONS.BATCH_DELETE_ROLES](ctx, { uuid, roleIds }) {
-        return batchDeleteRoles(uuid, roleIds);
-      }
     }
   },
   {
@@ -46,6 +43,10 @@ export default createBaseStore(
     createModel,
     cutBeforeUpdate(model) {
       const d = deepClone(model);
+      if (d.account) {
+        d.account.type = ACCOUNT_TYPE;
+      }
+      d.type = ACCOUNT_TYPE;
       d.remark = null;
       return d;
     }

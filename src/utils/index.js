@@ -691,3 +691,7 @@ export const isBlank = (v) => {
 export const isNotBlank = (v) => {
   return !isBlank(v);
 };
+
+export const validateId = id => {
+  return isNotBlank(id) && +id !== 0;
+}
