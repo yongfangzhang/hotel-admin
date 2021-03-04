@@ -6,15 +6,19 @@
                    key="collapse"
                    class="sidebar-logo-link"
                    to="/">
-        <svg-icon icon-class="logo"
-                  class="sidebar-logo mr-0" />
+        <img :src="logoUrl"
+             class="sidebar-logo mr-0">
+        <!-- <svg-icon icon-class="logo"
+                  class="sidebar-logo mr-0" /> -->
       </router-link>
       <router-link v-else
                    key="expand"
                    class="sidebar-logo-link"
                    to="/">
-        <svg-icon icon-class="logo"
-                  class="sidebar-logo" />
+        <img :src="logoUrl"
+             class="sidebar-logo">
+        <!-- <svg-icon icon-class="logo"
+                  class="sidebar-logo" /> -->
         <h1 class="sidebar-title">{{ title }} </h1>
       </router-link>
     </transition>
@@ -32,7 +36,8 @@ export default {
   },
   data() {
     return {
-      title: process.env.VUE_APP_NAME
+      title: process.env.VUE_APP_NAME,
+      logoUrl: `${process.env.BASE_URL}logo.png`
     };
   }
 };
