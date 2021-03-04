@@ -3,6 +3,8 @@ export const EMPTY_TEXT = '--';
 export const PAGE_SIZE = 10;
 export const SELECTOR_SEARCH_LIST_SIZE = 50;
 
+export const ACCOUNT_TYPE = 2;
+
 export const PARSE_TIME_TYPE = {
   YEAR: '{yyyy}',
   DATE: '{yyyy}-{mm}-{dd}',

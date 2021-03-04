@@ -100,17 +100,17 @@ export default {
     },
     infoFormItems() {
       return {
-        left: [{ key: 'mobile', prop: 'info.mobile', label: '手机号' }],
+        left: [{ key: 'mobile', prop: 'user.mobile', label: '手机号' }],
         right: [
-          { key: 'name', prop: 'info.name', label: '用户名称' },
+          { key: 'name', prop: 'user.name', label: '用户名称' },
           {
             key: 'gender',
-            prop: 'info.gender',
+            prop: 'user.gender',
             label: '用户性别',
             type: 'selector',
             map: this.GENDER_MAP
           },
-          { key: 'email', prop: 'info.email', label: '邮箱' }
+          { key: 'email', prop: 'user.email', label: '邮箱' }
         ]
       };
     },
@@ -120,14 +120,14 @@ export default {
           { required: true, message: '员工不能为空', trigger: 'blur' }
         ],
         account: [{ required: true, message: '账号不能为空', trigger: 'blur' }],
-        'info.name': [
+        'user.name': [
           { required: true, message: '用户名称不能为空', trigger: 'blur' }
         ],
-        'info.mobile': [
+        'user.mobile': [
           { required: true, message: '手机号不能为空', trigger: 'blur' },
           { validator: mobileValidator, trigger: 'blur' }
         ],
-        'info.email': [{ validator: emailValidator, trigger: 'blur' }]
+        'user.email': [{ validator: emailValidator, trigger: 'blur' }]
       };
     }
   },
@@ -184,10 +184,10 @@ export default {
         account: v.account,
         password: v.password,
         state: v.state,
-        name: v.info.name,
-        gender: v.info.gender,
-        mobile: v.info.mobile,
-        email: v.info.email,
+        name: v.user.name,
+        gender: v.user.gender,
+        mobile: v.user.mobile,
+        email: v.user.email,
         roleList: v.roles
       };
       return accountForm;

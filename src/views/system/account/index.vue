@@ -62,7 +62,7 @@
                          :min-width="colWidth.sm" />
         <el-table-column label="用户名称"
                          header-align="center"
-                         prop="info.name"
+                         prop="user.name"
                          show-overflow-tooltip
                          :min-width="colWidth.nm" />
         <el-table-column label="员工信息"
@@ -87,28 +87,28 @@
         </el-table-column>
         <el-table-column label="性别"
                          align="center"
-                         prop="info.genderName"
+                         prop="user.genderName"
                          :min-width="colWidth.xxs">
           <template slot-scope="{ row }">
-            <el-tag :type="GENDER_THEME_MAP[row.gender]"> {{ row.info.genderName }} </el-tag>
+            <el-tag :type="GENDER_THEME_MAP[row.gender]"> {{ row.user.genderName }} </el-tag>
           </template>
         </el-table-column>
         <el-table-column label="手机号"
                          align="center"
-                         prop="info.mobile"
+                         prop="user.mobile"
                          :min-width="colWidth.sm">
           <template slot-scope="{ row }">
-            <m-view :value="row.info.mobile"
+            <m-view :value="row.user.mobile"
                     type="tel" />
           </template>
         </el-table-column>
         <el-table-column label="邮箱"
                          align="center"
-                         prop="info.email"
+                         prop="user.email"
                          show-overflow-tooltip
                          :min-width="colWidth.md">
           <template slot-scope="{ row }">
-            <m-view :value="row.info.email"
+            <m-view :value="row.user.email"
                     type="email" />
           </template>
         </el-table-column>

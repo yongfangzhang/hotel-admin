@@ -43,7 +43,7 @@ const actions = {
           if (!routes || routes.length <= 0) {
             reject('请联系管理员分配权限!');
           }
-          // commit('SET_NAME', data.info.name);
+          // commit('SET_NAME', data.user.name);
           commit('SET_ACCOUNT_INFO', data);
           resolve(data);
         })

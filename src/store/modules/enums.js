@@ -25,7 +25,7 @@ export default {
   },
   actions: {
     [ACTIONS.FETCH_ENUM]({ commit }) {
-      return getEnum().then((d) => {
+      return getEnum().then(d => {
         commit(MUTATIONS.SET_ENUM, d);
       });
     }

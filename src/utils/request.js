@@ -17,14 +17,17 @@ const redirectLogin = () => {
   removeToken();
   if (location.href.indexOf('/login') < 0) {
     location.href = '/login';
+  } else {
+    location.reload();
   }
 };
 
 // create an axios instance
 const service = axios.create({
   // url = base url + request url
-  baseURL: process.env.VUE_APP_BASE_API + process.env.VUE_APP_CONTEXT_PATH,
+  // crossDomain: true,
   // withCredentials: true, // send cookies when cross-domain requests
+  baseURL: process.env.VUE_APP_BASE_API + process.env.VUE_APP_CONTEXT_PATH,
   timeout: 30000 // request timeout
 });
 
@@ -92,7 +95,7 @@ service.interceptors.response.use(
   },
   error => {
     stopProgress();
-    if (error.response.status === ERROR_CODE.ACCESS_DENIED) {
+    if (error.response && error.response.status === ERROR_CODE.ACCESS_DENIED) {
       return redirectLogin();
     }
     logger.debug('err: ' + error); // for debug
