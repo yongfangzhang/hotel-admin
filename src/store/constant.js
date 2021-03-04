@@ -11,6 +11,7 @@ export const MODULE = {
   SYSTEM_ACCOUNT: 'systemAccount',
   SYSTEM_ACCOUNT_ROLE: 'systemAccountRole',
   SYSTEM_ROLE: 'systemRole',
+  SYSTEM_ROLE_ROUTE: 'systemRoleRoute',
   SYSTEM_PERMISSION: 'systemPermission'
 };
 

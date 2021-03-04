@@ -4,7 +4,6 @@
     <page-title back
                 redirect-parent />
     <el-form ref="form"
-             :disabled="vDisabled"
              :model="viewInfo"
              :rules="formRules"
              :label-width="formLabelWidth.w6"
@@ -37,7 +36,7 @@
                    :titles="['所有权限', '已添加权限']"
                    :button-texts="['删除', '添加']"
                    :format="{ noChecked: '${total}', hasChecked: '${checked}/${total}' }"
-                   :props="{ key: 'id', label: 'caption' }"
+                   :props="{ key: 'uuid', label: 'caption' }"
                    @change="handleChange">
         <span slot-scope="{ option }">{{ option.caption }}【{{ option.path }}】</span>
       </el-transfer>
@@ -46,10 +45,10 @@
   </div>
 </template>
 <script>
-import { MODULE, ACTIONS } from '@/store/constant';
+import { MODULE, ACTIONS, MUTATIONS } from '@/store/constant';
 import { formEditMixin } from '@/utils/mixins';
-import { mapActions } from 'vuex';
 import { toastWarning } from '@/utils/message';
+import { validateId } from '@/utils/index';
 export default {
   name: 'SystemRoleEdit',
   mixins: [formEditMixin],
@@ -60,19 +59,16 @@ export default {
     };
   },
   computed: {
-    vDisabled() {
-      return this.viewInfo !== null && !this.viewInfo.editable;
-    },
     mParam() {
       return {
         paramMode: true,
         autoBack: true,
-        primaryKey: 'id',
+        primaryKey: 'uuid',
         module: MODULE.SYSTEM_ROLE
       };
     },
     newAdded() {
-      return !this.viewInfo || +this.viewInfo.id < 1;
+      return !this.viewInfo || !validateId(this.viewInfo.uuid);
     },
     formItems() {
       return {
@@ -103,41 +99,50 @@ export default {
     });
   },
   methods: {
-    ...mapActions(MODULE.SYSTEM_ROLE, [
-      ACTIONS.BATCH_ADD_ROUTES,
-      ACTIONS.BATCH_DELETE_ROUTES
-    ]),
     initAddedRoutes() {
       if (!this.viewInfo) {
         this.addedRoutes = [];
       } else {
-        this.addedRoutes = this.viewInfo.routes.map((r) => +r.id);
+        this.addedRoutes = this.viewInfo.routes.map((r) => r.uuid);
       }
     },
-    fallBackTransfer(keys) {
-      this.addedRoutes = this.addedRoutes.filter((r) => keys.indexOf(r) < 0);
+    updateRole() {
+      this.doAction(
+        MODULE.SYSTEM_ROLE,
+        ACTIONS.FETCH_VIEW_INFO,
+        this.viewInfo.uuid
+      ).then((data) => {
+        this.doMutation(MODULE.SYSTEM_ROLE, MUTATIONS.SET_VIEW_INFO, data);
+      });
     },
-    handleChange(value, direction, movedKeys) {
-      if (this.vDisabled) {
-        this.fallBackTransfer(movedKeys);
-        return toastWarning('禁止操作');
-      }
+    handleChange(value, direction, routeUuids) {
       if (this.newAdded) {
         this.addedRoutes = [];
         return toastWarning('请先添加角色');
       }
       switch (direction) {
         case 'right':
-          this[ACTIONS.BATCH_ADD_ROUTES]({
-            roleId: this.viewInfo.id,
-            routeIds: movedKeys
-          }).catch((_) => this.fallBackTransfer(movedKeys));
+          routeUuids.forEach((routeUuid) => {
+            this.doAction(MODULE.SYSTEM_ROLE_ROUTE, ACTIONS.CREATE_ITEM, {
+              roleUuid: this.viewInfo.uuid,
+              routeUuid
+            }).then(() => {
+              this.updateRole();
+            });
+          });
           break;
         case 'left':
-          this[ACTIONS.BATCH_DELETE_ROUTES]({
-            roleId: this.viewInfo.id,
-            routeIds: movedKeys
-          }).catch((_) => this.fallBackTransfer(movedKeys));
+          this.viewInfo.roleRoutes
+            .filter((rr) => routeUuids.indexOf(rr.routeUuid) > -1)
+            .forEach((rr) => {
+              this.doAction(
+                MODULE.SYSTEM_ROLE_ROUTE,
+                ACTIONS.DELETE_ITEM,
+                rr.uuid
+              ).then(() => {
+                this.updateRole();
+              });
+            });
           break;
         default:
           break;

@@ -52,7 +52,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="描述"
+        <!-- <el-table-column label="描述"
                          header-align="center"
                          show-overflow-tooltip
                          :width="colWidth.lg"
@@ -60,7 +60,7 @@
           <template slot-scope="{ row }">
             <m-view :value="row.description" />
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column label="备注"
                          header-align="center"
                          show-overflow-tooltip
