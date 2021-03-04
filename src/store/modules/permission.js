@@ -30,7 +30,7 @@ function hasPermission(userRoutes, route) {
 export function filterAsyncRoutes(totalRoutes, userRoutes) {
   const res = [];
 
-  totalRoutes.forEach((route) => {
+  totalRoutes.forEach(route => {
     const tmp = { ...route };
     if (tmp.children && tmp.children.length) {
       const arr = filterAsyncRoutes(tmp.children, userRoutes);
@@ -47,6 +47,7 @@ export function filterAsyncRoutes(totalRoutes, userRoutes) {
 }
 
 const state = {
+  perms: [],
   routes: [],
   addRoutes: []
 };
@@ -58,14 +59,19 @@ const mutations = {
     state.addRoutes = routes;
     state.routes = constantRoutes.concat(routes);
   },
-  clearRoutes: (state) => {
+  clearRoutes: state => {
     state.routes = [];
   }
 };
 
 const actions = {
-  generateRoutes({ commit }, routes) {
-    return new Promise((resolve) => {
+  generateRoutes({ commit, state }, routes) {
+    return new Promise(resolve => {
+      let perms = [];
+      routes.forEach(r => {
+        perms = perms.concat(r.permissions);
+      });
+      state.perms = perms;
       const accessedRoutes = filterAsyncRoutes(asyncRoutes, routes);
       commit('SET_ROUTES', accessedRoutes);
       resolve(accessedRoutes);

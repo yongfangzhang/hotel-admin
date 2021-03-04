@@ -17,7 +17,7 @@
           </el-form-item>
           <el-form-item label="操作类型">
             <m-selector v-model="queries.type"
-                        :map="OPERATION"
+                        :map="OPERATION_MAP"
                         @change="doFilter" />
           </el-form-item>
           <el-form-item label="级别">
@@ -74,7 +74,7 @@
                          align="center"
                          :width="colWidth.md">
           <template slot-scope="{ row }">
-            <div v-text="OPERATION[row.type]" />
+            <div v-text="OPERATION_MAP[row.type]" />
           </template>
         </el-table-column>
         <el-table-column prop="content"
@@ -90,7 +90,6 @@
   </div>
 </template>
 <script>
-import { mapGetters } from 'vuex';
 import { MODULE } from '@/store/constant';
 import { baseTableMixin } from '@/utils/mixins';
 export default {
@@ -102,8 +101,8 @@ export default {
         content: '',
         target: '',
         type: '',
-        startDate: '',
-        stopDate: ''
+        createdAtStart: '',
+        createdAtStop: ''
       },
       levelMap: {
         1: '1',
@@ -115,7 +114,6 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(MODULE.ENUMS, ['OPERATION', 'OPERATION_TARGET_MAP']),
     mParam() {
       return {
         module: MODULE.SYSTEM_LOG
@@ -129,8 +127,8 @@ export default {
       this.$nextTick(() => this.doFilter());
     },
     timeOnChange(data) {
-      this.queries.startDate = data ? data[0] : '';
-      this.queries.stopDate = data ? data[1] : '';
+      this.queries.createdAtStart = data ? data[0] : '';
+      this.queries.createdAtStop = data ? data[1] : '';
       this.$nextTick(() => this.doFilter());
     }
   }

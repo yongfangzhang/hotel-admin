@@ -3,7 +3,7 @@
     <template v-if="remark!=null">
       <div v-for="(r,idx) in remark"
            :key="idx">
-        <div> 【{{ r.creator }}】【{{ r.createdAt }}】: {{ r.content }} </div>
+        <div>【{{ r.createdAt }}】: {{ r.content }} </div>
       </div>
     </template>
     <div v-if="isView && (remark==null || !remark.length)"> {{ emptyText }} </div>

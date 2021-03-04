@@ -3,8 +3,6 @@
     <simple-table ref="table"
                   :module="mParam.module"
                   :queries="queries"
-                  :sequenced="false"
-                  :before-fetch="beforeFetch"
                   class="px-3 flex-fill">
       <div slot="header"
            class="d-flex justify-content-between">
@@ -12,16 +10,15 @@
                  inline
                  @submit.native.prevent>
           <div>
+            <el-form-item label="角色编码">
+              <el-input v-model="queries.code"
+                        placeholder="请输入"
+                        @keydown.enter.native="doFilter" />
+            </el-form-item>
             <el-form-item label="角色名称">
               <el-input v-model="queries.name"
                         placeholder="请输入"
                         @keydown.enter.native="doFilter" />
-            </el-form-item>
-            <el-form-item label="是否预置">
-              <m-selector v-model="queries.preset"
-                          :map="BOOLEAN_FLAG_MAP"
-                          nullable
-                          @change="doFilter" />
             </el-form-item>
           </div>
         </el-form>
@@ -36,27 +33,19 @@
         </div>
       </div>
       <template slot="columns">
-        <el-table-column label="ID"
-                         prop="id"
+        <el-table-column label="角色编码"
                          align="center"
-                         :width="colWidth.xxs" />
+                         prop="code"
+                         show-overflow-tooltip
+                         :width="colWidth.md" />
         <el-table-column label="角色名称"
-                         header-align="center"
+                         align="center"
                          prop="name"
                          show-overflow-tooltip
-                         :width="colWidth.nm" />
-        <el-table-column label="是否预置"
-                         prop="editable"
-                         align="center"
-                         :width="colWidth.xs">
-          <template slot-scope="{ row }">
-            <m-view :value="!row.editable"
-                    type="boolean" />
-          </template>
-        </el-table-column>
+                         :width="colWidth.md" />
         <el-table-column label="权限"
                          align="center"
-                         :width="colWidth.sm">
+                         :width="colWidth.md">
           <template slot-scope="{ row }">
             <el-button type="text"
                        @click="viewRoutes(row)">查看</el-button>
@@ -87,10 +76,8 @@
           <template slot-scope="{ row }">
             <div>
               <el-button type="text"
-                         :disabled="!row.editable"
                          @click="editRow(row)">编辑</el-button>
               <el-button type="text"
-                         :disabled="!row.editable"
                          @click="deleteRow(row)">删除</el-button>
             </div>
           </template>
@@ -116,8 +103,7 @@ export default {
       showRoutesDialog: false,
       queries: {
         name: null,
-        preset: null,
-        editable: null
+        code: null
       }
     };
   },
@@ -127,7 +113,7 @@ export default {
         paramMode: true,
         module: MODULE.SYSTEM_ROLE,
         editPath: PATH_MAP.ROLE_EDIT,
-        primaryKey: 'id'
+        primaryKey: 'uuid'
       };
     }
   },
@@ -136,14 +122,6 @@ export default {
     viewRoutes(row) {
       this.currentRow = row;
       this.showRoutesDialog = true;
-    },
-    beforeFetch() {
-      this.queries.editable = 1;
-      if (this.queries.preset === null) {
-        this.queries.editable = null;
-      } else {
-        this.queries.editable = 1 - this.queries.preset;
-      }
     }
   }
 };

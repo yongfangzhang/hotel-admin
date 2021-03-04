@@ -69,7 +69,7 @@ export default {
     queries: { type: Object, default: null },
     module: { type: String, default: '' },
     action: { type: String, default: ACTIONS.FETCH_PAGE_DATA },
-    sequenced: { type: Boolean, default: false },
+    sequenced: { type: Boolean, default: true },
     auto: { type: Boolean, default: true },
     height: { type: [Number, String], default: 1 },
     autoFill: { type: Boolean, default: false },

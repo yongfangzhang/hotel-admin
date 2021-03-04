@@ -3,7 +3,6 @@
     <simple-table ref="table"
                   :module="mParam.module"
                   :queries="queries"
-                  :sequenced="false"
                   class="px-3 flex-fill">
       <div slot="header"
            class="d-flex justify-content-between">
@@ -42,10 +41,6 @@
         </div>
       </div>
       <template slot="columns">
-        <el-table-column label="ID"
-                         prop="id"
-                         align="center"
-                         :width="colWidth.xxs" />
         <el-table-column label="路由路径"
                          header-align="center"
                          prop="path"

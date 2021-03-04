@@ -2,15 +2,12 @@
   <m-dialog v-model="currentValue"
             :title="title"
             :has-confirm="false"
-            width="md">
+            width="md"
+            dialog-class="fixed-dialog">
     <el-table :data="routes"
               border
               fit
               highlight-current-row>
-      <el-table-column label="ID"
-                       prop="id"
-                       align="center"
-                       :width="colWidth.xxs" />
       <el-table-column label="路由路径"
                        prop="path"
                        :width="colWidth.md" />
@@ -25,7 +22,7 @@
         <template slot-scope="{ row }">
           <m-view v-if="!row.permissions" />
           <div v-else>
-            <div v-for="(p,i) in row.permissions.split(',')"
+            <div v-for="(p,i) in row.permissions"
                  :key="i">{{ p }}</div>
           </div>
         </template>

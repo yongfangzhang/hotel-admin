@@ -4,7 +4,7 @@ import { createNormalRoute, fillPath, path2Name } from '@/router/utils';
 const ROOT_PATH = '/system';
 
 export const PATH_MAP = {
-  SYSTEM_LOG: fillPath(ROOT_PATH, 'system-log/index'),
+  SYSTEM_LOG: fillPath(ROOT_PATH, 'slog/index'),
   ACCOUNT: fillPath(ROOT_PATH, 'account/index'),
   ACCOUNT_EDIT: fillPath(ROOT_PATH, 'account/edit'),
   ROLE: fillPath(ROOT_PATH, 'role/index'),
@@ -33,7 +33,7 @@ export default {
       '角色编辑',
       { activeMenu: PATH_MAP.ROLE },
       { hidden: true }
-    ),
-    createNormalRoute(PATH_MAP.PERMISSION, '权限管理')
+    )
+    // createNormalRoute(PATH_MAP.PERMISSION, '权限管理')
   ]
 };

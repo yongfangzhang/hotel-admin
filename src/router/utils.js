@@ -15,10 +15,12 @@ export const createNormalRoute = (path, title, meta = {}, opt = {}) => {
   const pathVariableIdex = path.indexOf('/:');
   const viewPath =
     pathVariableIdex > -1 ? path.substring(0, pathVariableIdex) : path;
+  // remove icon
+  meta.icon = '';
   return objectMerge(
     {
       path,
-      component: (resolve) => require([`@/views${viewPath}`], resolve),
+      component: resolve => require([`@/views${viewPath}`], resolve),
       // component: () => import(`@/views${viewPath}`),
       name: path2Name(viewPath),
       meta: objectMerge(

@@ -12,6 +12,8 @@ import { ACTIONS, MUTATIONS } from '@/store/constant';
 import { deepExtend, isNotBlank, objectMerge } from '@/utils/index';
 import { confirmMessage, toastSuccess } from '@/utils/message';
 
+const validateId = id => isNotBlank(id) && +id !== 0;
+
 export const createBaseStore = (store, options) => {
   // eslint-disable-next-line object-curly-spacing
   const { state = {}, getters = {}, mutations = {}, actions = {} } = store;
@@ -84,7 +86,7 @@ export const createBaseStore = (store, options) => {
       },
       [ACTIONS.FETCH_VIEW_INFO]({ commit }, id) {
         if (!options.validateId) {
-          options.validateId = isNotBlank;
+          options.validateId = validateId;
         }
         if (!options.createModel) {
           throw new Error('请实现 createModel 方法');

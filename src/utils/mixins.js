@@ -33,7 +33,51 @@ export const baseMixin = {
     };
   },
   computed: {
-    ...mapGetters(MODULE.ENUMS, []),
+    ...mapGetters(MODULE.ENUMS, [
+      'ACCOUNT_TYPE',
+      'APARTMENT_STATE',
+      'BASE_ENUM',
+      'CUSTOMER_CHANNEL',
+      'ERROR_CODE',
+      'FILE_TYPE',
+      'GENDER',
+      'OPERATION',
+      'OPERATION_TARGET',
+      'ORDER_CHANNEL',
+      'ORDER_STATE',
+      'ORDER_TYPE',
+      'ORDER_USER_TYPE',
+      'RESOURCE_TYPE',
+      'ROLE_TYPE',
+      'ROOM_PRICE_TYPE',
+      'ROOM_STATE',
+      'ROUTE_TYPE',
+      'USER_STATE',
+      'ACCOUNT_TYPE_MAP',
+      'APARTMENT_STATE_MAP',
+      'BASE_ENUM_MAP',
+      'CUSTOMER_CHANNEL_MAP',
+      'ERROR_CODE_MAP',
+      'FILE_TYPE_MAP',
+      'GENDER_MAP',
+      'OPERATION_MAP',
+      'OPERATION_TARGET_MAP',
+      'ORDER_CHANNEL_MAP',
+      'ORDER_STATE_MAP',
+      'ORDER_TYPE_MAP',
+      'ORDER_USER_TYPE_MAP',
+      'RESOURCE_TYPE_MAP',
+      'ROLE_TYPE_MAP',
+      'ROOM_PRICE_TYPE_MAP',
+      'ROOM_STATE_MAP',
+      'ROUTE_TYPE_MAP',
+      'USER_STATE_MAP',
+      // extral
+      'USER_STATE_THEME_MAP',
+      'GENDER_THEME_MAP',
+      'BOOLEAN_FLAG',
+      'BOOLEAN_FLAG_MAP'
+    ]),
     formWidth() {
       // 基础留白50px, 单个字12px
       return {
@@ -245,7 +289,7 @@ export const baseTableMixin = {
     },
     routeByRowPath(row, path) {
       if (!path) throw new Error('未定义了跳转路由');
-      const v = row ? row[this._mParam.primaryKey] : 0;
+      const v = row ? row[this._mParam.primaryKey] : '';
       if (this._mParam.paramMode) {
         this.$router.push({
           path,

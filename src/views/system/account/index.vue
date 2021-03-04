@@ -55,36 +55,16 @@
         </div>
       </div>
       <template slot="columns">
-        <el-table-column label="账号"
-                         header-align="center"
+        <el-table-column label="账号名称"
+                         align="center"
                          prop="account"
                          show-overflow-tooltip
                          :min-width="colWidth.sm" />
         <el-table-column label="用户名称"
-                         header-align="center"
+                         align="center"
                          prop="user.name"
                          show-overflow-tooltip
                          :min-width="colWidth.nm" />
-        <el-table-column label="员工信息"
-                         align="left"
-                         show-overflow-tooltip
-                         :min-width="colWidth.nm">
-          <template slot-scope="{ row }">
-            <overview-emp v-if="row.agent"
-                          :text="row.agent.name"
-                          :uuid="row.agent.uuid" />
-          </template>
-        </el-table-column>
-        <el-table-column label="业务机构"
-                         align="left"
-                         show-overflow-tooltip
-                         :min-width="colWidth.nm">
-          <template slot-scope="{ row }">
-            <overview-dept v-if="row.agent"
-                           :text="row.agent.departmentName"
-                           :uuid="row.agent.departmentUuid" />
-          </template>
-        </el-table-column>
         <el-table-column label="性别"
                          align="center"
                          prop="user.genderName"
@@ -102,16 +82,6 @@
                     type="tel" />
           </template>
         </el-table-column>
-        <el-table-column label="邮箱"
-                         align="center"
-                         prop="user.email"
-                         show-overflow-tooltip
-                         :min-width="colWidth.md">
-          <template slot-scope="{ row }">
-            <m-view :value="row.user.email"
-                    type="email" />
-          </template>
-        </el-table-column>
         <el-table-column label="状态"
                          prop="stateName"
                          align="center"
@@ -121,7 +91,7 @@
           </template>
         </el-table-column>
         <el-table-column label="角色"
-                         header-align="center"
+                         align="center"
                          prop="remark"
                          :min-width="colWidth.lg">
           <template slot-scope="{ row }">
@@ -131,6 +101,10 @@
                     effect="plain">{{ r.name }}</el-tag>
           </template>
         </el-table-column>
+        <el-table-column label="注册时间"
+                         prop="createdAt"
+                         align="center"
+                         :min-width="colWidth.datetime" />
         <el-table-column label="最后登录时间"
                          prop="lastLoginAt"
                          align="center"
@@ -175,8 +149,8 @@ export default {
         state: null,
         name: null,
         mobile: null,
-        startDate: null,
-        stopDate: null
+        createdAtStart: null,
+        createdAtStop: null
       }
     };
   },
@@ -193,9 +167,9 @@ export default {
   mounted() {},
   methods: {
     beforeFetch() {
-      this.queries.state = this.qStates[0] || 0;
-      this.queries.startDate = this.createdRange[0];
-      this.queries.stopDate = this.createdRange[1];
+      this.queries.state = +this.qStates[0] || undefined;
+      this.queries.createdAtStart = this.createdRange[0];
+      this.queries.createdAtStop = this.createdRange[1];
     },
     recoverRow(row) {
       const item = deepClone(row);
