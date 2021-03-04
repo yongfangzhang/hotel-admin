@@ -15,7 +15,7 @@ export const PATH_MAP = {
 export default {
   path: '/system',
   component: Layout,
-  meta: { title: '系统', icon: 'system' },
+  meta: { title: '系统', icon: 'example' },
   redirect: PATH_MAP.SYSTEM_LOG,
   name: path2Name(ROOT_PATH),
   children: [

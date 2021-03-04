@@ -1,11 +1,12 @@
 @import "./bv4/utilities.scss";
+@import "./override/index.scss";
 @import "./variables.scss";
 @import "./mixin.scss";
 @import "./transition.scss";
 @import "./element-ui.scss";
-@import "./sidebar.scss";
 @import "./btn.scss";
-@import "./override/index.scss";
+@import './common.scss';
+@import "./sidebar.scss";
 
 body {
   height: 100%;
@@ -22,11 +23,38 @@ label {
 
 html {
   height: 100%;
+  font-size: 20px;
+  font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
   box-sizing: border-box;
+  touch-action: none;
+}
+@media screen and (max-width: 1440px){
+  html {
+    font-size: 15px;
+  }
+}
+@media screen and (max-width: 1367px){
+  html {
+    font-size: 14px;
+  }
+}
+@media screen and (max-width: 1281px){
+  html {
+    font-size: 12px;
+  }
 }
 
 #app {
   height: 100%;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 3px;
 }
 
 *,
@@ -134,7 +162,7 @@ aside {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: $title-height;
+    // height: $title-height;
     min-height: $title-height;
     padding: 0 $spacer;
     h3 {
@@ -285,6 +313,11 @@ aside {
   .el-collapse-item__header {
     background: $gray-100;
   }
+  &.header-no-bg {
+    .el-collapse-item__header {
+      background: unset;
+    }
+  }
   .el-collapse-item__content {
     padding: 0;
     // padding-bottom: $spacer/2; 底部是form error提示时会贴边
@@ -299,10 +332,13 @@ aside {
 }
 
 .fixed-dialog {
-  margin: 2rem auto !important;
-  height: calc(100% - 4rem) !important;
   display: flex;
   flex-direction: column;
+  margin:0 !important;
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
   .el-dialog__body {
     flex: 1;
     height: 100%;
@@ -344,4 +380,8 @@ aside {
   .el-input__inner {
     text-align: left;
   }
+}
+
+.hidden {
+  display: none;
 }

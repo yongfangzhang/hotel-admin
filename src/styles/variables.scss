@@ -10,8 +10,8 @@ $panGreen: #30B08F;
 
 // sidebar
 $menuText:#bfcbd9;
-$menuActiveText:#409EFF;
-$subMenuActiveText:#f4f4f5; // https://github.com/ElemeFE/element/issues/12951
+$menuActiveText:#409EFF; //#409EFF
+$subMenuActiveText: #f4f4f5; // https://github.com/ElemeFE/element/issues/12951
 
 $menuBg:#304156;
 $menuHover:#263445;
@@ -36,3 +36,35 @@ $font-size-xxl: 16px;
   subMenuHover: $subMenuHover;
   sideBarWidth: $sideBarWidth;
 }
+$font-size-xs: 12px;
+$font-size-sm: .7rem;
+$font-size-md: .8rem;
+$font-size-lg: .9rem;
+$font-size-xl: 1rem;
+
+$spacer-xs: 0.6rem;
+$spacer-sm: 0.7rem;
+$spacer-md: 0.8rem;
+$spacer-lg: 0.9rem;
+$spacer-xl: 1rem;
+
+
+$color-theme: #42B983;
+$color-active: #409eff;
+$color-title: #222;
+$color-sub-title: #333;
+$color-sub: #606266;
+$color-content: #666;
+$color-subText: #999999;
+$color-disable: #b2b2b2;
+$color-remind: #F39C12;
+$color-inner-footer: #A0A0A0;
+$color-theme-active-back: #E8F1FA; // 活跃的主题背景色
+// chat
+$color-chat-box: #ECF5FF;
+// border
+$color-border: #D8D8D8;
+// background
+$color-table-border: #EBEEF5;
+
+$color-background: rgb(245, 245, 245);

@@ -1,5 +1,7 @@
 // cover some element-ui styles
-
+.el-row {
+  margin: 0 -.5rem;
+}
 .el-breadcrumb__inner,
 .el-breadcrumb__inner a {
   font-weight: 400 !important;
@@ -15,6 +17,28 @@
   display: none;
 }
 
+.el-dialog__body{
+  padding: 1rem;
+}
+
+.el-dialog__header{
+  padding:17px;
+  background: #F4F4F4;
+}
+
+.el-dialog__title{
+  font-weight: bold;
+}
+
+.el-dialog__footer{
+  padding-top: 0;
+}
+
+.el-message-box__content{
+  max-height: 200px;
+  overflow-y: scroll;
+}
+
 .cell {
   .el-tag {
     margin-right: 0px;
@@ -25,6 +49,19 @@
   .cell {
     padding-left: 5px;
     padding-right: 5px;
+  }
+}
+
+.el-drawer{
+  :focus {
+    outline: 0;
+  }
+  .el-drawer__body{
+    height: 100%;
+  }
+  .el-drawer__header{
+    padding: 1rem;
+    margin-bottom: 0;
   }
 }
 
@@ -79,10 +116,246 @@
 }
 
 // collapse
-// 加了个class包起来了, 否则影响到其他页面 
-.management-collapse { 
+// 加了个class包起来了, 否则影响到其他页面
+.management-collapse {
   .el-collapse-item__header {
     font-size: 1.5rem !important;
     font-weight: bold !important;
   }
 }
+
+.el-menu-item, #app .el-submenu__title, #app .el-submenu .el-menu-item {
+  height: 2.8rem!important;
+  line-height: 2.8rem!important;
+}
+// inner navbar 样式调整
+.inner-navbar {
+  height: 50px!important;
+  .hamburger-container {
+    line-height: 50px!important;
+  }
+}
+
+.el-breadcrumb.app-breadcrumb {
+  height: 50px!important;
+  line-height: 50px!important;
+}
+
+.tags-view-container {
+  height: 46px!important;
+  .tags-view-wrapper .tags-view-item {
+    height: 28px!important;
+    line-height: 28px!important;
+    //font-size: $font-size-xs!important;
+    @include media-breakpoint-size($px-12);
+    margin-top: 9px !important;
+  }
+}
+
+.hasTagsView .fixed-header+.app-main {
+  padding-top: 106px!important;
+  padding-bottom: 2.6rem!important;
+}
+.scroll-container {
+  .el-scrollbar__wrap {
+    height: 46px!important;
+  }
+}
+.simple-table-container {
+  .el-table--mini th {
+    padding: 0.3rem 0 0.2rem 0;
+  }
+  .el-table--mini td {
+    padding: 0.2rem 0;
+  }
+}
+
+.simple-table-header {
+  background-color: #fafafa !important;
+  color: rgba(0,0,0,.85);
+  text-align: center !important;
+}
+
+.el-table {
+  .warning-row {
+    background: rgba(245, 108, 108, 0.2) !important;
+  }
+  .lost-row{
+    background: rgba(192, 196, 204, 0.2) !important;
+  }
+  .success-row{
+    background: rgba(103, 194, 58, 0.2) !important;
+  }
+  .border-edge{
+    border-right: 1px solid #E4E7ED;
+  }
+  .border-b{
+    border-bottom: 2px dotted #909399;
+  }
+}
+
+.m-transfer {
+  $transfer-text-width: 150px;
+  .el-transfer-panel {
+    width: calc(50% - #{0.8 * $transfer-text-width});
+  }
+  .el-transfer__buttons {
+    padding: 0 0.1 * $transfer-text-width;
+    width: 1.6 * $transfer-text-width;
+    text-align: center;
+    white-space: nowrap;
+  }
+  .el-transfer__button.is-with-texts {
+    display: inline-block;
+    margin: 0 0.1 * $transfer-text-width;
+  }
+  .el-transfer-panel__item {
+    display: block;
+  }
+}
+
+#app {
+  .el-tabs__nav-wrap::after {
+    // cover element-ui
+    height: 0!important;
+  }
+  .el-tabs__header {
+    margin-bottom: 15px;
+  }
+  .el-tabs__item {
+    height: 36px;
+    //padding: 0 1rem;
+    line-height: 36px;
+    color: $color-disable;
+    @include media-breakpoint-size($px-16);
+    &.is-active {
+      color: $color-active;
+    }
+  }
+  .el-message-box {
+    .el-message-box__header {
+      .el-message-box__title {
+        color: $color-title;
+        font-weight: bold;
+        @include media-breakpoint-size($px-18);
+      }
+    }
+    .el-message-box__message {
+      p {
+        @include media-breakpoint-size($px-16);
+      }
+    }
+    .el-message-box__btns {
+      .el-button {
+        @include media-breakpoint-height();
+        @include media-breakpoint-line-height();
+        font-size: 12px;
+        padding: 0 $spacer-xl;
+      }
+    }
+  }
+  .el-button--mini {
+    // @include media-breakpoint-height();
+    // @include media-breakpoint-line-height();
+    @include media-breakpoint-size($px-12);
+    // padding: 0 $spacer-xl;
+  }
+  // .is-required {
+  //   .el-input {
+  //     input {
+  //       border-width: 2px;
+  //     }
+  //   }
+  // }
+  .el-form-item--mini {
+    .el-form-item__content {
+      position: relative;
+    }
+    .el-form-item__label,
+    .el-input__inner,
+    .el-checkbox__label{
+      // @include media-breakpoint-height();
+      // @include media-breakpoint-line-height();
+      @include media-breakpoint-size($px-14);
+    }
+  }
+  .el-date-editor.el-input, .el-date-editor.el-input__inner {
+    width: 100%;
+    // @include media-breakpoint-height();
+    // @include media-breakpoint-line-height();
+    @include media-breakpoint-size($px-14);
+  }
+  //.el-range-editor.el-date-editor {
+  //  width: 29rem;
+  //}
+  // .el-tabs.el-tabs--top {
+  //   height: 100%;
+  //   position: relative;
+  //   overflow: hidden;
+  //   .el-tabs__header.is-top {
+  //     padding: 0 $spacer-xl;
+  //   }
+  //   .el-tabs__content {
+  //     height: calc(100% - 51px);
+  //     overflow-x: hidden;
+  //     overflow-y: auto;
+  //   }
+  // }
+  .el-icon-check{
+    font-weight: bold;
+  }
+  .el-icon-close{
+    font-weight: bold;
+  }
+}
+
+.el-message-box {
+  .el-message-box__header {
+    .el-message-box__title {
+      color: $color-title;
+      font-weight: bold;
+      @include media-breakpoint-size($px-18);
+    }
+  }
+  .el-message-box__message {
+    p {
+      @include media-breakpoint-size($px-16);
+    }
+  }
+  .el-message-box__btns {
+    .el-button {
+      @include media-breakpoint-height();
+      @include media-breakpoint-line-height();
+      font-size: 12px;
+      padding: 0 $spacer-xl;
+    }
+  }
+}
+
+.el-badge__content.is-fixed {
+  right: 0.5rem;
+}
+
+// 去除tabs选中
+.el-tabs__item:focus.is-active.is-focus:not(:active) {
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+}
+
+
+.el-form-item.is-success .el-input__inner,
+.el-form-item.is-success .el-input__inner:focus,
+.el-form-item.is-success .el-textarea__inner,
+.el-form-item.is-success .el-textarea__inner:focus {
+  border-color:#67C23A
+}
+.el-form-item.is-success .el-input-group__append .el-input__inner,
+.el-form-item.is-success .el-input-group__prepend .el-input__inner {
+  border-color:transparent
+}
+.el-form-item.is-success .el-input__validateIcon {
+  color:#67C23A
+}
+
+
+

@@ -16,7 +16,7 @@ export const createNormalRoute = (path, title, meta = {}, opt = {}) => {
   const viewPath =
     pathVariableIdex > -1 ? path.substring(0, pathVariableIdex) : path;
   // remove icon
-  meta.icon = '';
+  meta.icon = 'example';
   return objectMerge(
     {
       path,

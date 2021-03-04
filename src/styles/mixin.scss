@@ -64,3 +64,39 @@
     border-bottom: $transparent-border-style;
   }
 }
+
+@mixin flex-around() {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+@mixin flex-start() {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+@mixin flex-end() {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+@mixin border-bottom($color) {
+  background-size: 100% 1px;
+  background-position: left bottom;
+  background-repeat: no-repeat;
+  background-image: linear-gradient(to bottom, transparent, $color);
+}
+@mixin border-top($color) {
+  background-size: 100% 1px;
+  background-position: left top;
+  background-repeat: no-repeat;
+  background-image: linear-gradient(to bottom, transparent, $color);
+}
+@mixin text-overflow() {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+@mixin shadow-transition() {
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, .1);
+}

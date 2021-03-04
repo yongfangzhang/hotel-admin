@@ -68,7 +68,7 @@
         <el-table-column label="性别"
                          align="center"
                          prop="user.genderName"
-                         :min-width="colWidth.xxs">
+                         :min-width="colWidth.xs">
           <template slot-scope="{ row }">
             <el-tag :type="GENDER_THEME_MAP[row.gender]"> {{ row.user.genderName }} </el-tag>
           </template>
@@ -93,7 +93,7 @@
         <el-table-column label="角色"
                          align="center"
                          prop="remark"
-                         :min-width="colWidth.lg">
+                         :min-width="colWidth.xs">
           <template slot-scope="{ row }">
             <el-tag v-for="r in row.roles"
                     :key="r.id"
