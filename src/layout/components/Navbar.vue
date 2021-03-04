@@ -45,7 +45,7 @@ export default {
     Hamburger
   },
   data() {
-    return { showBack: true };
+    return { showBack: false };
   },
   computed: {
     ...mapGetters(['sidebar', 'avatar', 'device'])

@@ -58,7 +58,7 @@
   </div>
 </template>
 <script>
-import { MODULE, ACTIONS } from '@/store/constant';
+import { MODULE, ACTIONS, MUTATIONS } from '@/store/constant';
 import { formEditMixin } from '@/utils/mixins';
 import { mobileValidator } from '@/utils/validate';
 import { toastWarning } from '@/utils/message';
@@ -87,7 +87,7 @@ export default {
     accountFormItems() {
       return {
         left: [
-          { key: 'account', label: '账号' },
+          { key: 'account', label: '账号', disabled: !this.newAdded },
           { key: 'password', prop: 'password', label: '密码' }
         ],
         right: [{ key: 'remarkContent', label: '备注', type: 'remark' }]
@@ -95,15 +95,28 @@ export default {
     },
     infoFormItems() {
       return {
-        left: [{ key: 'mobile', prop: 'user.mobile', label: '手机号' }],
+        left: [
+          {
+            key: 'mobile',
+            prop: 'user.mobile',
+            label: '手机号',
+            disabled: !this.newAdded
+          }
+        ],
         right: [
-          { key: 'name', prop: 'user.name', label: '用户名称' },
+          {
+            key: 'name',
+            prop: 'user.name',
+            label: '用户名称',
+            disabled: !this.newAdded
+          },
           {
             key: 'gender',
             prop: 'user.gender',
             label: '用户性别',
             type: 'selector',
-            map: this.GENDER_MAP
+            map: this.GENDER_MAP,
+            disabled: !this.newAdded
           }
         ]
       };
@@ -136,28 +149,45 @@ export default {
       if (!this.viewInfo) {
         this.addedRoles = [];
       } else {
-        this.addedRoles = this.viewInfo.roles.map((r) => +r.uuid);
+        this.addedRoles = this.viewInfo.roles.map((r) => r.uuid);
       }
     },
-    fallBackTransfer(keys) {
-      this.addedRoles = this.addedRoles.filter((r) => keys.indexOf(r) < 0);
+    updateAccount() {
+      this.doAction(
+        MODULE.SYSTEM_ACCOUNT,
+        ACTIONS.FETCH_VIEW_INFO,
+        this.viewInfo.uuid
+      ).then((data) => {
+        this.doMutation(MODULE.SYSTEM_ACCOUNT, MUTATIONS.SET_VIEW_INFO, data);
+      });
     },
-    handleChange(value, direction, movedKeys) {
+    handleChange(value, direction, roleUuids) {
       if (this.newAdded) {
         return toastWarning('请先添加账号');
       }
       switch (direction) {
         case 'right':
-          // this[ACTIONS.BATCH_ADD_ROLES]({
-          //   uuid: this.viewInfo.uuid,
-          //   roleIds: movedKeys
-          // }).catch((_) => this.fallBackTransfer(movedKeys));
+          roleUuids.forEach((roleUuid) => {
+            this.doAction(MODULE.SYSTEM_ACCOUNT_ROLE, ACTIONS.CREATE_ITEM, {
+              accountUuid: this.viewInfo.uuid,
+              roleUuid
+            }).then(() => {
+              this.updateAccount();
+            });
+          });
           break;
         case 'left':
-          // this[ACTIONS.BATCH_DELETE_ROLES]({
-          //   uuid: this.viewInfo.uuid,
-          //   roleIds: movedKeys
-          // }).catch((_) => this.fallBackTransfer(movedKeys));
+          this.viewInfo.accountRoles
+            .filter((ar) => roleUuids.indexOf(ar.roleUuid) > -1)
+            .forEach((ar) => {
+              this.doAction(
+                MODULE.SYSTEM_ACCOUNT_ROLE,
+                ACTIONS.DELETE_ITEM,
+                ar.uuid
+              ).then(() => {
+                this.updateAccount();
+              });
+            });
           break;
         default:
           break;
@@ -167,14 +197,17 @@ export default {
       if (this.vDisabled) return;
       this.validateForm().then((v) => {
         if (!v) return;
-        const method = this.getPrimaryValue()
-          ? ACTIONS.UPDATE_ITEM
-          : ACTIONS.CREATE_ITEM;
-        this.doAction(MODULE.SYSTEM_ACCOUNT, method, {
-          account: this.viewInfo,
-          user: this.viewInfo.user
-        }).then((d) => {
-          // this.$router.back();
+        const create = this.newAdded;
+        const method = create ? ACTIONS.CREATE_ITEM : ACTIONS.UPDATE_ITEM;
+        this.doAction(
+          MODULE.SYSTEM_ACCOUNT,
+          method,
+          // prettier-inore
+          this.newAdded
+            ? { account: this.viewInfo, user: this.viewInfo.user }
+            : this.viewInfo
+        ).then((d) => {
+          if (!create) this.$router.back();
         });
       });
     }

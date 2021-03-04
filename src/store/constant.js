@@ -9,6 +9,7 @@ export const MODULE = {
 
   SYSTEM_LOG: 'systemLog',
   SYSTEM_ACCOUNT: 'systemAccount',
+  SYSTEM_ACCOUNT_ROLE: 'systemAccountRole',
   SYSTEM_ROLE: 'systemRole',
   SYSTEM_PERMISSION: 'systemPermission'
 };

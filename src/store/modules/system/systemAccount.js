@@ -19,6 +19,7 @@ export const createModel = (model = {}) => {
       genderName: null
     },
     tenant: {},
+    accountRoles: [],
     roles: [],
     routes: [],
     remark: [],
@@ -43,7 +44,7 @@ export default createBaseStore(
     createModel,
     cutBeforeUpdate(model) {
       const d = deepClone(model);
-      if (d.account) {
+      if (d.account && typeof d.account === 'object') {
         d.account.type = ACCOUNT_TYPE;
       }
       d.type = ACCOUNT_TYPE;
