@@ -38,17 +38,17 @@
       </div>
       <template slot="columns">
         <el-table-column prop="accountName"
-                         label="用户"
+                         label="账号名称"
                          align="center"
-                         :width="colWidth.nm" />
+                         :width="colWidth.sm" />
         <el-table-column prop="ip"
                          label="IP"
                          align="center"
-                         :width="colWidth.md" />
+                         :width="colWidth.nm" />
         <el-table-column prop="target"
                          label="操作目标"
                          align="center"
-                         :width="colWidth.md">
+                         :width="colWidth.xs">
           <template slot-scope="{ row }">
             <div v-text="OPERATION_TARGET_MAP[row.target]" />
           </template>
@@ -56,7 +56,7 @@
         <el-table-column prop="type"
                          label="操作类型"
                          align="center"
-                         :width="colWidth.md">
+                         :width="colWidth.xs">
           <template slot-scope="{ row }">
             <div v-text="OPERATION_MAP[row.type]" />
           </template>
