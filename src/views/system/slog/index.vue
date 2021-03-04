@@ -3,26 +3,20 @@
     <simple-table ref="table"
                   :module="mParam.module"
                   :queries="queries"
-                  :sequenced="false"
                   class="px-3 flex-fill">
       <div slot="header"
            class="d-flex justify-content-between">
         <el-form label-position="left"
                  inline
                  @submit.native.prevent>
-          <el-form-item label="操作目标">
+          <!-- <el-form-item label="操作目标">
             <m-selector v-model="queries.target"
                         :map="OPERATION_TARGET_MAP"
                         @change="doFilter" />
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="操作类型">
             <m-selector v-model="queries.type"
                         :map="OPERATION_MAP"
-                        @change="doFilter" />
-          </el-form-item>
-          <el-form-item label="级别">
-            <m-selector v-model="queries.level"
-                        :map="levelMap"
                         @change="doFilter" />
           </el-form-item>
           <el-form-item label="时间">
@@ -43,10 +37,6 @@
         </div>
       </div>
       <template slot="columns">
-        <el-table-column prop="id"
-                         label="ID"
-                         align="center"
-                         :width="colWidth.sm" />
         <el-table-column prop="accountName"
                          label="用户"
                          align="center"
