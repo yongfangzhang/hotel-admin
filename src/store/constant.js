@@ -7,6 +7,11 @@ export const MODULE = {
   USER: 'user',
   ENUMS: 'enums',
 
+  APARTMENT: 'apartment',
+  ROOM: 'room',
+  ROOM_PRICE: 'roomPrice',
+  ORDER: 'order',
+
   SYSTEM_LOG: 'systemLog',
   SYSTEM_ACCOUNT: 'systemAccount',
   SYSTEM_ACCOUNT_ROLE: 'systemAccountRole',

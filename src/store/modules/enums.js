@@ -154,6 +154,23 @@ export default {
         1: '是',
         0: '否'
       };
+    },
+    APARTMENT_STATE_THEME_MAP(state, getters) {
+      return {
+        [getters.APARTMENT_STATE.NORMAL]: 'primary',
+        [getters.APARTMENT_STATE.FORBIDDEN]: 'warning'
+        // [getters.APARTMENT_STATE.DELETED]: 'danger'
+      };
+    },
+    OPERATION_THEME_MAP(state, getters) {
+      return {
+        [getters.OPERATION.CREATE]: 'primary',
+        [getters.OPERATION.UPDATE]: 'warning',
+        [getters.OPERATION.DELETE]: 'danger',
+        [getters.OPERATION.RETRIEVE]: 'info',
+        [getters.OPERATION.LOGIN]: 'info',
+        [getters.OPERATION.LOGOUT]: 'info'
+      };
     }
   },
   mutations: {

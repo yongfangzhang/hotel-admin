@@ -7,7 +7,7 @@ import {
 import { getResource } from '@/api/pub/resource';
 import { ACTIONS, EVENT, eventBiz, MODULE, MUTATIONS } from '@/store/constant';
 import { getToken, TokenKey } from '@/utils/auth';
-import { obj2Str, parseTime } from '@/utils/index';
+import { obj2Str, parseTime, validateId } from '@/utils/index';
 import { getLocal, setLocal } from '@/utils/storage';
 import { mapGetters, mapMutations } from 'vuex';
 import { EMPTY_TEXT, PAGE_SIZE, PARSE_TIME_TYPE } from './constant';
@@ -76,7 +76,9 @@ export const baseMixin = {
       'USER_STATE_THEME_MAP',
       'GENDER_THEME_MAP',
       'BOOLEAN_FLAG',
-      'BOOLEAN_FLAG_MAP'
+      'BOOLEAN_FLAG_MAP',
+      'APARTMENT_STATE_THEME_MAP',
+      'OPERATION_THEME_MAP'
     ]),
     formWidth() {
       // 基础留白50px, 单个字12px
@@ -347,6 +349,12 @@ export const formEditMixin = {
     viewInfo() {
       return this.$store.state[this._mParam.module].viewInfo;
     },
+    newAdded() {
+      return (
+        !this.viewInfo ||
+        !validateId(this.viewInfo[this._mParam.primaryKey || 'uuid'])
+      );
+    },
     _mParam() {
       if (this.mParam) {
         return this.mParam;
@@ -395,7 +403,7 @@ export const formEditMixin = {
     },
     getPrimaryValue() {
       if (!this.viewInfo) return '';
-      return this.viewInfo[this._mParam.primaryKey || 'id'];
+      return this.viewInfo[this._mParam.primaryKey || 'uuid'];
     },
     initViewInfo() {
       // bob. 修改后，返回，有缓存问题

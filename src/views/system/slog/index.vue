@@ -58,7 +58,7 @@
                          align="center"
                          :width="colWidth.xs">
           <template slot-scope="{ row }">
-            <div v-text="OPERATION_MAP[row.type]" />
+            <el-tag :type="OPERATION_THEME_MAP[row.type]"> {{ row.typeName }} </el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="content"

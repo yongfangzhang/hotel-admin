@@ -48,7 +48,6 @@
 import { MODULE, ACTIONS, MUTATIONS } from '@/store/constant';
 import { formEditMixin } from '@/utils/mixins';
 import { toastWarning } from '@/utils/message';
-import { validateId } from '@/utils/index';
 export default {
   name: 'SystemRoleEdit',
   mixins: [formEditMixin],
@@ -66,9 +65,6 @@ export default {
         primaryKey: 'uuid',
         module: MODULE.SYSTEM_ROLE
       };
-    },
-    newAdded() {
-      return !this.viewInfo || !validateId(this.viewInfo.uuid);
     },
     formItems() {
       return {

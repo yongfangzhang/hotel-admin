@@ -13,13 +13,12 @@ export const PATH_MAP = {
 };
 
 export default {
-  path: '/system',
+  path: ROOT_PATH,
   component: Layout,
   meta: { title: '系统', icon: 'example' },
   redirect: PATH_MAP.SYSTEM_LOG,
   name: path2Name(ROOT_PATH),
   children: [
-    createNormalRoute(PATH_MAP.SYSTEM_LOG, '系统日志', { icon: '' }, {}),
     createNormalRoute(PATH_MAP.ACCOUNT, '用户管理', { icon: '' }, {}),
     createNormalRoute(
       PATH_MAP.ACCOUNT_EDIT,
@@ -33,7 +32,8 @@ export default {
       '角色编辑',
       { activeMenu: PATH_MAP.ROLE },
       { hidden: true }
-    )
+    ),
+    createNormalRoute(PATH_MAP.SYSTEM_LOG, '系统日志', { icon: '' }, {})
     // createNormalRoute(PATH_MAP.PERMISSION, '权限管理')
   ]
 };
