@@ -56,7 +56,9 @@ export const ACTIONS = {
   BATCH_CREATE_ITEM: createActions(),
   UPDATE_ITEM: createActions(),
   // 枚举
-  FETCH_ENUM: createActions()
+  FETCH_ENUM: createActions(),
+  // 房间价格
+  UPDATE_ROOM_PRICE: createActions()
 };
 
 export const EVENT = {

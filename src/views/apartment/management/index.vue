@@ -43,15 +43,53 @@
       <template slot="columns">
         <el-table-column label="公寓名称"
                          align="center"
-                         prop="name"
-                         show-overflow-tooltip
-                         :min-width="colWidth.sm" />
+                         prop="shortName"
+                         :min-width="colWidth.sm">
+          <template slot-scope="{ row }">
+            <div>{{ row.shortName }}</div>
+            <el-tooltip effect="dark"
+                        placement="top-start"
+                        :tabindex="-1">
+              <div>{{ row.name }}</div>
+            </el-tooltip>
+          </template>
+        </el-table-column>
+        <el-table-column label="联系人"
+                         align="center"
+                         prop="contactor"
+                         :width="colWidth.nm" />
+        <el-table-column label="联系人手机"
+                         align="center"
+                         prop="contactorMobile"
+                         :width="colWidth.sm" />
+        <el-table-column label="地址"
+                         align="center"
+                         prop="address"
+                         show-overflow-tooltip>
+          <template slot-scope="{ row }">
+            <el-link type="primary"
+                     @click="showMap">{{ row.address }}</el-link>
+          </template>
+        </el-table-column>
         <el-table-column label="状态"
                          prop="stateName"
                          align="center"
                          :min-width="colWidth.xs">
           <template slot-scope="{ row }">
             <el-tag :type="APARTMENT_STATE_THEME_MAP[row.state]"> {{ row.stateName }} </el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="销售次数"
+                         align="center"
+                         prop="saleTimes"
+                         :width="colWidth.xs" />
+        <el-table-column label="收益"
+                         align="center"
+                         prop="income"
+                         :width="colWidth.xs">
+          <template slot-scope="{ row }">
+            <m-view :value="row.income"
+                    type="currency" />
           </template>
         </el-table-column>
         <el-table-column label="创建时间"
@@ -82,6 +120,7 @@ import { MODULE } from '@/store/constant';
 import { baseTableMixin } from '@/utils/mixins';
 import { PATH_MAP } from '@/router/modules/apartment';
 import { deepClone } from '@/utils/index';
+import { toastWarning } from '@/utils/message';
 
 export default {
   name: 'ApartmentManagementIndex',
@@ -120,6 +159,9 @@ export default {
       const item = deepClone(row);
       item.state = this.APARTMENT_STATE.FORBIDDEN;
       this.saveRow(item);
+    },
+    showMap() {
+      toastWarning('地图查看: 敬请期待');
     }
   }
 };

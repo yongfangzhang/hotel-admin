@@ -5,6 +5,20 @@ export const createModel = (model = {}) => {
   const target = {
     uuid: null,
 
+    name: null,
+    shortName: null,
+    areaCode: null,
+    address: null,
+    longitude: null,
+    latitude: null,
+    geohash4: null,
+    contactor: null,
+    contactorMobile: null,
+    state: null,
+    saleTimes: null,
+    income: null,
+    stateName: null,
+
     description: null,
     remarkContent: null
   };

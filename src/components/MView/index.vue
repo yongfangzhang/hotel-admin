@@ -38,6 +38,9 @@
   <div v-else-if="type === 'number'">
     {{ value }}
   </div>
+  <div v-else-if="type === 'currency'">
+    <el-button type="text">{{ formatAmount(value) }}</el-button>
+  </div>
   <div v-else>{{ emptyText }}</div>
 </template>
 <script>
@@ -56,7 +59,7 @@ export default {
     map: {
       type: Object,
       default() {
-        return {}
+        return {};
       }
     },
     unit: {

@@ -23,13 +23,6 @@ export default {
       '房间编辑',
       { activeMenu: PATH_MAP.MANAGEMENT },
       { hidden: true }
-    ),
-    createNormalRoute(PATH_MAP.PRICE, '房价管理', { icon: '' }, {}),
-    createNormalRoute(
-      PATH_MAP.PRICE_EDIT,
-      '房价编辑',
-      { activeMenu: PATH_MAP.PRICE },
-      { hidden: true }
     )
   ]
 };
