@@ -56,10 +56,7 @@ export const ACTIONS = {
   BATCH_CREATE_ITEM: createActions(),
   UPDATE_ITEM: createActions(),
   // 枚举
-  FETCH_ENUM: createActions(),
-  // 角色
-  BATCH_ADD_ROUTES: createActions(),
-  BATCH_DELETE_ROUTES: createActions()
+  FETCH_ENUM: createActions()
 };
 
 export const EVENT = {

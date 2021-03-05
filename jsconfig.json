@@ -3,6 +3,11 @@
     "node_modules",
     "dist"
   ],
+  "typeAcquisition": {
+    "exclude": [
+      "adler-32"
+    ]
+  },
   "compilerOptions": {
     "target": "es6",
     "baseUrl": ".",
