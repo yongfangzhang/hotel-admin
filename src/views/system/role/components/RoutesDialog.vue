@@ -10,7 +10,7 @@
               highlight-current-row>
       <el-table-column label="路由路径"
                        prop="path"
-                       :width="colWidth.md" />
+                       :width="colWidth.lg" />
       <el-table-column label="类型"
                        prop="typeName"
                        align="center"
