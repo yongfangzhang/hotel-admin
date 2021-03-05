@@ -1,5 +1,6 @@
 import { createBaseStore } from '@/store/base-store';
-import { objectMerge } from '@/utils/index';
+import { ACCOUNT_TYPE } from '@/utils/constant';
+import { deepClone, objectMerge } from '@/utils/index';
 
 export const createModel = (model = {}) => {
   const target = {
@@ -24,6 +25,12 @@ export default createBaseStore(
       asc: 'uuid'
     },
     contextPath: '/route',
-    createModel
+    createModel,
+    cutBeforeUpdate(model) {
+      const d = deepClone(model);
+      d.accountType = ACCOUNT_TYPE;
+      d.remark = null;
+      return d;
+    }
   }
 );
