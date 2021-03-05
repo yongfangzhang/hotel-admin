@@ -2,6 +2,9 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import getters from './getters';
 import system from './modules/system/index';
+import apartment from './modules/apartment/index';
+import order from './modules/order/index';
+import room from './modules/room/index';
 
 Vue.use(Vuex);
 
@@ -21,7 +24,10 @@ const modules = modulesFiles.keys().reduce((modules, modulePath) => {
 const store = new Vuex.Store({
   modules: {
     ...modules,
-    ...system
+    ...system,
+    ...apartment,
+    ...order,
+    ...room
   },
   getters
 });

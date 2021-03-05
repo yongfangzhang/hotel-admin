@@ -45,7 +45,7 @@ export default {
         paramMode: true,
         autoBack: true,
         primaryKey: 'uuid',
-        module: MODULE.APARTMENT
+        module: MODULE.ORDER
       };
     },
     baseFormItems() {

@@ -80,7 +80,7 @@
 <script>
 import { MODULE } from '@/store/constant';
 import { baseTableMixin } from '@/utils/mixins';
-import { PATH_MAP } from '@/router/modules/apartment';
+import { PATH_MAP } from '@/router/modules/room';
 import { deepClone } from '@/utils/index';
 
 export default {
@@ -103,7 +103,7 @@ export default {
     mParam() {
       return {
         paramMode: true,
-        module: MODULE.APARTMENT,
+        module: MODULE.ROOM_PRICE,
         editPath: PATH_MAP.MANAGEMENT_EDIT,
         primaryKey: 'uuid'
       };

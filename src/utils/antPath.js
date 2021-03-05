@@ -1,7 +1,7 @@
-import logger from './logger';
+// import logger from './logger';
 
 export const antPathMatcher = (targetPath, path) => {
-  logger.info(targetPath, path);
+  // logger.info(targetPath, path);
   if (!path) return false;
   if (targetPath === path) return true;
   if (targetPath.indexOf('**') === -1) {
