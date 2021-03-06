@@ -1,25 +1,22 @@
 <template>
   <div class="h-100 py-3 d-flex flex-column">
     <div class="h-100">
-      <el-col :span="16" class="h-100 d-flex flex-column">
-        <el-input
-          v-model.lazy="filterText"
-          class="mb-2"
-          placeholder="搜索(名称, 编码, 值)"
-          @change="doFilter"
-          @keyup.enter="doFilter"
-        />
-        <el-tree
-          ref="tree"
-          :data="dictTree"
-          :props="treeProps"
-          node-key="id"
-          class="scrollable border flex-fill"
-          :style="{ paddingBottom: '90px' }"
-          :filter-node-method="filterDict"
-          :default-expanded-keys="expandKeys"
-          @node-click="onNodeClicked"
-        >
+      <el-col :span="16"
+              class="h-100 d-flex flex-column">
+        <el-input v-model.lazy="filterText"
+                  class="mb-2"
+                  placeholder="搜索(名称, 编码, 值)"
+                  @change="doFilter"
+                  @keyup.enter="doFilter" />
+        <el-tree ref="tree"
+                 :data="dictTree"
+                 :props="treeProps"
+                 node-key="uuid"
+                 class="scrollable border flex-fill"
+                 :style="{ paddingBottom: '90px' }"
+                 :filter-node-method="filterDict"
+                 :default-expanded-keys="expandKeys"
+                 @node-click="onNodeClicked">
           <span slot-scope="{ node, data }">
             <span class="mr-2 text-primary">{{ node.label }}</span>
             <span class="mr-3">
@@ -38,13 +35,12 @@
           </span>
         </el-tree>
       </el-col>
-      <el-col :span="8" class="h-100">
-        <dict-info
-          class="p-3"
-          :model="editable"
-          @save="saveDict"
-          @reset="resetDict"
-        />
+      <el-col :span="8"
+              class="h-100">
+        <dict-info class="p-3"
+                   :model="editable"
+                   @save="saveDict"
+                   @reset="resetDict" />
       </el-col>
     </div>
   </div>
@@ -96,10 +92,10 @@ export default {
       const keys = ['1000'];
       if (tree && this.dictTree) {
         const dictList = tree2List(this.dictTree);
-        dictList.forEach(dict => {
+        dictList.forEach((dict) => {
           const node = tree.getNode(dict);
           if (node.expanded) {
-            keys.push(dict.id);
+            keys.push(dict.uuid);
           }
         });
       }
@@ -119,14 +115,14 @@ export default {
       );
     },
     saveDict(dict) {
-      this[ACTIONS.UPDATE_ITEM](dict).then(r => {
+      this[ACTIONS.UPDATE_ITEM](dict).then((r) => {
         // this.editable = r
         this.fetchDictTree();
       });
     },
     resetDict(dict) {
       this.$confirm('确定重置此字典吗?').then(() => {
-        deleteDict(dict.id).then(r => {
+        deleteDict(dict.uuid).then((r) => {
           this.$message({
             type: 'success',
             message: '操作成功'

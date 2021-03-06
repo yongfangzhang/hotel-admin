@@ -1,5 +1,10 @@
 import Layout from '@/layout';
-import { createNormalRoute, fillPath, path2Name } from '@/router/utils';
+import {
+  createNormalRoute,
+  fillPath,
+  path2Name,
+  SEQUENCE
+} from '@/router/utils';
 
 const ROOT_PATH = '/system';
 
@@ -16,7 +21,7 @@ export const PATH_MAP = {
 export default {
   path: ROOT_PATH,
   component: Layout,
-  meta: { title: '系统管理', icon: 'example' },
+  meta: { title: '系统管理', icon: 'example', sequence: SEQUENCE.SYSTEM },
   redirect: PATH_MAP.SYSTEM_LOG,
   name: path2Name(ROOT_PATH),
   children: [

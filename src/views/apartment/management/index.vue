@@ -12,7 +12,7 @@
                  @submit.native.prevent>
           <div>
             <el-form-item label="公寓名称">
-              <el-input v-model="queries.account"
+              <el-input v-model="queries.name"
                         placeholder="请输入"
                         clearable
                         @clear="doFilter"
@@ -103,9 +103,8 @@
             <el-button type="text"
                        @click="editRow(row)">管理</el-button>
             <el-button type="text"
-                       class="text-warning"
-                       :disabled="row.state!==APARTMENT_STATE.NORMAL"
-                       @click="forbiddenRow(row)">禁用</el-button>
+                       :class="row.state===APARTMENT_STATE.NORMAL?'text-warning':'text-primary'"
+                       @click="toggleForbiddenRow(row)">{{ row.state===APARTMENT_STATE.NORMAL ? '禁用' : '启用' }}</el-button>
             <el-button type="text"
                        class="text-danger"
                        @click="deleteRow(row)">删除</el-button>
@@ -155,9 +154,12 @@ export default {
       this.queries.createdAtStart = this.createdRange[0];
       this.queries.createdAtStop = this.createdRange[1];
     },
-    forbiddenRow(row) {
+    toggleForbiddenRow(row) {
       const item = deepClone(row);
-      item.state = this.APARTMENT_STATE.FORBIDDEN;
+      item.state =
+        item.state === this.APARTMENT_STATE.NORMAL
+          ? this.APARTMENT_STATE.FORBIDDEN
+          : this.APARTMENT_STATE.NORMAL;
       this.saveRow(item);
     },
     showMap() {

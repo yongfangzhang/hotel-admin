@@ -1,5 +1,14 @@
 import { objectMerge } from '@/utils/index';
 
+export const SEQUENCE = {
+  DASHBOARD: 1,
+  ORDER: 2,
+  APARTMENT: 3,
+  ROOM: 4,
+  SYSTEM: 5,
+  ANNOUNCE: 6
+};
+
 export const path2Name = path => {
   const name = path
     .split('/')

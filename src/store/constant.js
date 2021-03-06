@@ -6,6 +6,7 @@ export const MODULE = {
   APP: 'app',
   USER: 'user',
   ENUMS: 'enums',
+  DICT: 'dict',
 
   APARTMENT: 'apartment',
   ROOM: 'room',
@@ -41,7 +42,9 @@ export const MUTATIONS = {
   SET_ROUTE_TITLE: createMutations(),
   // 枚举
   SET_ENUM: createMutations(),
-  SET_ACCOUNT_INFO: createMutations()
+  SET_ACCOUNT_INFO: createMutations(),
+  // 字典
+  SET_DICT: createMutations()
 };
 
 export const ACTIONS = {
@@ -58,7 +61,9 @@ export const ACTIONS = {
   // 枚举
   FETCH_ENUM: createActions(),
   // 房间价格
-  UPDATE_ROOM_PRICE: createActions()
+  UPDATE_ROOM_PRICE: createActions(),
+  // 字典
+  FETCH_DICT: createActions()
 };
 
 export const EVENT = {

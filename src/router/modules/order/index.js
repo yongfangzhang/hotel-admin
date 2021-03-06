@@ -1,5 +1,10 @@
 import Layout from '@/layout';
-import { createNormalRoute, fillPath, path2Name } from '@/router/utils';
+import {
+  createNormalRoute,
+  fillPath,
+  path2Name,
+  SEQUENCE
+} from '@/router/utils';
 
 const ROOT_PATH = '/order';
 
@@ -11,7 +16,7 @@ export const PATH_MAP = {
 export default {
   path: ROOT_PATH,
   component: Layout,
-  meta: { title: '订单', icon: 'example' },
+  meta: { title: '订单', icon: 'example', sequence: SEQUENCE.ORDER },
   redirect: PATH_MAP.MANAGEMENT,
   name: path2Name(ROOT_PATH),
   children: [

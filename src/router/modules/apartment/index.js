@@ -1,5 +1,10 @@
 import Layout from '@/layout';
-import { createNormalRoute, fillPath, path2Name } from '@/router/utils';
+import {
+  createNormalRoute,
+  fillPath,
+  path2Name,
+  SEQUENCE
+} from '@/router/utils';
 
 const ROOT_PATH = '/apartment';
 
@@ -11,7 +16,7 @@ export const PATH_MAP = {
 export default {
   path: ROOT_PATH,
   component: Layout,
-  meta: { title: '公寓', icon: 'example' },
+  meta: { title: '公寓', icon: 'example', sequence: SEQUENCE.APARTMENT },
   redirect: PATH_MAP.MANAGEMENT,
   name: path2Name(ROOT_PATH),
   children: [

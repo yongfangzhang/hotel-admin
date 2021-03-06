@@ -1,15 +1,14 @@
+import { fetchDictTree } from '@/api/pub/dict';
 import { createBaseStore } from '@/store/base-store';
 import { ACTIONS, MUTATIONS } from '@/store/constant';
 import {
   deepClone,
-  str2Obj,
-  obj2Str,
   list2GroupMap,
-  tree2List,
-  list2Map
+  obj2Str,
+  str2Obj,
+  tree2List
 } from '@/utils/index';
-import { fetchDictTree } from '@/api/pub/dict';
-import { setLocal, getLocal } from '@/utils/storage';
+import { getLocal, setLocal } from '@/utils/storage';
 
 const LOCAL_KEY = {
   DICT: '_yhkz_dict'
@@ -49,28 +48,6 @@ export default createBaseStore(
       },
       dictGroupMap(state, getters) {
         return list2GroupMap(getters.dictList, 'type');
-      },
-      INSURANCE_PERIOD_MAP(state, getters) {
-        const ipl = getters.dictGroupMap[DICT_TYPE.INSURANCE_PERIOD] || [];
-        return list2Map(ipl, 'value', 'name');
-      },
-      PAYMENT_MODE_MAP(state, getters) {
-        const pml = getters.dictGroupMap[DICT_TYPE.PAYMENT_MODE] || [];
-        return list2Map(pml, 'value', 'name');
-      },
-      PAYMENT_PERIOD_MAP(state, getters) {
-        const ppl = getters.dictGroupMap[DICT_TYPE.PAYMENT_PERIOD] || [];
-        return list2Map(ppl, 'value', 'name');
-      },
-      CUS_INCOME(state) {
-        const children = state.dictTree[0].children;
-        const arr = children.filter(item => item.code === 'CUS_INCOME');
-        const childArr = arr[0].children;
-        const obj = {};
-        childArr.forEach(item => {
-          obj[item.value] = item.name;
-        });
-        return obj;
       }
     },
     mutations: {
@@ -92,14 +69,14 @@ export default createBaseStore(
   },
   {
     orderParams: {
-      desc: 'id'
+      desc: 'uuid'
     },
-    contextPath: '/tsystem/dict',
+    contextPath: '/pub/dict',
     cutBeforeUpdate(model) {
       const d = deepClone(model);
       d.extendField = obj2Str(d.extendField) || '{}';
       d.description = d.description || '';
-      d.parentId = null;
+      d.parentUuid = null;
       d.code = null;
       d.value = null;
       d.type = null;
