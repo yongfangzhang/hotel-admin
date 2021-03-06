@@ -175,7 +175,7 @@ export function cleanArray(actual) {
 export function param(json) {
   if (!json) return '';
   return cleanArray(
-    Object.keys(json).map((key) => {
+    Object.keys(json).map(key => {
       if (json[key] === undefined) return '';
       return encodeURIComponent(key) + '=' + encodeURIComponent(json[key]);
     })
@@ -228,7 +228,7 @@ export function objectMerge(target, source) {
   if (Array.isArray(source)) {
     return source.slice();
   }
-  Object.keys(source).forEach((property) => {
+  Object.keys(source).forEach(property => {
     const sourceProperty = source[property];
     if (typeof sourceProperty === 'object' && sourceProperty) {
       target[property] = objectMerge(target[property], sourceProperty);
@@ -389,7 +389,7 @@ export const obj2Str = (obj, spacer) => {
  * convert string to object
  * @param {*} str
  */
-export const str2Obj = (str) => {
+export const str2Obj = str => {
   if (!str || typeof str !== 'string') return str;
   try {
     return JSON.parse(str);
@@ -398,18 +398,18 @@ export const str2Obj = (str) => {
   }
 };
 
-export const countChildren = (tree) => {
+export const countChildren = tree => {
   if (!tree || !tree.length) {
     return 0;
   }
   let count = tree.length;
-  tree.forEach((t) => {
+  tree.forEach(t => {
     count += countChildren(t.children);
   });
   return count;
 };
 
-export const tree2List = (tree) => {
+export const tree2List = tree => {
   let list = [];
   if (!tree) {
     return list;
@@ -421,7 +421,7 @@ export const tree2List = (tree) => {
     return list;
   }
   list = list.concat(tree);
-  tree.forEach((t) => {
+  tree.forEach(t => {
     list = list.concat(tree2List(t.children));
   });
   return list;
@@ -437,7 +437,7 @@ export const tree2Map = (map, tree, k = 'id') => {
   if (!tree.length) {
     return map;
   }
-  tree.forEach((t) => {
+  tree.forEach(t => {
     map[t[k]] = t;
     tree2Map(map, t.children, k);
   });
@@ -450,7 +450,7 @@ export const getValueByKeys = (obj, key) => {
   if (!v || !key) return null;
   if (key.indexOf('.') < 0) return obj[key];
   const arrReg = new RegExp(/^@(\d+)$/, 'g');
-  key.split('.').forEach((k) => {
+  key.split('.').forEach(k => {
     if (isEmpty(v) || typeof v !== 'object') return;
     const arrRet = arrReg.exec(k);
     if (arrRet) {
@@ -465,7 +465,7 @@ export const getValueByKeys = (obj, key) => {
 
 const getValueByKey = (obj, key) => {
   let ret = deepClone(obj);
-  key.split('.').forEach((k) => {
+  key.split('.').forEach(k => {
     ret = ret[k];
   });
   return ret;
@@ -474,7 +474,7 @@ const getValueByKey = (obj, key) => {
 export const list2Map = (list, k, v) => {
   const map = {};
   if (!list || !list.length) return map;
-  list.forEach((item) => {
+  list.forEach(item => {
     map[getValueByKey(item, k)] =
       typeof v === 'undefined' || v === null ? item : getValueByKey(item, v);
   });
@@ -483,7 +483,7 @@ export const list2Map = (list, k, v) => {
 
 export const list2GroupMap = (list, k) => {
   const map = {};
-  list.forEach((item) => {
+  list.forEach(item => {
     if (!map[item[k]]) {
       map[item[k]] = [];
     }
@@ -492,8 +492,11 @@ export const list2GroupMap = (list, k) => {
   return map;
 };
 
-export const randomString = (count) => {
-  return (1e9 * Math.random()).toString(26).replace('.', '').substring(4);
+export const randomString = count => {
+  return (1e9 * Math.random())
+    .toString(26)
+    .replace('.', '')
+    .substring(4);
 };
 
 export const generateUuid = () => {
@@ -520,7 +523,7 @@ export const removeByKeyValue = (arr, k, v) => {
   }
 };
 
-export const str2Date = (str) => {
+export const str2Date = str => {
   try {
     const strArr = str.split(/-|\s|:/g);
     const d = new Date(
@@ -538,7 +541,7 @@ export const str2Date = (str) => {
   }
 };
 
-export const str2DateTimestamp = (str) => {
+export const str2DateTimestamp = str => {
   const d = str2Date(str);
   if (!d) return 0;
   return d.getTime();
@@ -554,7 +557,7 @@ export const saveAs = (file, content) => {
   window.URL.revokeObjectURL(data);
 };
 
-export const isObject = (o) => {
+export const isObject = o => {
   return (
     typeof o === 'object' &&
     o !== null &&
@@ -599,7 +602,7 @@ export const deepExtend = (...args) => {
 export const filterMapByList = (map, list) => {
   if (!map || !list) return {};
   const rtn = {};
-  list.forEach((item) => {
+  list.forEach(item => {
     rtn[item] = map[item];
   });
   return rtn;
@@ -623,7 +626,7 @@ export const findIdx = (list, key, value) => {
  * 格式化 货币
  * */
 
-export const toThousands = (num) => {
+export const toThousands = num => {
   if (!num) return 0;
   const c =
     num.toString().indexOf('.') !== -1
@@ -667,7 +670,7 @@ export const downloadFile = (data, name) => {
  * base64转码
  * @param {*} data
  */
-export const base64Encode = (data) => {
+export const base64Encode = data => {
   let rv;
   rv = encodeURIComponent(data);
   rv = unescape(rv);
@@ -684,14 +687,14 @@ export function scrollToTab(name) {
   if (el) el.scrollIntoView(true, { behavior: 'smooth' });
 }
 
-export const isBlank = (v) => {
+export const isBlank = v => {
   return isEmpty(v) || isEmpty((v + '').trim());
 };
 
-export const isNotBlank = (v) => {
+export const isNotBlank = v => {
   return !isBlank(v);
 };
 
 export const validateId = id => {
   return isNotBlank(id) && +id !== 0;
-}
+};

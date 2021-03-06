@@ -9,7 +9,8 @@ export const PATH_MAP = {
   ACCOUNT_EDIT: fillPath(ROOT_PATH, 'account/edit'),
   ROLE: fillPath(ROOT_PATH, 'role/index'),
   ROLE_EDIT: fillPath(ROOT_PATH, 'role/edit'),
-  PERMISSION: fillPath(ROOT_PATH, 'permission/index')
+  PERMISSION: fillPath(ROOT_PATH, 'permission/index'),
+  DICT: fillPath(ROOT_PATH, 'dict/index')
 };
 
 export default {
@@ -19,6 +20,7 @@ export default {
   redirect: PATH_MAP.SYSTEM_LOG,
   name: path2Name(ROOT_PATH),
   children: [
+    createNormalRoute(PATH_MAP.DICT, '字典管理', { icon: '' }, {}),
     createNormalRoute(PATH_MAP.ACCOUNT, '用户管理', { icon: '' }, {}),
     createNormalRoute(
       PATH_MAP.ACCOUNT_EDIT,

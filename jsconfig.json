@@ -5,7 +5,8 @@
   ],
   "typeAcquisition": {
     "exclude": [
-      "adler-32"
+      "adler-32",
+      "cfb"
     ]
   },
   "compilerOptions": {
