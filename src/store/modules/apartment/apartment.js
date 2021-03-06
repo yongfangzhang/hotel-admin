@@ -7,10 +7,10 @@ export const createModel = (model = {}) => {
 
     name: null,
     shortName: null,
-    areaCode: null,
+    areaCode: '371302',
     address: null,
-    longitude: null,
-    latitude: null,
+    longitude: 1,
+    latitude: 1,
     geohash4: null,
     contactor: null,
     contactorMobile: null,

@@ -6,6 +6,7 @@ Vue.use(Router);
 
 /* Layout */
 import Layout from '@/layout';
+import { createNormalRoute } from './utils';
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -62,6 +63,21 @@ export const constantRoutes = [
     path: '/401',
     component: () => import('@/views/error-page/401'),
     hidden: true
+  },
+  {
+    path: '/announce',
+    component: Layout,
+    meta: { title: '声明', icon: 'example' },
+    redirect: '/announce/index',
+    name: 'announceIndex',
+    children: [
+      createNormalRoute(
+        '/announce/index',
+        '声明',
+        { icon: 'example', affix: true },
+        { noCache: true }
+      )
+    ]
   }
 ];
 

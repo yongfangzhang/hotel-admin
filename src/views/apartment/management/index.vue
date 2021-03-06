@@ -83,7 +83,7 @@
                          align="center"
                          prop="saleTimes"
                          :width="colWidth.xs" />
-        <el-table-column label="收益"
+        <el-table-column label="总收益"
                          align="center"
                          prop="income"
                          :width="colWidth.xs">
