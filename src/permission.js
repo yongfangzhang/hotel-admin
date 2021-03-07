@@ -6,7 +6,7 @@ import { getToken } from '@/utils/auth'; // get token from cookie
 import getPageTitle from '@/utils/get-page-title';
 import { MODULE, ACTIONS } from './store/constant';
 
-const whiteList = [`${process.env.BASE_URL}login`, '/auth-redirect']; // no redirect whitelist
+// const whiteList = [`${process.env.BASE_URL}login`, '/auth-redirect']; // no redirect whitelist
 
 router.beforeEach((to, from, next) => {
   // start progress bar
@@ -19,10 +19,10 @@ router.beforeEach((to, from, next) => {
   const hasToken = getToken();
 
   if (hasToken) {
-    if (to.path === `${process.env.BASE_URL}login`) {
+    if (to.path.indexOf('login') > -1) {
       // if is logged in, redirect to the home page
       stopProgress();
-      next({ path: process.env.BASE_URL + 'index.html' });
+      next({ path: '/' });
     } else {
       // determine whether the user has obtained his permission routes through getInfo
       const hasRoutes = store.getters.routes && store.getters.routes.length > 0;
@@ -58,7 +58,7 @@ router.beforeEach((to, from, next) => {
           store.dispatch('user/resetToken').then(d => {
             Message.error(error || 'Has Error');
             stopProgress();
-            next(`${process.env.BASE_URL}login?redirect=${to.path}`);
+            next(`/login?redirect=${to.path}`);
           });
         }
       }
@@ -68,14 +68,14 @@ router.beforeEach((to, from, next) => {
     store.commit('permission/clearRoutes'); // clear routes
     store.dispatch('tagsView/delAllViews'); // clear tags
 
-    if (whiteList.indexOf(to.path) !== -1) {
+    if (to.path.indexOf('login') > -1) {
       // in the free login whitelist, go directly
       stopProgress();
       next();
     } else {
       // other pages that do not have permission to access are redirected to the login page.
       stopProgress();
-      next(`${process.env.BASE_URL}login?redirect=${to.path}`);
+      next(`/login?redirect=${to.path}`);
     }
   }
 });

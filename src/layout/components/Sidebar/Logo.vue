@@ -37,7 +37,7 @@ export default {
   data() {
     return {
       title: process.env.VUE_APP_NAME,
-      logoUrl: `${process.env.BASE_URL}logo.png`
+      logoUrl: `/logo.png`
     };
   }
 };
