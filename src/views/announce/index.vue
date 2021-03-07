@@ -1,10 +1,15 @@
 <template>
-  <div>
-    声明
-  </div>
+  <iframe :src="announceUrl"
+          noborder
+          class="w-100 h-100 border-0" />
 </template>
 <script>
 export default {
-  name: 'AnnounceIndex'
+  name: 'AnnounceIndex',
+  computed: {
+    announceUrl() {
+      return `${process.env.BASE_URL}announce.html`;
+    }
+  }
 };
 </script>

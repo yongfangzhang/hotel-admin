@@ -62,7 +62,7 @@
         <el-table-column label="订单号"
                          align="center"
                          prop="number"
-                         :min-width="colWidth.sm" />
+                         :min-width="colWidth.nm" />
         <el-table-column label="渠道"
                          align="center"
                          prop="channelName"
