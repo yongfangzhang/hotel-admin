@@ -40,15 +40,15 @@
         <el-table-column prop="accountName"
                          label="账号名称"
                          align="center"
-                         :width="colWidth.sm" />
+                         :min-width="colWidth.sm" />
         <el-table-column prop="ip"
                          label="IP"
                          align="center"
-                         :width="colWidth.nm" />
+                         :min-width="colWidth.nm" />
         <el-table-column prop="target"
                          label="操作目标"
                          align="center"
-                         :width="colWidth.xs">
+                         :min-width="colWidth.xs">
           <template slot-scope="{ row }">
             <div v-text="OPERATION_TARGET_MAP[row.target]" />
           </template>
@@ -56,7 +56,7 @@
         <el-table-column prop="type"
                          label="操作类型"
                          align="center"
-                         :width="colWidth.xs">
+                         :min-width="colWidth.xs">
           <template slot-scope="{ row }">
             <el-tag :type="OPERATION_THEME_MAP[row.type]"> {{ row.typeName }} </el-tag>
           </template>
@@ -67,7 +67,7 @@
         <el-table-column prop="createdAt"
                          label="操作时间"
                          align="center"
-                         :width="colWidth.tm"
+                         :min-width="colWidth.tm"
                          sortable />
       </template>
     </simple-table>

@@ -58,12 +58,10 @@
         <el-table-column label="账号名称"
                          align="center"
                          prop="account"
-                         show-overflow-tooltip
                          :min-width="colWidth.sm" />
         <el-table-column label="用户名称"
                          align="center"
                          prop="user.name"
-                         show-overflow-tooltip
                          :min-width="colWidth.nm" />
         <el-table-column label="性别"
                          align="center"
@@ -111,7 +109,7 @@
                          :min-width="colWidth.datetime" />
         <el-table-column label="操作"
                          align="center"
-                         :width="colWidth.op3">
+                         :min-width="colWidth.op3">
           <template slot-scope="{ row }">
             <el-button type="text"
                        :disabled="row.state!==USER_STATE.NORMAL"

@@ -43,32 +43,22 @@
       <template slot="columns">
         <el-table-column label="公寓名称"
                          align="center"
-                         prop="shortName"
-                         :min-width="colWidth.sm">
-          <template slot-scope="{ row }">
-            <div>{{ row.shortName }}</div>
-            <el-tooltip effect="dark"
-                        placement="top-start"
-                        :tabindex="-1">
-              <div>{{ row.name }}</div>
-            </el-tooltip>
-          </template>
-        </el-table-column>
+                         prop="name"
+                         :min-width="colWidth.nm" />
         <el-table-column label="联系人"
                          align="center"
                          prop="contactor"
-                         :width="colWidth.nm" />
+                         :min-width="colWidth.sm" />
         <el-table-column label="联系人手机"
                          align="center"
                          prop="contactorMobile"
-                         :width="colWidth.sm" />
+                         :min-width="colWidth.sm" />
         <el-table-column label="地址"
                          align="center"
-                         prop="address"
-                         show-overflow-tooltip>
+                         prop="address">
           <template slot-scope="{ row }">
-            <el-link type="primary"
-                     @click="showMap">{{ row.address }}</el-link>
+            <el-button type="text"
+                       @click="showMap">{{ row.address }}</el-button>
           </template>
         </el-table-column>
         <el-table-column label="状态"
@@ -82,11 +72,11 @@
         <el-table-column label="销售次数"
                          align="center"
                          prop="saleTimes"
-                         :width="colWidth.xs" />
+                         :min-width="colWidth.xs" />
         <el-table-column label="总收益"
                          align="center"
                          prop="income"
-                         :width="colWidth.xs">
+                         :min-width="colWidth.xs">
           <template slot-scope="{ row }">
             <m-view :value="row.income"
                     type="currency" />
@@ -98,7 +88,7 @@
                          :min-width="colWidth.datetime" />
         <el-table-column label="操作"
                          align="center"
-                         :width="colWidth.op3">
+                         :min-width="colWidth.op3">
           <template slot-scope="{ row }">
             <el-button type="text"
                        @click="editRow(row)">管理</el-button>

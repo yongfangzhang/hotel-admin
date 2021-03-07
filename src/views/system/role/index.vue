@@ -36,16 +36,14 @@
         <el-table-column label="角色编码"
                          align="center"
                          prop="code"
-                         show-overflow-tooltip
-                         :width="colWidth.md" />
+                         :min-width="colWidth.md" />
         <el-table-column label="角色名称"
                          align="center"
                          prop="name"
-                         show-overflow-tooltip
-                         :width="colWidth.md" />
+                         :min-width="colWidth.md" />
         <el-table-column label="权限"
                          align="center"
-                         :width="colWidth.md">
+                         :min-width="colWidth.md">
           <template slot-scope="{ row }">
             <el-button type="text"
                        @click="viewRoutes(row)">查看</el-button>
@@ -54,8 +52,7 @@
 
         <!-- <el-table-column label="描述"
                          header-align="center"
-                         show-overflow-tooltip
-                         :width="colWidth.lg"
+                         :min-width="colWidth.lg"
                          prop="description">
           <template slot-scope="{ row }">
             <m-view :value="row.description" />
@@ -63,7 +60,6 @@
         </el-table-column> -->
         <el-table-column label="备注"
                          header-align="center"
-                         show-overflow-tooltip
                          prop="remark">
           <template slot-scope="{ row }">
             <m-view :value="row.remark"
@@ -72,7 +68,7 @@
         </el-table-column>
         <el-table-column label="操作"
                          align="center"
-                         :width="colWidth.op3">
+                         :min-width="colWidth.op3">
           <template slot-scope="{ row }">
             <div>
               <el-button type="text"

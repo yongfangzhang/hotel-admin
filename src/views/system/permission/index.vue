@@ -44,11 +44,11 @@
         <el-table-column label="路由路径"
                          header-align="center"
                          prop="path"
-                         :width="colWidth.md" />
+                         :min-width="colWidth.md" />
         <el-table-column label="类型"
                          prop="typeName"
                          align="center"
-                         :width="colWidth.sm" />
+                         :min-width="colWidth.sm" />
         <el-table-column label="权限名称"
                          header-align="center"
                          prop="caption" />
@@ -72,7 +72,7 @@
         </el-table-column>
         <el-table-column label="操作"
                          align="center"
-                         :width="colWidth.op3">
+                         :min-width="colWidth.op3">
           <template slot-scope="{ row }">
             <div>
               <el-button type="text"

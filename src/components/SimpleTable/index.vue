@@ -32,7 +32,7 @@
                        :resizable="false"
                        :fixed="sequencedFixed"
                        align="center"
-                       :width="colWidth.xxs">
+                       :min-width="colWidth.xxs">
         <template slot-scope="{ row, $index }">
           <span>{{ toFullIndex($index, pageData, row) }}</span>
         </template>

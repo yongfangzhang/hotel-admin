@@ -10,11 +10,11 @@
               highlight-current-row>
       <el-table-column label="路由路径"
                        prop="path"
-                       :width="colWidth.lg" />
+                       :min-width="colWidth.lg" />
       <el-table-column label="类型"
                        prop="typeName"
                        align="center"
-                       :width="colWidth.sm" />
+                       :min-width="colWidth.sm" />
       <el-table-column label="权限名称"
                        prop="caption" />
       <el-table-column label="授权标识"

@@ -44,7 +44,6 @@
         <el-table-column label="公寓名称"
                          align="center"
                          prop="name"
-                         show-overflow-tooltip
                          :min-width="colWidth.sm" />
         <el-table-column label="状态"
                          prop="stateName"
@@ -60,7 +59,7 @@
                          :min-width="colWidth.datetime" />
         <el-table-column label="操作"
                          align="center"
-                         :width="colWidth.op3">
+                         :min-width="colWidth.op3">
           <template slot-scope="{ row }">
             <el-button type="text"
                        @click="editRow(row)">管理</el-button>
