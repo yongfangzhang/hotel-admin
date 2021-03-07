@@ -16,7 +16,7 @@ import { startProgress, stopProgress } from './progress';
 const redirectLogin = () => {
   removeToken();
   if (location.href.indexOf('/login') < 0) {
-    location.href = '/login';
+    location.href = `${process.env.BASE_URL}login`;
   } else {
     location.reload();
   }

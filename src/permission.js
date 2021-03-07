@@ -19,7 +19,7 @@ router.beforeEach((to, from, next) => {
   const hasToken = getToken();
 
   if (hasToken) {
-    if (to.path === '/login') {
+    if (to.path === `${process.env.BASE_URL}login`) {
       // if is logged in, redirect to the home page
       stopProgress();
       next({ path: '/' });
@@ -58,7 +58,7 @@ router.beforeEach((to, from, next) => {
           store.dispatch('user/resetToken').then(d => {
             Message.error(error || 'Has Error');
             stopProgress();
-            next(`/login?redirect=${to.path}`);
+            next(`${process.env.BASE_URL}login?redirect=${to.path}`);
           });
         }
       }
@@ -75,7 +75,7 @@ router.beforeEach((to, from, next) => {
     } else {
       // other pages that do not have permission to access are redirected to the login page.
       stopProgress();
-      next(`/login?redirect=${to.path}`);
+      next(`${process.env.BASE_URL}login?redirect=${to.path}`);
     }
   }
 });
