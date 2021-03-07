@@ -4,6 +4,7 @@ import { ACTIONS, MUTATIONS } from '@/store/constant';
 import {
   deepClone,
   list2GroupMap,
+  list2Map,
   obj2Str,
   str2Obj,
   tree2List
@@ -15,12 +16,7 @@ const LOCAL_KEY = {
 };
 
 export const DICT_TYPE = {
-  INSURANCE_PERIOD: 1,
-  PAYMENT_MODE: 2,
-  PAYMENT_PERIOD: 3,
-  CALC_TYPE: 4,
-  SALES_CHANNEL: 5,
-  DISEASE_CATEGORY: 6
+  ROOM_TYPE: 1
 };
 
 function sortDictTree(array) {
@@ -48,6 +44,10 @@ export default createBaseStore(
       },
       dictGroupMap(state, getters) {
         return list2GroupMap(getters.dictList, 'type');
+      },
+      ROOM_TYPE_MAP(state, getters) {
+        const list = getters.dictGroupMap[DICT_TYPE.ROOM_TYPE] || [];
+        return list2Map(list, 'uuid', 'name');
       }
     },
     mutations: {

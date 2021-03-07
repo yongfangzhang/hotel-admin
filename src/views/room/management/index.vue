@@ -65,7 +65,11 @@
         <el-table-column label="房间类型"
                          align="center"
                          prop="typeUuid"
-                         :min-width="colWidth.sm" />
+                         :min-width="colWidth.sm">
+          <template slot-scope="{ row }">
+            <m-view :value="ROOM_TYPE_MAP[row.typeUuid]" />
+          </template>
+        </el-table-column>
         <el-table-column label="基础价格"
                          align="center"
                          prop="price"
@@ -117,9 +121,8 @@
             <el-button type="text"
                        @click="editRow(row)">管理</el-button>
             <el-button type="text"
-                       class="text-warning"
-                       :disabled="row.state!==APARTMENT_STATE.NORMAL"
-                       @click="forbiddenRow(row)">禁用</el-button>
+                       :class="row.state===ROOM_STATE.NORMAL?'text-warning':'text-primary'"
+                       @click="toggleForbiddenRow(row)">{{ row.state===ROOM_STATE.NORMAL ? '禁用' : '启用' }}</el-button>
             <el-button type="text"
                        class="text-danger"
                        @click="deleteRow(row)">删除</el-button>
@@ -134,6 +137,7 @@ import { ACTIONS, MODULE } from '@/store/constant';
 import { baseTableMixin } from '@/utils/mixins';
 import { PATH_MAP } from '@/router/modules/room';
 import { deepClone, list2Map } from '@/utils/index';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'RoomManagementIndex',
@@ -143,6 +147,7 @@ export default {
       showMoreFilter: false,
       qStates: [],
       createdRange: [],
+      apartmentMap: null,
       queries: {
         state: null,
         number: null,
@@ -153,6 +158,7 @@ export default {
     };
   },
   computed: {
+    ...mapGetters(MODULE.DICT, ['ROOM_TYPE_MAP']),
     mParam() {
       return {
         paramMode: true,
@@ -178,9 +184,12 @@ export default {
       this.queries.createdAtStart = this.createdRange[0];
       this.queries.createdAtStop = this.createdRange[1];
     },
-    forbiddenRow(row) {
+    toggleForbiddenRow(row) {
       const item = deepClone(row);
-      item.state = this.APARTMENT_STATE.FORBIDDEN;
+      item.state =
+        item.state === this.ROOM_STATE.NORMAL
+          ? this.ROOM_STATE.FORBIDDEN
+          : this.ROOM_STATE.NORMAL;
       this.saveRow(item);
     }
   }

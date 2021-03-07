@@ -52,6 +52,7 @@ router.beforeEach((to, from, next) => {
             });
           // 初始化各种带权限的常驻kv
           store.dispatch(`${MODULE.ENUMS}/${ACTIONS.FETCH_ENUM}`);
+          store.dispatch(`${MODULE.DICT}/${ACTIONS.FETCH_DICT}`);
         } catch (error) {
           // remove token and go to login page to re-login
           store.dispatch('user/resetToken').then(d => {
