@@ -312,7 +312,7 @@ export function debounce(func, wait, immediate) {
   };
 }
 
-export function isEmpty(v) {
+export function isStringEmpty(v) {
   return v === null || typeof v === 'undefined' || v === '';
 }
 
@@ -451,7 +451,7 @@ export const getValueByKeys = (obj, key) => {
   if (key.indexOf('.') < 0) return obj[key];
   const arrReg = new RegExp(/^@(\d+)$/, 'g');
   key.split('.').forEach(k => {
-    if (isEmpty(v) || typeof v !== 'object') return;
+    if (isStringEmpty(v) || typeof v !== 'object') return;
     const arrRet = arrReg.exec(k);
     if (arrRet) {
       // 数组
@@ -688,7 +688,7 @@ export function scrollToTab(name) {
 }
 
 export const isBlank = v => {
-  return isEmpty(v) || isEmpty((v + '').trim());
+  return isStringEmpty(v) || isStringEmpty((v + '').trim());
 };
 
 export const isNotBlank = v => {

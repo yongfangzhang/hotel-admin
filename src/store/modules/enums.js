@@ -171,6 +171,16 @@ export default {
         [getters.OPERATION.LOGIN]: 'info',
         [getters.OPERATION.LOGOUT]: 'info'
       };
+    },
+    ROOM_STATE_THEME_MAP(state, getters) {
+      return {
+        [getters.ROOM_STATE.NORMAL]: 'primary',
+        [getters.ROOM_STATE.IN_USE]: 'success',
+        [getters.ROOM_STATE.UNCLEAN]: 'warning',
+        [getters.ROOM_STATE.FORBIDDEN]: 'info',
+        [getters.ROOM_STATE.APARTMENT_FORBIDDEN]: 'danger',
+        [getters.ROOM_STATE.APARTMENT_DELETED]: 'danger'
+      };
     }
   },
   mutations: {

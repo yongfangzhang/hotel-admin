@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isEmpty(value)">{{ emptyText }}</div>
+  <div v-if="isStringEmpty(value)">{{ emptyText }}</div>
   <div v-else-if="type === 'text'">{{ formatText(value) }}<span v-if="unit">{{ unit }}</span></div>
   <div v-else-if="type === 'boolean'">{{ value? '是': '否' }}</div>
   <div v-else-if="type === 'sex'">{{ value === 1? '男': '女' }}</div>

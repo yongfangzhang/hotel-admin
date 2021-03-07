@@ -78,7 +78,8 @@ export const baseMixin = {
       'BOOLEAN_FLAG',
       'BOOLEAN_FLAG_MAP',
       'APARTMENT_STATE_THEME_MAP',
-      'OPERATION_THEME_MAP'
+      'OPERATION_THEME_MAP',
+      'ROOM_STATE_THEME_MAP'
     ]),
     formWidth() {
       // 基础留白50px, 单个字12px
@@ -203,7 +204,7 @@ export const baseMixin = {
       );
     },
     formatText(text, defaultText) {
-      if (this.isEmpty(text)) {
+      if (this.isStringEmpty(text)) {
         return defaultText || EMPTY_TEXT;
       }
       return text;
@@ -243,7 +244,7 @@ export const baseMixin = {
     queryRoute(k) {
       return this.$route.query[k];
     },
-    isEmpty(v) {
+    isStringEmpty(v) {
       return typeof v === 'undefined' || v === null || v === '' || v === 'null';
     },
     hasPermission(perm) {
@@ -251,7 +252,7 @@ export const baseMixin = {
     },
     $$getValue(obj, k, d) {
       // x.y.@0.s
-      if (this.isEmpty(obj)) return d;
+      if (this.isStringEmpty(obj)) return d;
       return this.formatText(getValueByKeys(obj, k), d);
     }
   }

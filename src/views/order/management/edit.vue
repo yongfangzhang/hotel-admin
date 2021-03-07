@@ -196,7 +196,9 @@ export default {
     }
   },
   mounted() {
-    this.doAction(MODULE.APARTMENT, ACTIONS.FETCH_LIST).then((list) => {
+    this.doAction(MODULE.APARTMENT, ACTIONS.FETCH_LIST, {
+      state: this.APARTMENT_STATE.NORMAL
+    }).then((list) => {
       this.apartmentList = list;
     });
     this.doAction(MODULE.USER, ACTIONS.FETCH_LIST).then((list) => {
@@ -208,7 +210,8 @@ export default {
     fetchRoomMap() {
       if (!this.viewInfo || !this.viewInfo.apartmentUuid) return;
       this.doAction(MODULE.ROOM, ACTIONS.FETCH_LIST, {
-        apartmentUuid: this.viewInfo.apartmentUuid
+        apartmentUuid: this.viewInfo.apartmentUuid,
+        state: this.ROOM_STATE.NORMAL
       }).then((list) => {
         this.roomMap = list2Map(list, 'uuid', 'name');
       });

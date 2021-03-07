@@ -11,8 +11,17 @@
                  inline
                  @submit.native.prevent>
           <div>
-            <el-form-item label="公寓名称">
-              <el-input v-model="queries.account"
+            <el-form-item label="公寓">
+              <m-selector v-model="queries.apartmentUuid"
+                          :map="apartmentMap"
+                          filterable
+                          clearable
+                          @keydown.enter.native="doFilter"
+                          @change="doFilter"
+                          @clear="doFilter" />
+            </el-form-item>
+            <el-form-item label="房间号">
+              <el-input v-model="queries.number"
                         placeholder="请输入"
                         clearable
                         @clear="doFilter"
@@ -41,16 +50,60 @@
         </div>
       </div>
       <template slot="columns">
-        <el-table-column label="公寓名称"
+        <el-table-column label="楼号"
                          align="center"
-                         prop="name"
-                         :min-width="colWidth.nm" />
+                         prop="floorNumber"
+                         :min-width="colWidth.xs" />
+        <el-table-column label="单元号"
+                         align="center"
+                         prop="unitNumber"
+                         :min-width="colWidth.xs" />
+        <el-table-column label="房间号"
+                         align="center"
+                         prop="number"
+                         :min-width="colWidth.xs" />
+        <el-table-column label="房间类型"
+                         align="center"
+                         prop="typeUuid"
+                         :min-width="colWidth.sm" />
+        <el-table-column label="基础价格"
+                         align="center"
+                         prop="price"
+                         :min-width="colWidth.xs">
+          <template slot-scope="{ row }">
+            <m-view :value="row.price"
+                    type="currency" />
+          </template>
+        </el-table-column>
+        <el-table-column v-for="(priceName, priceType) in ROOM_PRICE_TYPE_MAP"
+                         :key="priceType"
+                         :label="priceName"
+                         align="center"
+                         :min-width="colWidth.xs">
+          <template slot-scope="{ row }">
+            <m-view :value="getPrice(row.prices, priceType)"
+                    type="currency" />
+          </template>
+        </el-table-column>
+        <el-table-column label="销售次数"
+                         align="center"
+                         prop="saleTimes"
+                         :min-width="colWidth.xs" />
+        <el-table-column label="总收益"
+                         align="center"
+                         prop="income"
+                         :min-width="colWidth.xs">
+          <template slot-scope="{ row }">
+            <m-view :value="row.income"
+                    type="currency" />
+          </template>
+        </el-table-column>
         <el-table-column label="状态"
                          prop="stateName"
                          align="center"
                          :min-width="colWidth.xs">
           <template slot-scope="{ row }">
-            <el-tag :type="APARTMENT_STATE_THEME_MAP[row.state]"> {{ row.stateName }} </el-tag>
+            <el-tag :type="ROOM_STATE_THEME_MAP[row.state]"> {{ row.stateName }} </el-tag>
           </template>
         </el-table-column>
         <el-table-column label="创建时间"
@@ -77,10 +130,10 @@
   </div>
 </template>
 <script>
-import { MODULE } from '@/store/constant';
+import { ACTIONS, MODULE } from '@/store/constant';
 import { baseTableMixin } from '@/utils/mixins';
 import { PATH_MAP } from '@/router/modules/room';
-import { deepClone } from '@/utils/index';
+import { deepClone, list2Map } from '@/utils/index';
 
 export default {
   name: 'RoomManagementIndex',
@@ -92,7 +145,8 @@ export default {
       createdRange: [],
       queries: {
         state: null,
-        name: null,
+        number: null,
+        apartmentUuid: null,
         createdAtStart: null,
         createdAtStop: null
       }
@@ -108,8 +162,17 @@ export default {
       };
     }
   },
-  mounted() {},
+  mounted() {
+    this.doAction(MODULE.APARTMENT, ACTIONS.FETCH_LIST).then((list) => {
+      this.apartmentMap = list2Map(list, 'uuid', 'name');
+    });
+  },
   methods: {
+    getPrice(prices, type) {
+      if (!prices || !prices.length) return 0;
+      const priceItem = prices.filter((p) => +p.type === type)[0];
+      return priceItem ? priceItem.price : 0;
+    },
     beforeFetch() {
       this.queries.state = +this.qStates[0] || undefined;
       this.queries.createdAtStart = this.createdRange[0];
