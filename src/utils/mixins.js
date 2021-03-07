@@ -387,10 +387,14 @@ export const formEditMixin = {
   },
   methods: {
     ...mapMutations(MODULE.APP, [MUTATIONS.SET_ROUTE_TITLE]),
-    validateForm() {
+    validateForm(formEl) {
       if (this.customerValidateForm) return this.customerValidateForm();
-      if (!this.$refs.form) return Promise.resolve(true);
-      return new Promise(resolve => this.$refs.form.validate(resolve));
+      let form = formEl || this.$refs.form;
+      if (Array.isArray(form)) {
+        form = form[0];
+      }
+      if (!form) return Promise.resolve(true);
+      return new Promise(resolve => form.validate(resolve));
     },
     getDefaultTitle() {
       let title = null;

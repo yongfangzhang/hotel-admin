@@ -22,6 +22,7 @@ export const createModel = (model = {}) => {
     channelName: null,
     stateName: null,
     typeName: null,
+    items: [],
 
     description: null,
     remarkContent: null

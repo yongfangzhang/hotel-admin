@@ -60,10 +60,8 @@ const mutations = {
     state.routes = constantRoutes.concat(routes).sort((a, b) => {
       if (!a.meta || !a.meta.sequence) return -1;
       if (!b.meta || !b.meta.sequence) return 1;
-      console.log(a.meta.sequence, b.meta.sequence);
       return a.meta.sequence - b.meta.sequence;
     });
-    console.log(state.routes);
   },
   clearRoutes: state => {
     state.routes = [];

@@ -26,3 +26,9 @@ export function logout() {
     method: 'post'
   });
 }
+
+export function fetchUserXsList() {
+  return request({
+    url: '/user/list/xs'
+  });
+}

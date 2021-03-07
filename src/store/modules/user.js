@@ -1,7 +1,12 @@
-import { getInfo, login, logout } from '@/api/account/passport';
+import {
+  getInfo,
+  login,
+  logout,
+  fetchUserXsList
+} from '@/api/account/passport';
 import { resetRouter } from '@/router';
 import { removeToken, setToken } from '@/utils/auth';
-import { list2Map } from '@/utils/index';
+import { ACTIONS } from '../constant';
 
 const state = {
   accountInfo: {}
@@ -18,12 +23,12 @@ const actions = {
   login({ commit }, form) {
     return new Promise((resolve, reject) => {
       login(form)
-        .then((data) => {
+        .then(data => {
           commit('SET_ACCOUNT_INFO', data);
           setToken(data.token);
           resolve();
         })
-        .catch((error) => {
+        .catch(error => {
           reject(error);
         });
     });
@@ -33,7 +38,7 @@ const actions = {
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
       getInfo()
-        .then((data) => {
+        .then(data => {
           if (!data) {
             reject('验证失败，请重新登录.');
           }
@@ -47,7 +52,7 @@ const actions = {
           commit('SET_ACCOUNT_INFO', data);
           resolve(data);
         })
-        .catch((error) => {
+        .catch(error => {
           reject(error);
         });
     });
@@ -62,7 +67,7 @@ const actions = {
           resetRouter();
           resolve();
         })
-        .catch((error) => {
+        .catch(error => {
           reject(error);
         });
     });
@@ -70,18 +75,18 @@ const actions = {
 
   // remove token
   resetToken({ commit }) {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       removeToken();
       resolve();
     });
+  },
+
+  [ACTIONS.FETCH_LIST]() {
+    return fetchUserXsList();
   }
 };
 
-const getters = {
-  userMap(state) {
-    return list2Map(state.userList, 'uuid', 'name');
-  }
-};
+const getters = {};
 
 export default {
   namespaced: true,
