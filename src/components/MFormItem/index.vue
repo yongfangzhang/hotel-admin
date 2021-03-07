@@ -5,8 +5,11 @@
                 :prop="item.prop || item.key"
                 :class="customClass"
                 class="m-form-item">
-    <template v-if="item.hint" #label>
-      <m-edit-hint :title="item.label" :desc="item.hint" />
+    <template v-if="item.hint"
+              #label>
+      <m-edit-hint :title="item.label"
+                   :desc="item.hint"
+                   @change="$emit('change')" />
     </template>
     <slot name="before" />
     <slot v-if="item.slot"
@@ -23,7 +26,8 @@
             :multiple="item.multiple"
             :on-preview="onPreview"
             :extral="item.extral"
-            :is-view="item.isView != undefined ? item.isView : isView " />
+            :is-view="item.isView != undefined ? item.isView : isView "
+            @change="$emit('change')" />
     <slot name="after" />
   </el-form-item>
 </template>
@@ -71,10 +75,15 @@ export default {
     onPreview: {
       type: Function,
       default() {
-        return null
+        return null;
       }
     },
-    customClass: { type: Array, default() { return [] } }
+    customClass: {
+      type: Array,
+      default() {
+        return [];
+      }
+    }
   }
 };
 </script>

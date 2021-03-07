@@ -2,8 +2,11 @@
   <el-radio-group v-model="currentValue"
                   :disabled="disabled"
                   :style="{width: width}"
-                  :class="{'w-100': !width}">
-    <el-radio v-for="(label, value) in map" :key="value" :label="value">{{ label }}</el-radio>
+                  :class="{'w-100': !width}"
+                  @change="$emit('change')">
+    <el-radio v-for="(label, value) in map"
+              :key="value"
+              :label="value">{{ label }}</el-radio>
   </el-radio-group>
 </template>
 <script>
@@ -20,7 +23,7 @@ export default {
   methods: {
     getByKey(item, key) {
       let v = item;
-      key.split('.').forEach(k => {
+      key.split('.').forEach((k) => {
         v = v[k];
       });
       return v;

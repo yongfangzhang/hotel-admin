@@ -62,7 +62,8 @@
                              :label="item.label"
                              :item="item"
                              :entity="vItem"
-                             :disabled="item.disabled" />
+                             :disabled="item.disabled"
+                             @change="()=>item.change&&item.change(vItem)" />
               </el-col>
               <el-col :xs="24"
                       :sm="12">
@@ -71,7 +72,8 @@
                              :label="item.label"
                              :item="item"
                              :entity="vItem"
-                             :disabled="item.disabled" />
+                             :disabled="item.disabled"
+                             @change="()=>item.change&&item.change(vItem)" />
               </el-col>
             </el-row>
           </el-form>
@@ -102,6 +104,7 @@ export default {
     return {
       activeNames: ['basic', 'item'],
       roomMap: null,
+      roomFullMap: null,
       apartmentList: [],
       userList: []
     };
@@ -138,12 +141,17 @@ export default {
           { key: 'remarkContent', label: '备注', type: 'remark' }
         ],
         right: [
+          {
+            key: 'state',
+            label: '状态',
+            type: 'selector',
+            map: this.ORDER_STATE_MAP
+          },
           { key: 'number', label: '订单号', isView: true },
           { key: 'channel', label: '渠道', isView: true },
           { key: 'canceledAt', label: '取消时间', isView: true },
           { key: 'finishedAt', label: '完成时间', isView: true },
-          { key: 'commentedAt', label: '评价时间', isView: true },
-          { key: 'state', label: '状态', isView: true }
+          { key: 'commentedAt', label: '评价时间', isView: true }
         ]
       };
     },
@@ -151,7 +159,7 @@ export default {
       return {
         left: [
           // prettier-ignore
-          { key: 'roomUuid', label: '房间', type: 'selector', map: this.roomMap },
+          { key: 'roomUuid', label: '房间', type: 'selector', map: this.roomMap, change: this.onRoomChange },
           // prettier-ignore
           { key: 'name', label: '客户姓名' },
           { key: 'mobile', label: '手机号', type: 'number' },
@@ -160,10 +168,10 @@ export default {
         ],
         right: [
           // prettier-ignore
-          { key: 'priceType', label: '价格类型', type: 'selector', map: this.ROOM_PRICE_TYPE_MAP },
-          { key: 'originalPrice', label: '价格', type: 'number' },
-          { key: 'paidPrice', label: '实付价格', type: 'number' },
-          { key: 'state', label: '状态', isView: true }
+          { key: 'priceType', label: '价格类型', type: 'selector', map: this.ROOM_PRICE_TYPE_MAP, change: this.onPriceTypeChange },
+          { key: 'originalPrice', label: '价格', isView: true },
+          { key: 'paidPrice', label: '实付价格', type: 'number' }
+          // { key: 'state', label: '状态', type: 'selector', map: this.ORDER_STATE_MAP }
         ]
       };
     },
@@ -174,6 +182,9 @@ export default {
         ],
         userType: [
           { required: true, message: '客户来源不能为空', trigger: 'change' }
+        ],
+        state: [
+          { required: true, message: '订单状态不能为空', trigger: 'change' }
         ]
       };
     },
@@ -193,7 +204,8 @@ export default {
     },
     'viewInfo.apartmentUuid'() {
       this.fetchRoomMap();
-    }
+    },
+    'viewInfo.priceType'() {}
   },
   mounted() {
     this.doAction(MODULE.APARTMENT, ACTIONS.FETCH_LIST, {
@@ -207,6 +219,14 @@ export default {
     this.fetchRoomMap();
   },
   methods: {
+    onRoomChange(item) {
+      this.$set(item, 'room', this.roomFullMap[item.roomUuid]);
+      this.onPriceTypeChange(item);
+    },
+    onPriceTypeChange(item) {
+      if (!item.room) return;
+      item.originalPrice = item.room.priceTypeMap[item.priceType];
+    },
     fetchRoomMap() {
       if (!this.viewInfo || !this.viewInfo.apartmentUuid) return;
       this.doAction(MODULE.ROOM, ACTIONS.FETCH_LIST, {
@@ -214,6 +234,7 @@ export default {
         state: this.ROOM_STATE.NORMAL
       }).then((list) => {
         this.roomMap = list2Map(list, 'uuid', 'name');
+        this.roomFullMap = list2Map(list, 'uuid');
       });
     },
     addItem() {
@@ -228,7 +249,8 @@ export default {
         paidPrice: null,
         state: null,
         liveAt: null,
-        leaveAt: null
+        leaveAt: null,
+        room: null
       });
     },
     removeItem(idx) {
@@ -240,6 +262,7 @@ export default {
         toastWarning('请添加入住人');
         return Promise.resolve(false);
       }
+      this.viewInfo.channel = this.ORDER_CHANNEL.ADMIN;
       const promiseArr = [this.$refs.form]
         .concat(this.$refs.userForm)
         .map((f) => new Promise((resolve) => f.validate(resolve)));

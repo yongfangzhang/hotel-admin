@@ -8,7 +8,8 @@
              :class="{'w-100': !width}"
              :style="{width: width}"
              :remote="remote"
-             :remote-method="remoteMethod">
+             :remote-method="remoteMethod"
+             @change="$emit('change')">
     <el-option v-if="nullable"
                label="请选择"
                :value="nullableValue" />
@@ -58,7 +59,7 @@ export default {
     },
     getByKey(item, key) {
       let v = item;
-      key.split('.').forEach(k => {
+      key.split('.').forEach((k) => {
         v = v[k];
       });
       return v;

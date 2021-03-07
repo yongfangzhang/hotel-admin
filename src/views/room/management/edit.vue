@@ -23,13 +23,14 @@
                 :sm="12">
           <m-form-item key="price"
                        label="基础价格"
-                       :item="{ key: 'price', label: '基础价格' }"
+                       :item="{ key: 'price', label: '基础价格', type: 'number' }"
                        :entity="viewInfo" />
           <el-form-item v-for="(priceName, priceType) in ROOM_PRICE_TYPE_MAP"
                         :key="priceType"
                         :label="priceName"
                         class="m-form-item">
             <m-edit v-model="priceTypeMap[priceType]"
+                    type="number"
                     placeholder="请输入" />
           </el-form-item>
           <m-form-item key="remarkContent"

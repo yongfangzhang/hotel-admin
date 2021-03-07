@@ -1,49 +1,60 @@
 <template>
   <div v-if="type === 'text'">
-    <span v-if="isView" v-text="currentValue ? currentValue + (extral && extral.append ? extral.append : '') : '--'" />
+    <span v-if="isView"
+          v-text="currentValue ? currentValue + (extral && extral.append ? extral.append : '') : '--'" />
     <el-input v-else
               v-model="currentValue"
               v-bind="originProps"
               :disabled="disabled"
               clearable
               :placeholder="placeholder"
-              @keyup.native.enter="onEnter">
-      <template v-if="extral && extral.append" slot="append">{{ extral.append }}</template>
+              @keyup.native.enter="onEnter"
+              @change="$emit('change')">
+      <template v-if="extral && extral.append"
+                slot="append">{{ extral.append }}</template>
     </el-input>
   </div>
   <div v-else-if="type === 'number'">
-    <span v-if="isView" v-text="currentValue ? currentValue + (extral && extral.append ? extral.append : '') : '--'" />
+    <span v-if="isView"
+          v-text="currentValue ? currentValue + (extral && extral.append ? extral.append : '') : '--'" />
     <el-input v-else
               v-model="currentValue"
               type="number"
               :disabled="disabled"
               :placeholder="placeholder"
-              @keyup.native.enter="onEnter">
-      <template v-if="extral && extral.append" slot="append">{{ extral.append }}</template>
+              @keyup.native.enter="onEnter"
+              @change="$emit('change')">
+      <template v-if="extral && extral.append"
+                slot="append">{{ extral.append }}</template>
     </el-input>
   </div>
   <div v-else-if="type === 'textarea'">
-    <span v-if="isView" v-text="currentValue || '--'" />
+    <span v-if="isView"
+          v-text="currentValue || '--'" />
     <el-input v-else
               v-model="currentValue"
               type="textarea"
               :rows="extral.rows || 3"
               :placeholder="placeholder"
               :disabled="disabled"
-              @keyup.native.enter="onEnter" />
+              @keyup.native.enter="onEnter"
+              @change="$emit('change')" />
   </div>
   <div v-else-if="type == 'date' || type == 'datetime' || type === 'datetimerange' || type === 'daterange'">
-    <span v-if="isView" v-text="currentValue || '--'" />
+    <span v-if="isView"
+          v-text="currentValue || '--'" />
     <el-date-picker v-else
                     v-model="currentValue"
                     class="w-100"
                     :type="type"
                     :value-format="valueFormat"
                     :disabled="disabled"
-                    :placeholder="placeholder" />
+                    :placeholder="placeholder"
+                    @change="$emit('change')" />
   </div>
   <div v-else-if="type === 'selector'">
-    <span v-if="isView" v-text="map[currentValue] || '--'" />
+    <span v-if="isView"
+          v-text="map[currentValue] || '--'" />
     <m-selector v-else
                 v-model="currentValue"
                 :disabled="disabled"
@@ -54,22 +65,27 @@
                 :kmap="kmap"
                 :multiple="multiple"
                 :filterable="extral.filterable"
-                :remote-method="remoteMethod" />
+                :remote-method="remoteMethod"
+                @change="$emit('change')" />
   </div>
   <div v-else-if="type === 'radio'">
-    <span v-if="isView" v-text="map[currentValue] || '--'" />
+    <span v-if="isView"
+          v-text="map[currentValue] || '--'" />
     <m-radio v-else
              v-model="currentValue"
              :disabled="disabled"
              :map="map"
              :list="list"
-             :kmap="kmap" />
+             :kmap="kmap"
+             @change="$emit('change')" />
   </div>
   <div v-else-if="type === 'boolean'">
-    <span v-if="isView" v-text="currentValue ? '是' : '否'" />
+    <span v-if="isView"
+          v-text="currentValue ? '是' : '否'" />
     <el-checkbox v-else
                  v-model="currentValue"
-                 :disabled="disabled" />
+                 :disabled="disabled"
+                 @change="$emit('change')" />
   </div>
   <el-switch v-else-if="type === 'switch'"
              v-model="currentValue"
@@ -77,21 +93,25 @@
              :active-text="extral.activeText"
              :inactive-text="extral.inactiveText"
              :active-value="extral.activeValue"
-             :inactive-value="extral.inactiveValue" />
+             :inactive-value="extral.inactiveValue"
+             @change="$emit('change')" />
   <m-address-form v-else-if="type === 'address'"
                   v-model="currentValue"
-                  :disabled="disabled" />
+                  :disabled="disabled"
+                  @change="$emit('change')" />
   <m-uploader v-else-if="type === 'resource'"
               v-model="currentValue"
               :item="extral"
               :uuids="extral.uuids"
               :preview-click="onPreview"
-              :disabled="disabled" />
+              :disabled="disabled"
+              @change="$emit('change')" />
   <m-remark v-else-if="type === 'remark'"
             v-model="currentValue"
             :disabled="disabled"
             :class-name="className"
-            :remark="remark" />
+            :remark="remark"
+            @change="$emit('change')" />
   <div v-else />
 </template>
 <script>
@@ -127,7 +147,7 @@ export default {
           return '选择日期';
         }
         if (this.type && this.type === 'selector') {
-          return '请选择'
+          return '请选择';
         }
         return '请输入';
       }
@@ -139,7 +159,7 @@ export default {
     onPreview: {
       type: Function,
       default() {
-        return null
+        return null;
       }
     },
     multiple: { type: Boolean, default: false }
@@ -147,15 +167,15 @@ export default {
   computed: {
     valueFormat() {
       if (this.type === 'datetime') {
-        return 'yyyy-MM-dd HH:mm:ss'
+        return 'yyyy-MM-dd HH:mm:ss';
       } else {
-        return 'yyyy-MM-dd'
+        return 'yyyy-MM-dd';
       }
     }
   },
   methods: {
     onEnter(evt) {
-      this.extral.enter && this.extral.enter(evt)
+      this.extral.enter && this.extral.enter(evt);
     }
   }
 };
