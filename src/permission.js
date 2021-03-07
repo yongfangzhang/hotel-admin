@@ -6,7 +6,7 @@ import { getToken } from '@/utils/auth'; // get token from cookie
 import getPageTitle from '@/utils/get-page-title';
 import { MODULE, ACTIONS } from './store/constant';
 
-const whiteList = ['/login', '/auth-redirect']; // no redirect whitelist
+const whiteList = [`${process.env.BASE_URL}login`, '/auth-redirect']; // no redirect whitelist
 
 router.beforeEach((to, from, next) => {
   // start progress bar
@@ -22,7 +22,7 @@ router.beforeEach((to, from, next) => {
     if (to.path === `${process.env.BASE_URL}login`) {
       // if is logged in, redirect to the home page
       stopProgress();
-      next({ path: '/' });
+      next({ path: process.env.BASE_URL + 'index.html' });
     } else {
       // determine whether the user has obtained his permission routes through getInfo
       const hasRoutes = store.getters.routes && store.getters.routes.length > 0;
