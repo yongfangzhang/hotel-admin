@@ -34,8 +34,9 @@
             <datetime-filter v-model="createdRange"
                              @change="doFilter" />
             <state-filter v-model="qStates"
-                          :map="APARTMENT_STATE_MAP"
-                          :theme-map="APARTMENT_STATE_THEME_MAP"
+                          :map="ROOM_STATE_MAP"
+                          :theme-map="ROOM_STATE_THEME_MAP"
+                          theme-type="color"
                           @change="doFilter" />
           </div>
         </el-form>
@@ -107,7 +108,11 @@
                          align="center"
                          :min-width="colWidth.xs">
           <template slot-scope="{ row }">
-            <el-tag :type="ROOM_STATE_THEME_MAP[row.state]"> {{ row.stateName }} </el-tag>
+            <el-tag>
+              <span :style="{color: ROOM_STATE_THEME_MAP[row.state]}">
+                {{ row.stateName }}
+              </span>
+            </el-tag>
           </template>
         </el-table-column>
         <el-table-column label="创建时间"
@@ -121,8 +126,8 @@
             <el-button type="text"
                        @click="editRow(row)">管理</el-button>
             <el-button type="text"
-                       :class="row.state===ROOM_STATE.NORMAL?'text-warning':'text-primary'"
-                       @click="toggleForbiddenRow(row)">{{ row.state===ROOM_STATE.NORMAL ? '禁用' : '启用' }}</el-button>
+                       :class="row.state!==ROOM_STATE.FORBIDDEN?'text-warning':'text-primary'"
+                       @click="toggleForbiddenRow(row)">{{ row.state!==ROOM_STATE.FORBIDDEN ? '禁用' : '启用' }}</el-button>
             <el-button type="text"
                        class="text-danger"
                        @click="deleteRow(row)">删除</el-button>
@@ -136,7 +141,7 @@
 import { ACTIONS, MODULE } from '@/store/constant';
 import { baseTableMixin } from '@/utils/mixins';
 import { PATH_MAP } from '@/router/modules/room';
-import { deepClone, list2Map } from '@/utils/index';
+import { list2Map } from '@/utils/index';
 import { mapGetters } from 'vuex';
 
 export default {
@@ -169,11 +174,17 @@ export default {
     }
   },
   mounted() {
-    this.doAction(MODULE.APARTMENT, ACTIONS.FETCH_LIST).then((list) => {
-      this.apartmentMap = list2Map(list, 'uuid', 'name');
-    });
+    this.init();
+  },
+  activated() {
+    this.init();
   },
   methods: {
+    init() {
+      this.doAction(MODULE.APARTMENT, ACTIONS.FETCH_LIST).then((list) => {
+        this.apartmentMap = list2Map(list, 'uuid', 'name');
+      });
+    },
     getPrice(prices, type) {
       if (!prices || !prices.length) return 0;
       const priceItem = prices.filter((p) => +p.type === type)[0];
@@ -185,12 +196,12 @@ export default {
       this.queries.createdAtStop = this.createdRange[1];
     },
     toggleForbiddenRow(row) {
-      const item = deepClone(row);
-      item.state =
-        item.state === this.ROOM_STATE.NORMAL
-          ? this.ROOM_STATE.FORBIDDEN
-          : this.ROOM_STATE.NORMAL;
-      this.saveRow(item);
+      if (row.state === this.ROOM_STATE.FORBIDDEN) {
+        // TODO: 当前禁用, 改为可用, 状态由用户输入
+      } else {
+        // TODO: 提示是否确认禁用
+      }
+      this.saveRow(row);
     }
   }
 };

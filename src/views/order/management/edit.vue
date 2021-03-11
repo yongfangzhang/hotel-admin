@@ -142,13 +142,18 @@ export default {
         ],
         right: [
           {
+            key: 'channel',
+            label: '渠道',
+            type: 'selector',
+            map: this.ORDER_CHANNEL_MAP
+          },
+          {
             key: 'state',
             label: '状态',
             type: 'selector',
             map: this.ORDER_STATE_MAP
           },
           { key: 'number', label: '订单号', isView: true },
-          { key: 'channel', label: '渠道', isView: true },
           { key: 'canceledAt', label: '取消时间', isView: true },
           { key: 'finishedAt', label: '完成时间', isView: true },
           { key: 'commentedAt', label: '评价时间', isView: true }
@@ -208,17 +213,23 @@ export default {
     'viewInfo.priceType'() {}
   },
   mounted() {
-    this.doAction(MODULE.APARTMENT, ACTIONS.FETCH_LIST, {
-      state: this.APARTMENT_STATE.NORMAL
-    }).then((list) => {
-      this.apartmentList = list;
-    });
-    this.doAction(MODULE.USER, ACTIONS.FETCH_LIST).then((list) => {
-      this.userList = list;
-    });
-    this.fetchRoomMap();
+    this.init();
+  },
+  activated() {
+    this.init();
   },
   methods: {
+    init() {
+      this.doAction(MODULE.APARTMENT, ACTIONS.FETCH_LIST, {
+        state: this.APARTMENT_STATE.NORMAL
+      }).then((list) => {
+        this.apartmentList = list;
+      });
+      this.doAction(MODULE.USER, ACTIONS.FETCH_LIST).then((list) => {
+        this.userList = list;
+      });
+      this.fetchRoomMap();
+    },
     onRoomChange(item) {
       this.$set(item, 'room', this.roomFullMap[item.roomUuid]);
       this.onPriceTypeChange(item);
@@ -262,7 +273,7 @@ export default {
         toastWarning('请添加入住人');
         return Promise.resolve(false);
       }
-      this.viewInfo.channel = this.ORDER_CHANNEL.ADMIN;
+      // this.viewInfo.channel = this.ORDER_CHANNEL.ADMIN;
       const promiseArr = [this.$refs.form]
         .concat(this.$refs.userForm)
         .map((f) => new Promise((resolve) => f.validate(resolve)));

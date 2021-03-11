@@ -12,7 +12,9 @@
              @open="open"
              @close="onClose">
     <slot />
-    <span v-if="hasClose && hasConfirm" slot="footer" class="dialog-footer w-100">
+    <span v-if="hasClose || hasConfirm"
+          slot="footer"
+          class="dialog-footer w-100">
       <slot name="footer-left" />
       <el-button v-if="hasClose"
                  @click="close"> {{ closeText }} </el-button>

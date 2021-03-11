@@ -136,11 +136,17 @@ export default {
     }
   },
   mounted() {
-    this.doAction(MODULE.SYSTEM_ROLE, ACTIONS.FETCH_LIST).then((d) => {
-      this.allRoles = d;
-    });
+    this.init();
+  },
+  activated() {
+    this.init();
   },
   methods: {
+    init() {
+      this.doAction(MODULE.SYSTEM_ROLE, ACTIONS.FETCH_LIST).then((d) => {
+        this.allRoles = d;
+      });
+    },
     initAddedRoles() {
       if (!this.viewInfo) {
         this.addedRoles = [];

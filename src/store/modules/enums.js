@@ -4,14 +4,16 @@ import { getEnum } from '@/api/pub/enum';
 
 const LOCAL_KEY = {
   ENUM: '_yhkz_enum',
-  ENUM_MAP: '_yhkz_enum_map'
+  ENUM_MAP: '_yhkz_enum_map',
+  ROOM_STATE_THEME_MAP: '_yhkz_room_state_theme_map'
 };
 
 export default {
   namespaced: true,
   state: {
     enum: getLocal(LOCAL_KEY.ENUM),
-    enumMap: getLocal(LOCAL_KEY.ENUM_MAP)
+    enumMap: getLocal(LOCAL_KEY.ENUM_MAP),
+    roomStateThemeMap: getLocal(LOCAL_KEY.ROOM_STATE_THEME_MAP) || {}
   },
   getters: {
     ACCOUNT_TYPE(state) {
@@ -174,12 +176,12 @@ export default {
     },
     ROOM_STATE_THEME_MAP(state, getters) {
       return {
-        [getters.ROOM_STATE.NORMAL]: 'primary',
-        [getters.ROOM_STATE.IN_USE]: 'success',
-        [getters.ROOM_STATE.UNCLEAN]: 'warning',
-        [getters.ROOM_STATE.FORBIDDEN]: 'info',
-        [getters.ROOM_STATE.APARTMENT_FORBIDDEN]: 'danger',
-        [getters.ROOM_STATE.APARTMENT_DELETED]: 'danger'
+        [getters.ROOM_STATE.EMPTY_CLEAN]: '',
+        [getters.ROOM_STATE.EMPTY_DARTY]: '#f39202',
+        [getters.ROOM_STATE.STAY_CLEAN]: '#67c23a',
+        [getters.ROOM_STATE.STAY_DARTY]: '#409eff',
+        [getters.ROOM_STATE.FORBIDDEN]: '#ff4139',
+        ...state.roomStateThemeMap
       };
     }
   },
@@ -190,6 +192,10 @@ export default {
       state.enumMap = val.enumMap;
       setLocal(LOCAL_KEY.ENUM, state.enum);
       setLocal(LOCAL_KEY.ENUM_MAP, state.enumMap);
+    },
+    [MUTATIONS.UPDATE_ROOM_STATE_THEME_MAP](state, payload) {
+      state.roomStateThemeMap = payload || {};
+      setLocal(LOCAL_KEY.ROOM_STATE_THEME_MAP, payload);
     }
   },
   actions: {

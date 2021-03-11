@@ -34,7 +34,7 @@
                      @click="doFilter">查询</el-button>
           <el-button type="primary"
                      plain
-                     @click="resetFilter">重置</el-button>
+                     @click="resetFilter">清空</el-button>
           <el-button type="primary"
                      plain
                      @click="editPermission()">新建</el-button>
@@ -120,7 +120,6 @@ export default {
       };
     }
   },
-  mounted() {},
   methods: {
     editPermission(row) {
       this.currentRow = row ? deepClone(row) : createModel();

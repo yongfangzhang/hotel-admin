@@ -1,5 +1,5 @@
 <template>
-  <div class="text-right p-2 px-3 border-top">
+  <div class="text-right p-3 border-top">
     <slot name="before" />
     <el-button type="primary"
                @click="$emit('save')">

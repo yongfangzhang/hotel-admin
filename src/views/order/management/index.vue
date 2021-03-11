@@ -139,11 +139,17 @@ export default {
     }
   },
   mounted() {
-    this.doAction(MODULE.APARTMENT, ACTIONS.FETCH_LIST).then((list) => {
-      this.apartmentMap = list2Map(list, 'uuid', 'name');
-    });
+    this.init();
+  },
+  activated() {
+    this.init();
   },
   methods: {
+    init() {
+      this.doAction(MODULE.APARTMENT, ACTIONS.FETCH_LIST).then((list) => {
+        this.apartmentMap = list2Map(list, 'uuid', 'name');
+      });
+    },
     beforeFetch() {
       this.queries.state = +this.qStates[0] || undefined;
       this.queries.createdAtStart = this.createdRange[0];

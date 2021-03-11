@@ -162,7 +162,6 @@ export default {
       };
     }
   },
-  mounted() {},
   methods: {
     beforeFetch() {
       this.queries.state = +this.qStates[0] || undefined;

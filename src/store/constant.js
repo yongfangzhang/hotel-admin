@@ -44,7 +44,10 @@ export const MUTATIONS = {
   SET_ENUM: createMutations(),
   SET_ACCOUNT_INFO: createMutations(),
   // 字典
-  SET_DICT: createMutations()
+  SET_DICT: createMutations(),
+  // 房间
+  UPDATE_ROOM_STATE_THEME_MAP: createMutations(),
+  UPDATE_ROOM_SETTING: createMutations()
 };
 
 export const ACTIONS = {

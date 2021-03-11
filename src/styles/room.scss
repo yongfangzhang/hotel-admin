@@ -1,0 +1,17 @@
+.room-item-panel {
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 12px 0px;
+  font-size: 12px;
+
+  .el-card__header {
+    padding: 0 !important;
+    border: none;
+    font-size: 16px;
+    background-color: #dddddd;
+    .card-header-button {
+      min-width: 30px;
+    }
+  }
+  .el-card__body {
+    padding: 0;
+  }
+}

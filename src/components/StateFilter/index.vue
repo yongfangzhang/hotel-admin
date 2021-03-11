@@ -6,7 +6,10 @@
       <el-checkbox v-for="(theme, state) in themeMap"
                    :key="state"
                    :label="+state">
-        <span :class="'text-' + theme"> {{ map[state] }} </span>
+        <span v-if="themeType === 'color'"
+              :style="{color: theme}"> {{ map[state] }} </span>
+        <span v-else
+              :class="'text-' + theme"> {{ map[state] }} </span>
       </el-checkbox>
     </el-checkbox-group>
   </el-form-item>
@@ -24,6 +27,10 @@ export default {
     max: {
       type: Number,
       default: 1
+    },
+    themeType: {
+      type: String,
+      default: 'class'
     },
     themeMap: {
       type: Object,

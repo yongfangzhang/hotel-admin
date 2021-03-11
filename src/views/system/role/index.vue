@@ -113,7 +113,6 @@ export default {
       };
     }
   },
-  mounted() {},
   methods: {
     viewRoutes(row) {
       this.currentRow = row;

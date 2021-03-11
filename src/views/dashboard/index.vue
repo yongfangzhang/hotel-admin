@@ -1,15 +1,13 @@
 <template>
-  <iframe :src="dashboardUrl"
-          noborder
-          class="w-100 h-100 border-0" />
+  <room-monitor class="h-100" />
 </template>
 <script>
+import RoomMonitor from './components/RoomMonitor';
+
 export default {
   name: 'Dashboard',
-  computed: {
-    dashboardUrl() {
-      return `${process.env.BASE_URL}dashboard.html`;
-    }
+  components: {
+    RoomMonitor
   }
 };
 </script>

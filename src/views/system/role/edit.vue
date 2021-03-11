@@ -90,11 +90,17 @@ export default {
     }
   },
   mounted() {
-    this.doAction(MODULE.SYSTEM_PERMISSION, ACTIONS.FETCH_LIST).then((d) => {
-      this.allRoutes = d;
-    });
+    this.init();
+  },
+  activated() {
+    this.init();
   },
   methods: {
+    init() {
+      this.doAction(MODULE.SYSTEM_PERMISSION, ACTIONS.FETCH_LIST).then((d) => {
+        this.allRoutes = d;
+      });
+    },
     initAddedRoutes() {
       if (!this.viewInfo) {
         this.addedRoutes = [];

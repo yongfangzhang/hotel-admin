@@ -124,14 +124,20 @@ export default {
     }
   },
   mounted() {
-    this.doAction(MODULE.APARTMENT, ACTIONS.FETCH_LIST, {
-      state: this.APARTMENT_STATE.NORMAL
-    }).then((list) => {
-      this.apartmentList = list;
-    });
-    this.initPriceMap();
+    this.init();
+  },
+  activated() {
+    this.init();
   },
   methods: {
+    init() {
+      this.doAction(MODULE.APARTMENT, ACTIONS.FETCH_LIST, {
+        state: this.APARTMENT_STATE.NORMAL
+      }).then((list) => {
+        this.apartmentList = list;
+      });
+      this.initPriceMap();
+    },
     initPriceMap() {
       if (!this.viewInfo) return;
       const prices = this.viewInfo.prices || [];

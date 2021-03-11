@@ -72,9 +72,15 @@ export default {
     ...mapState(MODULE.DICT, ['dictTree'])
   },
   mounted() {
-    this.fetchDictTree();
+    this.init();
+  },
+  activated() {
+    this.init();
   },
   methods: {
+    init() {
+      this.fetchDictTree();
+    },
     ...mapActions(MODULE.DICT, [
       ACTIONS.FETCH_DICT,
       ACTIONS.UPDATE_ITEM,
