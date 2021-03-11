@@ -67,11 +67,13 @@ import RoomPanelSetting from './RoomPanelSetting.vue';
 import { mapState } from 'vuex';
 import { deepClone, list2Map } from '@/utils/index';
 import { confirmMessage } from '@/utils/message';
+import { PATH_MAP } from '@/router/modules/order/index';
 export default {
   name: 'RoomMonitor',
   components: { RoomFilter, RoomItem, RoomPanelSetting },
   data() {
     return {
+      currentRoom: null,
       showStateDialog: false,
       showSetting: false
     };
@@ -120,7 +122,16 @@ export default {
       this.$refs.filter.doFilter();
     },
     // createRoom() {},
-    createOrder() {},
+    createOrder(room) {
+      this.$router.push({
+        path: PATH_MAP.MANAGEMENT_EDIT,
+        query: {
+          uuid: '',
+          apartmentUuid: room.apartmentUuid,
+          roomUuid: room.uuid
+        }
+      });
+    },
     changeRoomState(room) {
       this.currentRoom = deepClone(room);
       this.showStateDialog = true;

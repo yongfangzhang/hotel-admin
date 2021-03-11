@@ -42,7 +42,8 @@
         <div v-for="(vItem,idx) in viewInfo.items"
              :key="idx">
           <div class="border-bottom ml-3 py-2">
-            <span class="font-weight-bold mr-3">入住人 {{ idx + 1 }}</span>
+            <span :id="'order-item-'+idx"
+                  class="font-weight-bold mr-3">入住人 {{ idx + 1 }}</span>
             <el-button v-if="!vItem.uuid"
                        type="text"
                        class="text-danger"
@@ -93,10 +94,10 @@
 <script>
 /* eslint-disable object-curly-spacing */
 
-import { ACTIONS, MODULE } from '@/store/constant';
+import { ACTIONS, MODULE, MUTATIONS } from '@/store/constant';
 import { formEditMixin } from '@/utils/mixins';
 import { toastWarning } from '@/utils/message';
-import { list2Map } from '@/utils/index';
+import { list2Map, validateId } from '@/utils/index';
 export default {
   name: 'OrderManagementEdit',
   mixins: [formEditMixin],
@@ -106,7 +107,8 @@ export default {
       roomMap: null,
       roomFullMap: null,
       apartmentList: [],
-      userList: []
+      userMap: null,
+      userFullMap: null
     };
   },
   computed: {
@@ -129,12 +131,11 @@ export default {
             key: 'userUuid',
             label: '客户',
             type: 'selector',
-            list: this.userList,
+            map: this.userMap,
             disabled:
               !this.viewInfo ||
               !this.viewInfo.userType ||
-              this.viewInfo.userType === this.ORDER_USER_TYPE.SOCIAL,
-            kmap: { label: 'name', value: 'uuid' }
+              this.viewInfo.userType === this.ORDER_USER_TYPE.SOCIAL
           },
           // prettier-ignore
           { key: 'paidAt', label: '支付时间', type: 'datetime', placeholder: '请选择' },
@@ -190,6 +191,9 @@ export default {
         ],
         state: [
           { required: true, message: '订单状态不能为空', trigger: 'change' }
+        ],
+        channel: [
+          { required: true, message: '渠道不能为空', trigger: 'change' }
         ]
       };
     },
@@ -199,16 +203,31 @@ export default {
           { required: true, message: '房间不能为空', trigger: 'change' }
         ],
         name: [{ required: true, message: '姓名不能为空', trigger: 'blur' }],
-        mobile: [{ required: true, message: '手机号不能为空', trigger: 'blur' }]
+        mobile: [
+          { required: true, message: '手机号不能为空', trigger: 'blur' }
+        ],
+        paidPrice: [
+          { required: true, message: '实付价格不能为空', trigger: 'change' }
+        ]
       };
     }
   },
   watch: {
+    'viewInfo.userUuid'(v) {
+      if (!v || !this.userFullMap) return;
+      const user = this.userFullMap[v];
+      if (!user) return;
+      const items = this.viewInfo.items || [];
+      items.forEach((item) => {
+        item.name = user.name;
+        item.mobile = user.mobile;
+      });
+    },
     'viewInfo.userType'() {
       this.viewInfo.userUuid = null;
     },
-    'viewInfo.apartmentUuid'() {
-      this.fetchRoomMap();
+    'viewInfo.apartmentUuid'(v) {
+      this.fetchRoomMap(v);
     },
     'viewInfo.priceType'() {}
   },
@@ -220,15 +239,43 @@ export default {
   },
   methods: {
     init() {
+      this.parseQuery();
       this.doAction(MODULE.APARTMENT, ACTIONS.FETCH_LIST, {
         state: this.APARTMENT_STATE.NORMAL
       }).then((list) => {
         this.apartmentList = list;
       });
       this.doAction(MODULE.USER, ACTIONS.FETCH_LIST).then((list) => {
-        this.userList = list;
+        this.userMap = list2Map(list, 'uuid', 'name');
+        this.userFullMap = list2Map(list, 'uuid');
       });
-      this.fetchRoomMap();
+    },
+    parseQuery() {
+      const { uuid, apartmentUuid, roomUuid } = this.$route.query || {};
+      if (validateId(uuid)) return;
+      this.fetchRoomMap(apartmentUuid).then((roomMap) => {
+        this.doMutation(MODULE.ORDER, MUTATIONS.SET_VIEW_INFO, {
+          keys: ['apartmentUuid', 'items'],
+          values: [
+            apartmentUuid,
+            [
+              {
+                uuid: null,
+                roomUuid,
+                name: null,
+                mobile: null,
+                priceType: null,
+                originalPrice: null,
+                paidPrice: null,
+                state: null,
+                liveAt: null,
+                leaveAt: null,
+                room: roomUuid && roomMap ? roomMap[roomUuid] : null
+              }
+            ]
+          ]
+        });
+      });
     },
     onRoomChange(item) {
       this.$set(item, 'room', this.roomFullMap[item.roomUuid]);
@@ -237,24 +284,31 @@ export default {
     onPriceTypeChange(item) {
       if (!item.room) return;
       item.originalPrice = item.room.priceTypeMap[item.priceType];
+      item.paidPrice = item.originalPrice;
     },
-    fetchRoomMap() {
-      if (!this.viewInfo || !this.viewInfo.apartmentUuid) return;
-      this.doAction(MODULE.ROOM, ACTIONS.FETCH_LIST, {
+    fetchRoomMap(apartmentUuid) {
+      if (!apartmentUuid && (!this.viewInfo || !this.viewInfo.apartmentUuid)) {
+        return Promise.resolve();
+      }
+      return this.doAction(MODULE.ROOM, ACTIONS.FETCH_LIST, {
         apartmentUuid: this.viewInfo.apartmentUuid,
         state: this.ROOM_STATE.NORMAL
       }).then((list) => {
         this.roomMap = list2Map(list, 'uuid', 'name');
         this.roomFullMap = list2Map(list, 'uuid');
+        return Promise.resolve(this.roomFullMap);
       });
     },
     addItem() {
       const items = this.viewInfo.items || [];
+      const userUuid = this.viewInfo.userUuid;
+      const user =
+        userUuid && this.userFullMap ? this.userFullMap[userUuid] : null;
       items.push({
         uuid: null,
         roomUuid: null,
-        name: null,
-        mobile: null,
+        name: user ? user.name : null,
+        mobile: user ? user.mobile : null,
         priceType: null,
         originalPrice: null,
         paidPrice: null,
@@ -262,6 +316,11 @@ export default {
         liveAt: null,
         leaveAt: null,
         room: null
+      });
+      this.activeNames = ['item'];
+      this.$nextTick(() => {
+        const el = this.$el.querySelector(`#order-item-${items.length - 1}`);
+        if (el && el.scrollIntoView) el.scrollIntoView();
       });
     },
     removeItem(idx) {
@@ -277,9 +336,11 @@ export default {
       const promiseArr = [this.$refs.form]
         .concat(this.$refs.userForm)
         .map((f) => new Promise((resolve) => f.validate(resolve)));
-      return Promise.all(promiseArr).then((args) =>
-        Promise.resolve(args.filter((a) => !a).length === 0)
-      );
+      return Promise.all(promiseArr).then((args) => {
+        const success = args.filter((a) => !a).length === 0;
+        if (!success) this.activeNames = ['basic', 'item'];
+        return Promise.resolve(success);
+      });
     }
   }
 };
