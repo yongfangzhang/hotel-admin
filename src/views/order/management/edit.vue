@@ -97,7 +97,7 @@
 import { ACTIONS, MODULE, MUTATIONS } from '@/store/constant';
 import { formEditMixin } from '@/utils/mixins';
 import { toastWarning } from '@/utils/message';
-import { list2Map, validateId } from '@/utils/index';
+import { list2Map, parseTime, validateId } from '@/utils/index';
 export default {
   name: 'OrderManagementEdit',
   mixins: [formEditMixin],
@@ -154,10 +154,11 @@ export default {
             type: 'selector',
             map: this.ORDER_STATE_MAP
           },
+          { key: 'biz_number', label: '第三方订单号' },
           { key: 'number', label: '订单号', isView: true },
           { key: 'canceledAt', label: '取消时间', isView: true },
-          { key: 'finishedAt', label: '完成时间', isView: true },
-          { key: 'commentedAt', label: '评价时间', isView: true }
+          { key: 'finishedAt', label: '完成时间', isView: true }
+          // { key: 'commentedAt', label: '评价时间', isView: true }
         ]
       };
     },
@@ -207,7 +208,16 @@ export default {
           { required: true, message: '手机号不能为空', trigger: 'blur' }
         ],
         paidPrice: [
-          { required: true, message: '实付价格不能为空', trigger: 'change' }
+          { required: true, message: '实付价格不能为空', trigger: 'blur' }
+        ],
+        liveAt: [
+          { required: true, message: '入住时间不能为空', trigger: 'change' }
+        ],
+        leaveAt: [
+          { required: true, message: '退房时间不能为空', trigger: 'change' }
+        ],
+        priceType: [
+          { required: true, message: '价格类型不能为空', trigger: 'change' }
         ]
       };
     }
@@ -268,14 +278,29 @@ export default {
                 originalPrice: null,
                 paidPrice: null,
                 state: null,
-                liveAt: null,
-                leaveAt: null,
-                room: roomUuid && roomMap ? roomMap[roomUuid] : null
+                room: roomUuid && roomMap ? roomMap[roomUuid] : null,
+                ...this.presetLiveAndLeave()
               }
             ]
           ]
         });
       });
+    },
+    presetLiveAndLeave() {
+      const today = new Date();
+      today.setHours(today.getHours() + 1);
+      today.setMinutes(0);
+      today.setSeconds(0);
+      today.setMilliseconds(0);
+
+      const liveAt = parseTime(today);
+      today.setDate(today.getDate() + 1);
+      today.setHours(12);
+      const leaveAt = parseTime(today);
+      return {
+        liveAt,
+        leaveAt
+      };
     },
     onRoomChange(item) {
       this.$set(item, 'room', this.roomFullMap[item.roomUuid]);
@@ -313,9 +338,9 @@ export default {
         originalPrice: null,
         paidPrice: null,
         state: null,
-        liveAt: null,
-        leaveAt: null,
-        room: null
+        room: null,
+
+        ...this.presetLiveAndLeave()
       });
       this.activeNames = ['item'];
       this.$nextTick(() => {

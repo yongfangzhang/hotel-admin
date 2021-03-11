@@ -9,7 +9,6 @@
                    size="mini"
                    type="primary"
                    @command="handleDropdownCommand">
-
         <span class="text-primary cursor-pointer">
           操作<i class="el-icon-arrow-down" />
         </span>
@@ -27,20 +26,34 @@
     </div>
     <div :style="{backgroundColor: roomTheme, minHeight: '8.8rem'}"
          class="px-2 py-1">
-      <div v-if="room.relatedOrderItem">
-        <div class="py-3 d-flex justify-content-between">
-          <div>入住人</div>
-          <div>{{ room.relatedOrderItem.name }}</div>
+      <el-popover v-if="room.relatedOrderItem"
+                  placement="top-start"
+                  title="详情"
+                  width="260"
+                  trigger="hover">
+        <div class="font-12">
+          <div class="my-2"><span class="room-item-tip-title">订单号</span>: {{ room.relatedOrder.number }}</div>
+          <div class="my-2"><span class="room-item-tip-title">入住人</span>: {{ room.relatedOrderItem.name }}</div>
+          <div class="my-2"><span class="room-item-tip-title">电话</span>: {{ room.relatedOrderItem.mobile }}</div>
+          <div class="my-2"><span class="room-item-tip-title">入住时间</span>: {{ room.relatedOrderItem.liveAt }}</div>
+          <div class="my-2"><span class="room-item-tip-title">退房时间</span>: {{ room.relatedOrderItem.leaveAt }}</div>
+          <div class="my-2"><span class="room-item-tip-title">剩余时间</span>:</div>
         </div>
-        <div class="pb-3 d-flex justify-content-between">
-          <div>电话</div>
-          <div>{{ room.relatedOrderItem.mobile }}</div>
+        <div slot="reference">
+          <div class="py-3 d-flex justify-content-between">
+            <div>入住人</div>
+            <div>{{ room.relatedOrderItem.name }}</div>
+          </div>
+          <div class="pb-3 d-flex justify-content-between">
+            <div>电话</div>
+            <div>{{ room.relatedOrderItem.mobile }}</div>
+          </div>
+          <div class="pb-3 d-flex justify-content-between">
+            <div>订单来源</div>
+            <div>{{ room.relatedOrder.channelName }}</div>
+          </div>
         </div>
-        <div class="pb-3 d-flex justify-content-between">
-          <div>订单来源</div>
-          <div>{{ room.relatedOrder.channelName }}</div>
-        </div>
-      </div>
+      </el-popover>
       <div v-else
            class="py-5 text-center">
         <el-button v-if="room.state===ROOM_STATE.EMPTY_CLEAN"

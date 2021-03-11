@@ -1,5 +1,5 @@
 import { createBaseStore } from '@/store/base-store';
-import { objectMerge } from '@/utils/index';
+import { objectMerge, parseTime } from '@/utils/index';
 
 export const createModel = (model = {}) => {
   const target = {
@@ -8,14 +8,14 @@ export const createModel = (model = {}) => {
     apartmentUuid: null,
     userUuid: null,
     number: null,
-    channel: null,
+    channel: 1,
     originalPrice: null,
     paidPrice: null,
-    state: null,
-    type: null,
-    userType: null,
-    accountType: null,
-    paidAt: null,
+    state: 2,
+    type: 1,
+    userType: 1,
+    accountType: 2,
+    paidAt: parseTime(new Date()),
     canceledAt: null,
     finishedAt: null,
     commentedAt: null,
