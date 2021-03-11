@@ -9,7 +9,7 @@
             @on-close="onClose">
     <el-form ref="form"
              :model="roomSetting"
-             :label-width="formLabelWidth.w6">
+             :label-width="formLabelWidth.w8">
       <el-form-item label="显示楼号">
         <el-switch v-model="roomSetting.showFloorNumber" />
       </el-form-item>
@@ -27,11 +27,11 @@
       </el-form-item>
       <el-form-item label="房态颜色">
         <div v-for="(color, val ) in ROOM_STATE_THEME_MAP"
-             :key="val"
-             class="d-flex align-items-center">
-          <span class="mr-3"
-                :style="{color}">{{ ROOM_STATE_MAP[val] }}</span>
+             :key="val">
+          <div class="mr-3 text-middle d-inline-block"
+               :style="{color}">{{ ROOM_STATE_MAP[val] }}</div>
           <el-color-picker :value="ROOM_STATE_THEME_MAP[val]"
+                           class="text-middle"
                            @change="c=>onColorChanged(val,c)" />
         </div>
       </el-form-item>

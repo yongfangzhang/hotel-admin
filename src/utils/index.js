@@ -50,7 +50,7 @@ export function parseTime(time, cFormat) {
 }
 
 /*
- * 单证生成随机20位数  yyyyMMddHHmmss，再加上6位随机数
+ * 单证生成随机20位数  yyyyMMddHHmmss, 再加上6位随机数
  * */
 
 export function productRandomDocNumber() {
@@ -289,7 +289,7 @@ export function debounce(func, wait, immediate) {
       timeout = setTimeout(later, wait - last);
     } else {
       timeout = null;
-      // 如果设定为immediate===true，因为开始边界已经调用过了此处无需调用
+      // 如果设定为immediate===true, 因为开始边界已经调用过了此处无需调用
       if (!immediate) {
         result = func.apply(context, args);
         if (!timeout) context = args = null;
@@ -301,7 +301,7 @@ export function debounce(func, wait, immediate) {
     context = this;
     timestamp = +new Date();
     const callNow = immediate && !timeout;
-    // 如果延时不存在，重新设定延时
+    // 如果延时不存在, 重新设定延时
     if (!timeout) timeout = setTimeout(later, wait);
     if (callNow) {
       result = func.apply(context, args);

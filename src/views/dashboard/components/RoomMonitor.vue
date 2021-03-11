@@ -21,21 +21,42 @@
                     :key="room.uuid"
                     :span="24 / roomSetting.colSpan">
               <room-item :room="room"
-                         @filter="doFilter" />
+                         @filter="doFilter"
+                         @create-order="createOrder"
+                         @change-state="changeRoomState" />
             </el-col>
           </el-row>
         </div>
         <div v-if="!roomList || roomList.length===0"
              class="text-center mt-5 text-muted">暂未查询到房间</div>
       </div>
-      <div class="text-right pt-3 px-3 border-top">
+      <!-- <div class="text-right pt-3 px-3 border-top">
         <el-button type="primary"
                    @click="createRoom">
           新建房间
         </el-button>
-      </div>
+      </div> -->
     </div>
     <room-panel-setting v-model="showSetting" />
+    <m-dialog v-model="showStateDialog"
+              title="修改房间状态"
+              :close-on-confirm="true"
+              :has-close="true"
+              :has-confirm="true"
+              :append-to-body="true"
+              width="xs"
+              @confirm="confirmChangeState">
+      <el-form v-if="currentRoom"
+               label-position="left"
+               inline
+               @submit.native.prevent>
+        <el-form-item label="房间状态">
+          <m-selector v-model="currentRoom.state"
+                      :clearable="false"
+                      :map="availableRoomStateMap" />
+        </el-form-item>
+      </el-form>
+    </m-dialog>
   </div>
 </template>
 <script>
@@ -44,12 +65,14 @@ import RoomFilter from './RoomFilter.vue';
 import RoomItem from './RoomItem.vue';
 import RoomPanelSetting from './RoomPanelSetting.vue';
 import { mapState } from 'vuex';
-import { list2Map } from '@/utils/index';
+import { deepClone, list2Map } from '@/utils/index';
+import { confirmMessage } from '@/utils/message';
 export default {
   name: 'RoomMonitor',
   components: { RoomFilter, RoomItem, RoomPanelSetting },
   data() {
     return {
+      showStateDialog: false,
       showSetting: false
     };
   },
@@ -61,6 +84,16 @@ export default {
     apartmentMap() {
       const apartmentList = this.$store.state[MODULE.APARTMENT].list || [];
       return list2Map(apartmentList, 'uuid');
+    },
+    availableRoomStateMap() {
+      const ROOM_STATE = this.ROOM_STATE;
+      const ROOM_STATE_MAP = this.ROOM_STATE_MAP;
+      return {
+        [ROOM_STATE.EMPTY_CLEAN]: ROOM_STATE_MAP[ROOM_STATE.EMPTY_CLEAN],
+        [ROOM_STATE.EMPTY_DARTY]: ROOM_STATE_MAP[ROOM_STATE.EMPTY_DARTY],
+        [ROOM_STATE.STAY_CLEAN]: ROOM_STATE_MAP[ROOM_STATE.STAY_CLEAN],
+        [ROOM_STATE.STAY_DARTY]: ROOM_STATE_MAP[ROOM_STATE.STAY_DARTY]
+      };
     },
     roomGroupList() {
       const group = {};
@@ -81,11 +114,54 @@ export default {
   },
   methods: {
     init() {
-      this.doAction(MODULE.APARTMENT, ACTIONS.FETCH_LIST);
+      this.doAction(MODULE.APARTMENT, ACTIONS.FETCH_LIST).then(this.doFilter);
     },
-    createRoom() {},
     doFilter() {
       this.$refs.filter.doFilter();
+    },
+    // createRoom() {},
+    createOrder() {},
+    changeRoomState(room) {
+      this.currentRoom = deepClone(room);
+      this.showStateDialog = true;
+    },
+    confirmChangeState() {
+      this.showStateDialog = false;
+      if (!this.currentRoom) {
+        return;
+      }
+      const state = +this.currentRoom.state;
+      let msg = `修改状态为【${this.availableRoomStateMap[state]}】`;
+      switch (state) {
+        case this.ROOM_STATE.EMPTY_CLEAN:
+          msg += '将清空房间并可以继续接单';
+          break;
+        case this.ROOM_STATE.EMPTY_DARTY:
+          msg += '将清空房间并等待打扫';
+          break;
+        case this.ROOM_STATE.STAY_CLEAN:
+          msg += '该房间将不能继续接单';
+          break;
+        case this.ROOM_STATE.STAY_DARTY:
+          msg += '将通知保洁打扫房间(功能暂未实现)';
+          break;
+        default:
+          break;
+      }
+      msg += ', 是否继续?';
+      confirmMessage(msg)
+        .then((_) => {
+          return this.doAction(MODULE.ROOM, ACTIONS.UPDATE_ITEM, {
+            uuid: this.currentRoom.uuid,
+            state
+          });
+        })
+        .then(() => {
+          this.doFilter();
+        })
+        .catch(() => {
+          // ignore
+        });
     }
   }
 };

@@ -5,27 +5,52 @@
          class="d-flex justify-content-between align-items-center px-2 py-1">
       <div class="flex-fill text-overflow-ellipsis"
            :title="cardTtitle">{{ cardTtitle }}</div>
-      <el-button v-if="room.state===ROOM_STATE.EMPTY_CLEAN"
-                 class="text-primary card-header-button"
-                 type="text"
-                 @click="createOrder">下单</el-button>
-      <el-button v-else-if="room.state===ROOM_STATE.EMPTY_DARTY"
-                 class="text-warning card-header-button"
-                 type="text"
-                 @click="notifyClean">打扫</el-button>
-      <el-button v-else-if="room.state===ROOM_STATE.STAY_CLEAN || room.state===ROOM_STATE.STAY_DARTY"
-                 class="text-danger card-header-button"
-                 type="text"
-                 @click="roomCheckOut">退房</el-button>
-      <el-button v-if="room.state===ROOM_STATE.STAY_DARTY"
-                 class="text-warning card-header-button"
-                 type="text"
-                 @click="notifyClean">打扫</el-button>
+      <el-dropdown class="card-header-button py-2"
+                   size="mini"
+                   type="primary"
+                   @command="handleDropdownCommand">
+
+        <span class="text-primary cursor-pointer">
+          操作<i class="el-icon-arrow-down" />
+        </span>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item :disabled="room.state!==ROOM_STATE.EMPTY_CLEAN"
+                            command="createOrder">接单</el-dropdown-item>
+          <el-dropdown-item :disabled="room.state!==ROOM_STATE.EMPTY_DARTY && room.state!==ROOM_STATE.STAY_DARTY"
+                            command="notifyClean">通知打扫</el-dropdown-item>
+          <el-dropdown-item :disabled="room.state!==ROOM_STATE.STAY_CLEAN && room.state!==ROOM_STATE.STAY_DARTY"
+                            command="roomCheckOut">退房</el-dropdown-item>
+          <el-dropdown-item command="changeRoomState"
+                            divided>修改房态</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
     </div>
-    <div :style="{backgroundColor: roomTheme}"
+    <div :style="{backgroundColor: roomTheme, minHeight: '8.8rem'}"
          class="px-2 py-1">
-      <div class="py-3">入住人</div>
-      <div class="pb-3">订单来源</div>
+      <div v-if="room.relatedOrderItem">
+        <div class="py-3 d-flex justify-content-between">
+          <div>入住人</div>
+          <div>{{ room.relatedOrderItem.name }}</div>
+        </div>
+        <div class="pb-3 d-flex justify-content-between">
+          <div>电话</div>
+          <div>{{ room.relatedOrderItem.mobile }}</div>
+        </div>
+        <div class="pb-3 d-flex justify-content-between">
+          <div>订单来源</div>
+          <div>{{ room.relatedOrder.channelName }}</div>
+        </div>
+      </div>
+      <div v-else
+           class="py-5 text-center">
+        <el-button v-if="room.state===ROOM_STATE.EMPTY_CLEAN"
+                   type="text"
+                   @click="createOrder">接单</el-button>
+        <el-button v-else-if="room.state===ROOM_STATE.EMPTY_DARTY"
+                   type="text"
+                   class="text-muted"
+                   @click="notifyClean">通知打扫</el-button>
+      </div>
     </div>
   </el-card>
 </template>
@@ -61,7 +86,9 @@ export default {
     }
   },
   methods: {
-    createOrder() {},
+    handleDropdownCommand(command) {
+      this[command] && this[command]();
+    },
     notifyClean() {
       toastWarning('通知保洁打扫房间的功能待实现');
     },
@@ -79,7 +106,16 @@ export default {
         })
         .then(() => {
           this.$emit('filter');
+        })
+        .catch(() => {
+          // ignore
         });
+    },
+    createOrder() {
+      this.$emit('create-order', this.room);
+    },
+    changeRoomState() {
+      this.$emit('change-state', this.room);
     }
   }
 };

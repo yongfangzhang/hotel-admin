@@ -66,7 +66,7 @@ export default {
     },
     confirmText: {
       type: String,
-      default: '信息还未提交, 是否确认关闭？'
+      default: '信息还未提交, 是否确认关闭?'
     }
   },
   data() {

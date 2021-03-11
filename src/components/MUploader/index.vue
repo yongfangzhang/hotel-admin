@@ -123,7 +123,7 @@ export default {
       }
     },
     changeHandler() {
-      // 文件状态改变，成功或失败
+      // 文件状态改变, 成功或失败
       this.uploading = false;
     },
     removeHandler(file) {

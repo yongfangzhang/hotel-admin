@@ -411,7 +411,7 @@ export const formEditMixin = {
       return this.viewInfo[this._mParam.primaryKey || 'uuid'];
     },
     initViewInfo() {
-      // bob. 修改后，返回，有缓存问题
+      // bob. 修改后, 返回, 有缓存问题
       // if (this.$route.fullPath === this.currentFullPath) {
       //   logger.groupInfo("path", this.currentFullPath, "inited");
       //   return;

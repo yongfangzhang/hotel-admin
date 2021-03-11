@@ -32,8 +32,8 @@
     <div class="text-nowrap">
       <query-button type="query"
                     @click="doFilter" />
-      <query-button type="reset"
-                    @click="resetFilter" />
+      <!-- <query-button type="reset"
+                    @click="resetFilter" /> -->
       <el-button type="primary"
                  @click="$emit('show-setting')">设置</el-button>
     </div>
@@ -60,16 +60,7 @@ export default {
       return this.$store.state.apartment.list || [];
     }
   },
-  mounted() {
-    this.init();
-  },
-  activated() {
-    this.init();
-  },
   methods: {
-    init() {
-      this.doFilter();
-    },
     doFilter() {
       this.beforeFetch();
       this.doAction(MODULE.ROOM, ACTIONS.FETCH_LIST, this.queries);
