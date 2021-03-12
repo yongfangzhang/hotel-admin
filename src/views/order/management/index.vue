@@ -79,6 +79,15 @@
             <el-tag :type="APARTMENT_STATE_THEME_MAP[row.state]"> {{ row.stateName }} </el-tag>
           </template>
         </el-table-column>
+        <el-table-column label="支付价格"
+                         align="center"
+                         prop="paidPrice"
+                         :min-width="colWidth.xs">
+          <template slot-scope="{ row }">
+            <m-view :value="row.paidPrice"
+                    type="currency" />
+          </template>
+        </el-table-column>
         <el-table-column label="创建时间"
                          prop="createdAt"
                          align="center"

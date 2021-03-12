@@ -76,7 +76,7 @@
         <el-table-column label="总收益"
                          align="center"
                          prop="income"
-                         :min-width="colWidth.xs">
+                         :min-width="colWidth.sm">
           <template slot-scope="{ row }">
             <m-view :value="row.income"
                     type="currency" />

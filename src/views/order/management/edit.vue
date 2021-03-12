@@ -203,7 +203,10 @@ export default {
             type: 'selector',
             map: this.roomMap,
             change: this.onRoomChange,
-            disabled: !this.newAdded
+            disabled: !this.newAdded,
+            extral: {
+              disabledFunction: this.roomDisabledFunc
+            }
           },
           {
             key: 'mobile',
@@ -307,6 +310,7 @@ export default {
   },
   watch: {
     'viewInfo.userUuid'(v) {
+      if (!this.viewInfo) return;
       if (!v || !this.userFullMap) return;
       const user = this.userFullMap[v];
       if (!user) return;
@@ -317,9 +321,11 @@ export default {
       });
     },
     'viewInfo.userType'() {
+      if (!this.viewInfo) return;
       this.viewInfo.userUuid = null;
     },
     'viewInfo.apartmentUuid'(v) {
+      if (!this.viewInfo) return;
       this.fetchRoomMap(v);
     },
     'viewInfo.priceType'() {}
@@ -415,6 +421,10 @@ export default {
         this.roomFullMap = list2Map(list, 'uuid');
         return Promise.resolve(this.roomFullMap);
       });
+    },
+    roomDisabledFunc(uuid) {
+      if (!this.roomFullMap || !this.roomFullMap[uuid]) return true;
+      return this.roomFullMap[uuid].state !== this.ROOM_STATE.EMPTY_CLEAN;
     },
     addItem() {
       if (!this.newAdded) return;

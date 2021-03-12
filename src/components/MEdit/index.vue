@@ -67,6 +67,7 @@
                 :filterable="extral.filterable"
                 :remote-method="remoteMethod"
                 :allow-create="allowCreate"
+                :disabled-function="extral.disabledFunction"
                 @change="$emit('change')" />
   </div>
   <div v-else-if="type === 'radio'">
