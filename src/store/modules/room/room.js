@@ -10,7 +10,8 @@ const LOCAL_KEY = {
 const DEFAULT_SETTING = {
   showFloorNumber: true,
   showUnitNumber: true,
-  colSpan: 6
+  colSpan: 6,
+  rowHeight: 130
 };
 
 export const createModel = (model = {}) => {
@@ -57,7 +58,7 @@ export default createBaseStore(
   },
   {
     orderParams: {
-      asc: 'uuid'
+      desc: 'uuid'
     },
     contextPath: '/room',
     createModel

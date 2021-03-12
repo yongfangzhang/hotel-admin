@@ -26,6 +26,7 @@
             :multiple="item.multiple"
             :on-preview="onPreview"
             :extral="item.extral"
+            :allow-create="allowCreate"
             :is-view="item.isView != undefined ? item.isView : isView "
             @change="$emit('change')" />
     <slot name="after" />
@@ -51,6 +52,7 @@ export default {
       type: Boolean,
       default: false
     },
+    allowCreate: { type: Boolean, default: false },
     labelWidth: {
       type: String,
       default: ''

@@ -25,6 +25,11 @@
                      :value="v" />
         </el-select>
       </el-form-item>
+      <el-form-item label="每个房间高度">
+        <el-input v-model="roomSetting.rowHeight"
+                  placeholder="请输入"
+                  type="number" />
+      </el-form-item>
       <el-form-item label="房态颜色">
         <div v-for="(color, val ) in ROOM_STATE_THEME_MAP"
              :key="val">

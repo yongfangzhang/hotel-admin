@@ -16,10 +16,11 @@
                     :value="apartmentMap[apartment].contactorMobile" />
             <div> )</div> -->
           </div>
-          <el-row class="p-3">
+          <el-row class="px-3 pb-3">
             <el-col v-for="room in rooms"
                     :key="room.uuid"
-                    :span="24 / roomSetting.colSpan">
+                    :span="24 / roomSetting.colSpan"
+                    class="pt-3">
               <room-item :room="room"
                          @filter="doFilter"
                          @create-order="createOrder"

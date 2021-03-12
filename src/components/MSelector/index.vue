@@ -9,6 +9,7 @@
              :style="{width: width}"
              :remote="remote"
              :remote-method="remoteMethod"
+             :allow-create="allowCreate"
              @change="$emit('change')">
     <el-option v-if="nullable"
                label="请选择"
@@ -49,6 +50,7 @@ export default {
     clearable: { type: Boolean, default: true },
     remote: { type: Boolean, default: false },
     remoteMethod: { type: Function, default: null },
+    allowCreate: { type: Boolean, default: false },
     placeholder: { type: String, default: '请选择' }
   },
   methods: {

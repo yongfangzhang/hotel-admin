@@ -22,7 +22,7 @@ export default createBaseStore(
   {},
   {
     orderParams: {
-      asc: 'uuid'
+      desc: 'uuid'
     },
     contextPath: '/route',
     createModel,

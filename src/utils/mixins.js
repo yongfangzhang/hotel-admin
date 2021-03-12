@@ -53,6 +53,7 @@ export const baseMixin = {
       'ROOM_STATE',
       'ROUTE_TYPE',
       'USER_STATE',
+      'LODGING_TYPE',
       'ACCOUNT_TYPE_MAP',
       'APARTMENT_STATE_MAP',
       'BASE_ENUM_MAP',
@@ -72,6 +73,7 @@ export const baseMixin = {
       'ROOM_STATE_MAP',
       'ROUTE_TYPE_MAP',
       'USER_STATE_MAP',
+      'LODGING_TYPE_MAP',
       // extral
       'USER_STATE_THEME_MAP',
       'GENDER_THEME_MAP',

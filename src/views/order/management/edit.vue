@@ -22,7 +22,8 @@
                            :label="item.label"
                            :item="item"
                            :entity="viewInfo"
-                           :disabled="item.disabled" />
+                           :allow-create="item.allowCreate"
+                           :disabled="!item.alwaysEnable && (vDisabled || item.disabled)" />
             </el-col>
             <el-col :xs="24"
                     :sm="12">
@@ -31,7 +32,8 @@
                            :label="item.label"
                            :item="item"
                            :entity="viewInfo"
-                           :disabled="item.disabled" />
+                           :allow-create="item.allowCreate"
+                           :disabled="!item.alwaysEnable && (vDisabled || item.disabled)" />
             </el-col>
           </el-row>
         </el-form>
@@ -63,7 +65,8 @@
                              :label="item.label"
                              :item="item"
                              :entity="vItem"
-                             :disabled="item.disabled"
+                             :disabled="!item.alwaysEnable && (vDisabled || item.disabled)"
+                             :allow-create="item.allowCreate"
                              @change="()=>item.change&&item.change(vItem)" />
               </el-col>
               <el-col :xs="24"
@@ -73,7 +76,8 @@
                              :label="item.label"
                              :item="item"
                              :entity="vItem"
-                             :disabled="item.disabled"
+                             :disabled="!item.alwaysEnable && (vDisabled || item.disabled)"
+                             :allow-create="item.allowCreate"
                              @change="()=>item.change&&item.change(vItem)" />
               </el-col>
             </el-row>
@@ -112,6 +116,9 @@ export default {
     };
   },
   computed: {
+    vDisabled() {
+      return !this.viewInfo || this.viewInfo.state >= this.ORDER_STATE.USED;
+    },
     mParam() {
       return {
         paramMode: true,
@@ -139,7 +146,12 @@ export default {
           },
           // prettier-ignore
           { key: 'paidAt', label: '支付时间', type: 'datetime', placeholder: '请选择' },
-          { key: 'remarkContent', label: '备注', type: 'remark' }
+          {
+            key: 'remarkContent',
+            label: '备注',
+            type: 'remark',
+            alwaysEnable: true
+          }
         ],
         right: [
           {
@@ -154,7 +166,7 @@ export default {
             type: 'selector',
             map: this.ORDER_STATE_MAP
           },
-          { key: 'biz_number', label: '第三方订单号' },
+          { key: 'bizNumber', label: '第三方订单号' },
           { key: 'number', label: '订单号', isView: true },
           { key: 'canceledAt', label: '取消时间', isView: true },
           { key: 'finishedAt', label: '完成时间', isView: true }
@@ -167,9 +179,21 @@ export default {
         left: [
           // prettier-ignore
           { key: 'roomUuid', label: '房间', type: 'selector', map: this.roomMap, change: this.onRoomChange },
-          // prettier-ignore
+          {
+            key: 'mobile',
+            label: '手机号',
+            type: 'selector',
+            map: this.mobileMap,
+            allowCreate: true,
+            change: this.onMobileChange
+          },
           { key: 'name', label: '客户姓名' },
-          { key: 'mobile', label: '手机号', type: 'number' },
+          {
+            key: 'lodgingType',
+            label: '入住类型',
+            type: 'selector',
+            map: this.LODGING_TYPE_MAP
+          },
           { key: 'liveAt', label: '入住时间', type: 'datetime' },
           { key: 'leaveAt', label: '退房时间', type: 'datetime' }
         ],
@@ -177,7 +201,13 @@ export default {
           // prettier-ignore
           { key: 'priceType', label: '价格类型', type: 'selector', map: this.ROOM_PRICE_TYPE_MAP, change: this.onPriceTypeChange },
           { key: 'originalPrice', label: '价格', isView: true },
-          { key: 'paidPrice', label: '实付价格', type: 'number' }
+          { key: 'paidPrice', label: '实付价格', type: 'number' },
+          {
+            key: 'saveUser',
+            label: '存为会员',
+            type: 'switch',
+            extral: { activeText: '打开后将会自动保存当前入住人为会员' }
+          }
           // { key: 'state', label: '状态', type: 'selector', map: this.ORDER_STATE_MAP }
         ]
       };
@@ -209,6 +239,9 @@ export default {
         ],
         paidPrice: [
           { required: true, message: '实付价格不能为空', trigger: 'blur' }
+        ],
+        lodgingType: [
+          { required: true, message: '入住类型不能为空', trigger: 'change' }
         ],
         liveAt: [
           { required: true, message: '入住时间不能为空', trigger: 'change' }
@@ -257,13 +290,15 @@ export default {
       });
       this.doAction(MODULE.USER, ACTIONS.FETCH_LIST).then((list) => {
         this.userMap = list2Map(list, 'uuid', 'name');
+        this.mobileMap = list2Map(list, 'mobile', 'mobile');
         this.userFullMap = list2Map(list, 'uuid');
+        this.mobileFullMap = list2Map(list, 'mobile');
       });
     },
     parseQuery() {
       const { uuid, apartmentUuid, roomUuid } = this.$route.query || {};
       if (validateId(uuid)) return;
-      this.fetchRoomMap(apartmentUuid).then((roomMap) => {
+      this.fetchRoomMap(apartmentUuid).then((data) => {
         this.doMutation(MODULE.ORDER, MUTATIONS.SET_VIEW_INFO, {
           keys: ['apartmentUuid', 'items'],
           values: [
@@ -278,7 +313,9 @@ export default {
                 originalPrice: null,
                 paidPrice: null,
                 state: null,
-                room: roomUuid && roomMap ? roomMap[roomUuid] : null,
+                lodgingType: this.LODGING_TYPE.SHORT,
+                room: roomUuid && data ? data[roomUuid] : null,
+                saveUser: false,
                 ...this.presetLiveAndLeave()
               }
             ]
@@ -311,6 +348,11 @@ export default {
       item.originalPrice = item.room.priceTypeMap[item.priceType];
       item.paidPrice = item.originalPrice;
     },
+    onMobileChange(item) {
+      const user = this.mobileFullMap[item.mobile];
+      if (!user) return;
+      this.$set(item, 'name', user.name);
+    },
     fetchRoomMap(apartmentUuid) {
       if (!apartmentUuid && (!this.viewInfo || !this.viewInfo.apartmentUuid)) {
         return Promise.resolve();
@@ -325,6 +367,7 @@ export default {
       });
     },
     addItem() {
+      if (this.vDisabled) return;
       const items = this.viewInfo.items || [];
       const userUuid = this.viewInfo.userUuid;
       const user =
@@ -338,8 +381,9 @@ export default {
         originalPrice: null,
         paidPrice: null,
         state: null,
+        lodgingType: this.LODGING_TYPE.SHORT,
         room: null,
-
+        saveUser: false,
         ...this.presetLiveAndLeave()
       });
       this.activeNames = ['item'];
@@ -357,6 +401,7 @@ export default {
         toastWarning('请添加入住人');
         return Promise.resolve(false);
       }
+
       // this.viewInfo.channel = this.ORDER_CHANNEL.ADMIN;
       const promiseArr = [this.$refs.form]
         .concat(this.$refs.userForm)

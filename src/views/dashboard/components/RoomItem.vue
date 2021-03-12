@@ -24,38 +24,42 @@
         </el-dropdown-menu>
       </el-dropdown>
     </div>
-    <div :style="{backgroundColor: roomTheme, minHeight: '8.8rem'}"
+    <div :style="{backgroundColor: roomTheme, height: roomSetting.rowHeight+'px'}"
          class="px-2 py-1">
       <el-popover v-if="room.relatedOrderItem"
                   placement="top-start"
                   title="详情"
                   width="260"
-                  trigger="hover">
+                  trigger="hover"
+                  @show="calcRemainTime">
         <div class="font-12">
           <div class="my-2"><span class="room-item-tip-title">订单号</span>: {{ room.relatedOrder.number }}</div>
+          <div class="my-2"><span class="room-item-tip-title">平台订单号</span>: {{ room.relatedOrder.bizNumber }}</div>
+          <div class="my-2"><span class="room-item-tip-title">订单来源</span>: {{ room.relatedOrder.channelName }}</div>
           <div class="my-2"><span class="room-item-tip-title">入住人</span>: {{ room.relatedOrderItem.name }}</div>
           <div class="my-2"><span class="room-item-tip-title">电话</span>: {{ room.relatedOrderItem.mobile }}</div>
+          <div class="my-2"><span class="room-item-tip-title">入住类型</span>: {{ room.relatedOrderItem.lodgingTypeName }}</div>
           <div class="my-2"><span class="room-item-tip-title">入住时间</span>: {{ room.relatedOrderItem.liveAt }}</div>
           <div class="my-2"><span class="room-item-tip-title">退房时间</span>: {{ room.relatedOrderItem.leaveAt }}</div>
-          <div class="my-2"><span class="room-item-tip-title">剩余时间</span>:</div>
+          <div class="my-2"><span class="room-item-tip-title">剩余时间</span>: {{ remainTime }}</div>
         </div>
         <div slot="reference">
           <div class="py-3 d-flex justify-content-between">
-            <div>入住人</div>
-            <div>{{ room.relatedOrderItem.name }}</div>
+            <div class="text-overflow-ellipsis">入住人</div>
+            <div class="text-overflow-ellipsis">{{ room.relatedOrderItem.name }}</div>
           </div>
           <div class="pb-3 d-flex justify-content-between">
-            <div>电话</div>
-            <div>{{ room.relatedOrderItem.mobile }}</div>
+            <div class="text-overflow-ellipsis">电话</div>
+            <div class="text-overflow-ellipsis">{{ room.relatedOrderItem.mobile }}</div>
           </div>
           <div class="pb-3 d-flex justify-content-between">
-            <div>订单来源</div>
-            <div>{{ room.relatedOrder.channelName }}</div>
+            <div class="text-overflow-ellipsis">订单来源</div>
+            <div class="text-overflow-ellipsis">{{ room.relatedOrder.channelName }}</div>
           </div>
         </div>
       </el-popover>
       <div v-else
-           class="py-5 text-center">
+           class="text-center h-100 d-flex align-items-center justify-content-center">
         <el-button v-if="room.state===ROOM_STATE.EMPTY_CLEAN"
                    type="text"
                    @click="createOrder">接单</el-button>
@@ -71,6 +75,8 @@
 import { ACTIONS, MODULE } from '@/store/constant';
 import { mapState } from 'vuex';
 import { confirmMessage, toastWarning } from '@/utils/message';
+import { EMPTY_TEXT } from '@/utils/constant';
+import { formatDuration, str2DateTimestamp } from '@/utils/index';
 export default {
   name: 'RoomItem',
   props: {
@@ -78,6 +84,11 @@ export default {
       type: Object,
       default: null
     }
+  },
+  data() {
+    return {
+      remainTime: EMPTY_TEXT
+    };
   },
   computed: {
     ...mapState(MODULE.ROOM, ['roomSetting']),
@@ -99,6 +110,17 @@ export default {
     }
   },
   methods: {
+    calcRemainTime() {
+      if (!this.room || !this.room.relatedOrderItem) {
+        this.remainTime = EMPTY_TEXT;
+      } else {
+        this.remainTime = formatDuration(
+          str2DateTimestamp(this.room.relatedOrderItem.leaveAt),
+          Date.now(),
+          0
+        );
+      }
+    },
     handleDropdownCommand(command) {
       this[command] && this[command]();
     },

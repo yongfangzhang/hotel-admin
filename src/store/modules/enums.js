@@ -73,6 +73,9 @@ export default {
     USER_STATE(state) {
       return state.enum.UserState;
     },
+    LODGING_TYPE(state) {
+      return state.enum.LodgingType;
+    },
     ACCOUNT_TYPE_MAP(state) {
       return state.enumMap.AccountType;
     },
@@ -129,6 +132,9 @@ export default {
     },
     USER_STATE_MAP(state) {
       return state.enumMap.UserState;
+    },
+    LODGING_TYPE_MAP(state) {
+      return state.enumMap.LodgingType;
     },
 
     // extral

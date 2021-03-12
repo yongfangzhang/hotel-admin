@@ -20,7 +20,7 @@ export default createBaseStore(
   {},
   {
     orderParams: {
-      asc: 'uuid'
+      desc: 'uuid'
     },
     contextPath: '/role',
     createModel,

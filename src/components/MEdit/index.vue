@@ -66,6 +66,7 @@
                 :multiple="multiple"
                 :filterable="extral.filterable"
                 :remote-method="remoteMethod"
+                :allow-create="allowCreate"
                 @change="$emit('change')" />
   </div>
   <div v-else-if="type === 'radio'">
@@ -139,6 +140,7 @@ export default {
     className: { type: String, default: '' },
     remote: { type: Boolean, default: false },
     remoteMethod: { type: Function, default: null },
+    allowCreate: { type: Boolean, default: false },
     placeholder: {
       type: String,
       // default: '请输入'

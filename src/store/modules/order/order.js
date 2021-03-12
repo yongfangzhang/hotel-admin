@@ -8,6 +8,7 @@ export const createModel = (model = {}) => {
     apartmentUuid: null,
     userUuid: null,
     number: null,
+    bizNumber: null,
     channel: 1,
     originalPrice: null,
     paidPrice: null,
@@ -34,7 +35,7 @@ export default createBaseStore(
   {},
   {
     orderParams: {
-      asc: 'uuid'
+      desc: 'uuid'
     },
     contextPath: '/order',
     createModel
