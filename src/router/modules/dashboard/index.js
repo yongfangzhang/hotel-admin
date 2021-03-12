@@ -19,11 +19,6 @@ export default {
   redirect: PATH_MAP.INDEX,
   name: path2Name(ROOT_PATH),
   children: [
-    createNormalRoute(
-      PATH_MAP.INDEX,
-      '首页',
-      { icon: 'home', affix: true },
-      { noCache: true }
-    )
+    createNormalRoute(PATH_MAP.INDEX, '首页', { icon: 'home', affix: true }, {})
   ]
 };

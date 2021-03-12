@@ -517,10 +517,10 @@ export const formatDuration = (startTime, endTime, min = -1) => {
   diff -= days * 24 * 3600;
 
   const hours = Math.floor(diff / 3600);
-  diff -= diff * 3600;
+  diff -= hours * 3600;
 
   const minutes = Math.floor(diff / 60);
-  diff -= diff * 60;
+  diff -= minutes * 60;
   const seconds = diff;
   return `${days}天${hours}小时${minutes}分钟${seconds}秒`;
 };

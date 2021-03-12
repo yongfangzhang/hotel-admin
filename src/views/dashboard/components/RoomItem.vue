@@ -33,15 +33,15 @@
                   trigger="hover"
                   @show="calcRemainTime">
         <div class="font-12">
-          <div class="my-2"><span class="room-item-tip-title">订单号</span>: {{ room.relatedOrder.number }}</div>
-          <div class="my-2"><span class="room-item-tip-title">平台订单号</span>: {{ room.relatedOrder.bizNumber }}</div>
-          <div class="my-2"><span class="room-item-tip-title">订单来源</span>: {{ room.relatedOrder.channelName }}</div>
-          <div class="my-2"><span class="room-item-tip-title">入住人</span>: {{ room.relatedOrderItem.name }}</div>
-          <div class="my-2"><span class="room-item-tip-title">电话</span>: {{ room.relatedOrderItem.mobile }}</div>
-          <div class="my-2"><span class="room-item-tip-title">入住类型</span>: {{ room.relatedOrderItem.lodgingTypeName }}</div>
-          <div class="my-2"><span class="room-item-tip-title">入住时间</span>: {{ room.relatedOrderItem.liveAt }}</div>
-          <div class="my-2"><span class="room-item-tip-title">退房时间</span>: {{ room.relatedOrderItem.leaveAt }}</div>
-          <div class="my-2"><span class="room-item-tip-title">剩余时间</span>: {{ remainTime }}</div>
+          <div class="my-2"><span class="room-item-tip-title">订单号:</span> {{ room.relatedOrder.number }}</div>
+          <div class="my-2"><span class="room-item-tip-title">订单渠道:</span> {{ room.relatedOrder.channelName }}</div>
+          <div class="my-2"><span class="room-item-tip-title">渠道单号:</span> {{ room.relatedOrder.bizNumber || '-' }}</div>
+          <div class="my-2"><span class="room-item-tip-title">入住人:</span> {{ room.relatedOrderItem.name }}</div>
+          <div class="my-2"><span class="room-item-tip-title">电话:</span> {{ room.relatedOrderItem.mobile }}</div>
+          <div class="my-2"><span class="room-item-tip-title">入住类型:</span> {{ room.relatedOrderItem.lodgingTypeName }}</div>
+          <div class="my-2"><span class="room-item-tip-title">入住时间:</span> {{ room.relatedOrderItem.liveAt }}</div>
+          <div class="my-2"><span class="room-item-tip-title">退房时间:</span> {{ room.relatedOrderItem.leaveAt }}</div>
+          <div class="my-2"><span class="room-item-tip-title">剩余时间:</span> {{ remainTime }}</div>
         </div>
         <div slot="reference">
           <div class="py-3 d-flex justify-content-between">
@@ -53,7 +53,7 @@
             <div class="text-overflow-ellipsis">{{ room.relatedOrderItem.mobile }}</div>
           </div>
           <div class="pb-3 d-flex justify-content-between">
-            <div class="text-overflow-ellipsis">订单来源</div>
+            <div class="text-overflow-ellipsis">订单渠道</div>
             <div class="text-overflow-ellipsis">{{ room.relatedOrder.channelName }}</div>
           </div>
         </div>
@@ -115,8 +115,8 @@ export default {
         this.remainTime = EMPTY_TEXT;
       } else {
         this.remainTime = formatDuration(
-          str2DateTimestamp(this.room.relatedOrderItem.leaveAt),
           Date.now(),
+          str2DateTimestamp(this.room.relatedOrderItem.leaveAt),
           0
         );
       }

@@ -117,7 +117,8 @@ export default {
   },
   computed: {
     vDisabled() {
-      return !this.viewInfo || this.viewInfo.state >= this.ORDER_STATE.USED;
+      // return !this.viewInfo || this.viewInfo.state >= this.ORDER_STATE.USED;
+      return false;
     },
     mParam() {
       return {
@@ -133,7 +134,7 @@ export default {
           // prettier-ignore
           { key: 'apartmentUuid', label: '公寓', type: 'selector', list: this.apartmentList, kmap: { label: 'name', value: 'uuid' } },
           // prettier-ignore
-          { key: 'userType', label: '客户来源', type: 'selector', map: this.ORDER_USER_TYPE_MAP },
+          { key: 'userType', label: '客户渠道', type: 'selector', map: this.ORDER_USER_TYPE_MAP },
           {
             key: 'userUuid',
             label: '客户',
@@ -218,7 +219,7 @@ export default {
           { required: true, message: '公寓不能为空', trigger: 'change' }
         ],
         userType: [
-          { required: true, message: '客户来源不能为空', trigger: 'change' }
+          { required: true, message: '客户渠道不能为空', trigger: 'change' }
         ],
         state: [
           { required: true, message: '订单状态不能为空', trigger: 'change' }
