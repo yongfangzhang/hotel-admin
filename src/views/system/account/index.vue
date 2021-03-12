@@ -49,7 +49,8 @@
                         @click="doFilter" />
           <query-button type="reset"
                         @click="resetFilter" />
-          <el-button type="primary"
+          <el-button v-if="hasPermission('account:create')"
+                     type="primary"
                      plain
                      @click="editRow()">新建</el-button>
         </div>
@@ -114,11 +115,11 @@
             <el-button type="text"
                        :disabled="row.state!==USER_STATE.NORMAL"
                        @click="editRow(row)">管理</el-button>
-            <el-button v-if="row.state===USER_STATE.NORMAL"
+            <el-button v-if="hasPermission('account:delete') && row.state===USER_STATE.NORMAL"
                        type="text"
                        class="text-danger"
                        @click="deleteRow(row)">删除</el-button>
-            <el-button v-else
+            <el-button v-else-if="hasPermission('account:update')"
                        type="text"
                        class="text-success"
                        @click="recoverRow(row)">恢复</el-button>

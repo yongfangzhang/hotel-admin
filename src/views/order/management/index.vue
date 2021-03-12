@@ -53,7 +53,8 @@
                         @click="doFilter" />
           <query-button type="reset"
                         @click="resetFilter" />
-          <el-button type="primary"
+          <el-button v-if="hasPermission('order:create')"
+                     type="primary"
                      plain
                      @click="editRow()">新建</el-button>
         </div>
@@ -102,7 +103,8 @@
           <template slot-scope="{ row }">
             <el-button type="text"
                        @click="editRow(row)">管理</el-button>
-            <el-button type="text"
+            <el-button v-if="hasPermission('order:update')"
+                       type="text"
                        class="text-danger"
                        :disabled="row.state===ORDER_STATE.UNPAID"
                        @click="abandonRow(row)">作废</el-button>

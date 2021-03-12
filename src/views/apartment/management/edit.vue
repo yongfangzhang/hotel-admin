@@ -30,7 +30,8 @@
         </el-col>
       </el-row>
     </el-form>
-    <save-button @save="createOrUpdate" />
+    <save-button v-if="canUpdate"
+                 @save="createOrUpdate" />
   </div>
 </template>
 <script>
@@ -47,6 +48,9 @@ export default {
         primaryKey: 'uuid',
         module: MODULE.APARTMENT
       };
+    },
+    canUpdate() {
+      return this.hasPermission('apartment:update');
     },
     baseFormItems() {
       return {

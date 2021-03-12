@@ -54,7 +54,8 @@
         <span slot-scope="{ option }">{{ option.name }}</span>
       </el-transfer>
     </el-form>
-    <save-button @save="cusSave" />
+    <save-button v-if="canUpdate"
+                 @save="cusSave" />
   </div>
 </template>
 <script>
@@ -79,6 +80,9 @@ export default {
         primaryKey: 'uuid',
         module: MODULE.SYSTEM_ACCOUNT
       };
+    },
+    canUpdate() {
+      return this.hasPermission('account:update');
     },
     accountFormItems() {
       return {

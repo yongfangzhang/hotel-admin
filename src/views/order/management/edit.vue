@@ -85,7 +85,8 @@
         </div>
       </el-collapse-item>
     </el-collapse>
-    <save-button @save="createOrUpdate">
+    <save-button v-if="canUpdate"
+                 @save="createOrUpdate">
       <el-button v-show="newAdded"
                  slot="before"
                  type="success"
@@ -117,6 +118,9 @@ export default {
     };
   },
   computed: {
+    canUpdate() {
+      return this.hasPermission('order:update');
+    },
     vDisabled() {
       // return !this.viewInfo || this.viewInfo.state >= this.ORDER_STATE.USED;
       return false;

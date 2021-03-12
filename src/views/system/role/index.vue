@@ -27,7 +27,8 @@
                         @click="doFilter" />
           <query-button type="reset"
                         @click="resetFilter" />
-          <el-button type="primary"
+          <el-button v-if="hasPermission('role:create')"
+                     type="primary"
                      plain
                      @click="editRow()">新建</el-button>
         </div>

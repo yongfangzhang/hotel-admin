@@ -35,7 +35,8 @@
                         @click="doFilter" />
           <query-button type="reset"
                         @click="resetFilter" />
-          <el-button type="primary"
+          <el-button v-if="hasPermission('apartment:create')"
+                     type="primary"
                      plain
                      @click="editRow()">新建</el-button>
         </div>
@@ -92,10 +93,12 @@
           <template slot-scope="{ row }">
             <el-button type="text"
                        @click="editRow(row)">管理</el-button>
-            <el-button type="text"
+            <el-button v-if="hasPermission('apartment:update')"
+                       type="text"
                        :class="row.state===APARTMENT_STATE.NORMAL?'text-warning':'text-primary'"
                        @click="toggleForbiddenRow(row)">{{ row.state===APARTMENT_STATE.NORMAL ? '禁用' : '启用' }}</el-button>
-            <el-button type="text"
+            <el-button v-if="hasPermission('apartment:delete')"
+                       type="text"
                        class="text-danger"
                        @click="deleteRow(row)">删除</el-button>
           </template>

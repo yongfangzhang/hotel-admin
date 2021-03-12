@@ -250,7 +250,7 @@ export const baseMixin = {
       return typeof v === 'undefined' || v === null || v === '' || v === 'null';
     },
     hasPermission(perm) {
-      return this.$store.state.user.routes.indexOf(perm) > -1;
+      return this.$store.state.permission.perms.indexOf(perm) > -1;
     },
     $$getValue(obj, k, d) {
       // x.y.@0.s
@@ -430,6 +430,7 @@ export const formEditMixin = {
     },
     createOrUpdate(cb, ignoreDisabled) {
       if (!ignoreDisabled && this.vDisabled) return;
+      if (typeof this.canUpdate !== 'undefined' && !this.canUpdate) return;
       this.validateForm().then(v => {
         if (!v) return;
         const method = this.getPrimaryValue()

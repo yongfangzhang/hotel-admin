@@ -40,7 +40,8 @@
         </el-col>
       </el-row>
     </el-form>
-    <save-button @save="cusSave" />
+    <save-button v-if="canUpdate"
+                 @save="cusSave" />
   </div>
 </template>
 <script>
@@ -66,6 +67,9 @@ export default {
         primaryKey: 'uuid',
         module: MODULE.ROOM
       };
+    },
+    canUpdate() {
+      return this.hasPermission('room:update');
     },
     baseFormItems() {
       return {

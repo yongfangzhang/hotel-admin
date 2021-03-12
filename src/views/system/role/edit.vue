@@ -41,7 +41,8 @@
         <span slot-scope="{ option }">{{ option.caption }}【{{ option.path }}】</span>
       </el-transfer>
     </el-form>
-    <save-button @save="createOrUpdate" />
+    <save-button v-if="canUpdate"
+                 @save="createOrUpdate" />
   </div>
 </template>
 <script>
@@ -65,6 +66,9 @@ export default {
         primaryKey: 'uuid',
         module: MODULE.SYSTEM_ROLE
       };
+    },
+    canUpdate() {
+      return this.hasPermission('role:update');
     },
     formItems() {
       return {
