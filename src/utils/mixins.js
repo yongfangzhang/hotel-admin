@@ -382,9 +382,9 @@ export const formEditMixin = {
   activated() {
     this.initViewInfo();
   },
-  // deactivated() {
-  //   this.doMutation(this._mParam.module, MUTATIONS.CLEAR_VIEW_PAGE);
-  // },
+  deactivated() {
+    this.doMutation(this._mParam.module, MUTATIONS.CLEAR_VIEW_PAGE);
+  },
   destroyed() {
     this.doMutation(this._mParam.module, MUTATIONS.CLEAR_VIEW_PAGE);
   },
