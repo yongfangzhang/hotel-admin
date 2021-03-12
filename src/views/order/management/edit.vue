@@ -86,7 +86,8 @@
       </el-collapse-item>
     </el-collapse>
     <save-button @save="createOrUpdate">
-      <el-button slot="before"
+      <el-button v-show="newAdded"
+                 slot="before"
                  type="success"
                  class="mr-2"
                  @click="addItem">
@@ -100,7 +101,7 @@
 
 import { ACTIONS, MODULE, MUTATIONS } from '@/store/constant';
 import { formEditMixin } from '@/utils/mixins';
-import { toastWarning } from '@/utils/message';
+import { alertMessage, toastWarning } from '@/utils/message';
 import { list2Map, parseTime, validateId } from '@/utils/index';
 export default {
   name: 'OrderManagementEdit',
@@ -131,22 +132,39 @@ export default {
     baseFormItems() {
       return {
         left: [
-          // prettier-ignore
-          { key: 'apartmentUuid', label: '公寓', type: 'selector', list: this.apartmentList, kmap: { label: 'name', value: 'uuid' } },
-          // prettier-ignore
-          { key: 'userType', label: '客户渠道', type: 'selector', map: this.ORDER_USER_TYPE_MAP },
+          {
+            key: 'apartmentUuid',
+            label: '公寓',
+            type: 'selector',
+            list: this.apartmentList,
+            kmap: { label: 'name', value: 'uuid' },
+            disabled: !this.newAdded
+          },
+          {
+            key: 'userType',
+            label: '客户渠道',
+            type: 'selector',
+            map: this.ORDER_USER_TYPE_MAP,
+            disabled: !this.newAdded
+          },
           {
             key: 'userUuid',
             label: '客户',
             type: 'selector',
             map: this.userMap,
             disabled:
+              !this.newAdded ||
               !this.viewInfo ||
               !this.viewInfo.userType ||
               this.viewInfo.userType === this.ORDER_USER_TYPE.SOCIAL
           },
-          // prettier-ignore
-          { key: 'paidAt', label: '支付时间', type: 'datetime', placeholder: '请选择' },
+          {
+            key: 'paidAt',
+            label: '支付时间',
+            type: 'datetime',
+            placeholder: '请选择',
+            disabled: !this.newAdded
+          },
           {
             key: 'remarkContent',
             label: '备注',
@@ -159,7 +177,8 @@ export default {
             key: 'channel',
             label: '渠道',
             type: 'selector',
-            map: this.ORDER_CHANNEL_MAP
+            map: this.ORDER_CHANNEL_MAP,
+            disabled: !this.newAdded
           },
           {
             key: 'state',
@@ -167,7 +186,7 @@ export default {
             type: 'selector',
             map: this.ORDER_STATE_MAP
           },
-          { key: 'bizNumber', label: '第三方订单号' },
+          { key: 'bizNumber', label: '第三方订单号', disabled: !this.newAdded },
           { key: 'number', label: '订单号', isView: true },
           { key: 'canceledAt', label: '取消时间', isView: true },
           { key: 'finishedAt', label: '完成时间', isView: true }
@@ -178,36 +197,66 @@ export default {
     userFormItems() {
       return {
         left: [
-          // prettier-ignore
-          { key: 'roomUuid', label: '房间', type: 'selector', map: this.roomMap, change: this.onRoomChange },
+          {
+            key: 'roomUuid',
+            label: '房间',
+            type: 'selector',
+            map: this.roomMap,
+            change: this.onRoomChange,
+            disabled: !this.newAdded
+          },
           {
             key: 'mobile',
             label: '手机号',
             type: 'selector',
             map: this.mobileMap,
             allowCreate: true,
-            change: this.onMobileChange
+            change: this.onMobileChange,
+            disabled: !this.newAdded
           },
-          { key: 'name', label: '客户姓名' },
+          { key: 'name', label: '客户姓名', disabled: !this.newAdded },
           {
             key: 'lodgingType',
             label: '入住类型',
             type: 'selector',
-            map: this.LODGING_TYPE_MAP
+            map: this.LODGING_TYPE_MAP,
+            disabled: !this.newAdded
           },
-          { key: 'liveAt', label: '入住时间', type: 'datetime' },
-          { key: 'leaveAt', label: '退房时间', type: 'datetime' }
+          {
+            key: 'liveAt',
+            label: '入住时间',
+            type: 'datetime',
+            disabled: !this.newAdded
+          },
+          {
+            key: 'leaveAt',
+            label: '退房时间',
+            type: 'datetime',
+            disabled: !this.newAdded
+          }
         ],
         right: [
-          // prettier-ignore
-          { key: 'priceType', label: '价格类型', type: 'selector', map: this.ROOM_PRICE_TYPE_MAP, change: this.onPriceTypeChange },
-          { key: 'originalPrice', label: '价格', isView: true },
-          { key: 'paidPrice', label: '实付价格', type: 'number' },
+          {
+            key: 'priceType',
+            label: '价格类型',
+            type: 'selector',
+            map: this.ROOM_PRICE_TYPE_MAP,
+            change: this.onPriceTypeChange,
+            disabled: !this.newAdded
+          },
+          { key: 'originalPrice', label: '原始价格', isView: true },
+          {
+            key: 'paidPrice',
+            label: '实付价格',
+            type: 'number',
+            disabled: !this.newAdded
+          },
           {
             key: 'saveUser',
             label: '存为会员',
             type: 'switch',
-            extral: { activeText: '打开后将会自动保存当前入住人为会员' }
+            extral: { activeText: '打开后将会自动保存当前入住人为会员' },
+            disabled: !this.newAdded
           }
           // { key: 'state', label: '状态', type: 'selector', map: this.ORDER_STATE_MAP }
         ]
@@ -368,7 +417,7 @@ export default {
       });
     },
     addItem() {
-      if (this.vDisabled) return;
+      if (!this.newAdded) return;
       const items = this.viewInfo.items || [];
       const userUuid = this.viewInfo.userUuid;
       const user =
@@ -400,6 +449,27 @@ export default {
     customerValidateForm() {
       if (!this.viewInfo.items || !this.viewInfo.items.length) {
         toastWarning('请添加入住人');
+        return Promise.resolve(false);
+      }
+
+      const errEl = [];
+      const h = this.$createElement;
+      this.viewInfo.items.forEach((item) => {
+        const room = this.roomFullMap[item.roomUuid];
+        const state = room.state;
+        if (state !== this.ROOM_STATE.EMPTY_CLEAN) {
+          errEl.push(
+            h(
+              'div',
+              null,
+              `房间${room.name}状态为【${room.stateName}】, 不允许创建订单`
+            )
+          );
+        }
+      });
+
+      if (errEl.length > 0) {
+        alertMessage(h('div', null, errEl));
         return Promise.resolve(false);
       }
 
