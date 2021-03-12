@@ -1,7 +1,8 @@
 import { objectMerge } from '@/utils/index';
 
 export const SEQUENCE = {
-  DASHBOARD: 1,
+  DASHBOARD: 0,
+  STATISTICS: 1,
   ORDER: 2,
   APARTMENT: 3,
   ROOM: 4,
