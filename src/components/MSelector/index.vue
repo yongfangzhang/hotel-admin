@@ -9,8 +9,7 @@
              :style="{width: width}"
              :remote="remote"
              :remote-method="remoteMethod"
-             :allow-create="allowCreate"
-             @change="$emit('change')">
+             :allow-create="allowCreate">
     <el-option v-if="nullable"
                label="请选择"
                :value="nullableValue" />

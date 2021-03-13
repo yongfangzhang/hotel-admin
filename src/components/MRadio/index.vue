@@ -2,8 +2,7 @@
   <el-radio-group v-model="currentValue"
                   :disabled="disabled"
                   :style="{width: width}"
-                  :class="{'w-100': !width}"
-                  @change="$emit('change')">
+                  :class="{'w-100': !width}">
     <el-radio v-for="(label, value) in map"
               :key="value"
               :label="value">{{ label }}</el-radio>
