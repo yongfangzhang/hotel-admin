@@ -503,26 +503,26 @@ export const generateUuid = () => {
   return randomString(4) + randomString(4) + randomString(8) + randomString(16);
 };
 
-export const formatDuration = (startTime, endTime, min = -1) => {
+export const formatDuration = (startTime, endTime, min = 0) => {
   if (!startTime) return 0;
   const startDate = new Date(startTime);
   const endDate = endTime ? new Date(endTime) : new Date();
-  let diff = endDate.getTime() - startDate.getTime();
-  if (min >= 0) {
-    diff = Math.max(diff, min);
-  }
-  diff = Math.floor(diff / 1000);
+  const diff = Math.floor(
+    Math.max(endDate.getTime() - startDate.getTime(), min) / 1000
+  );
 
-  const days = Math.floor(diff / 24 / 3600);
-  diff -= days * 24 * 3600;
+  let seconds = diff;
 
-  const hours = Math.floor(diff / 3600);
-  diff -= hours * 3600;
+  const days = Math.floor(seconds / 24 / 3600);
+  seconds -= days * 24 * 3600;
 
-  const minutes = Math.floor(diff / 60);
-  diff -= minutes * 60;
-  const seconds = diff;
-  return `${days}天${hours}小时${minutes}分钟${seconds}秒`;
+  const hours = Math.floor(seconds / 3600);
+  seconds -= hours * 3600;
+
+  const minutes = Math.floor(seconds / 60);
+  seconds -= minutes * 60;
+
+  return { diff, text: `${days}天${hours}小时${minutes}分钟${seconds}秒` };
 };
 
 export const removeByKeyValue = (arr, k, v) => {

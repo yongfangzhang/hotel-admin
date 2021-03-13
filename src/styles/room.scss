@@ -16,6 +16,9 @@
   .el-card__body {
     padding: 0;
   }
+  .remain-warning {
+    animation: remain-warning 2s infinite;
+  }
 }
 
 .room-item-tip-title {
@@ -36,5 +39,17 @@
   }
   .el-card__body {
     padding: 0;
+  }
+}
+
+@keyframes remain-warning {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
   }
 }

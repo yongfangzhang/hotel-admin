@@ -95,8 +95,8 @@
                        @click="editRow(row)">管理</el-button>
             <el-button v-if="hasPermission('apartment:update')"
                        type="text"
-                       :class="row.state===APARTMENT_STATE.NORMAL?'text-warning':'text-primary'"
-                       @click="toggleForbiddenRow(row)">{{ row.state===APARTMENT_STATE.NORMAL ? '禁用' : '启用' }}</el-button>
+                       :class="row.state!==APARTMENT_STATE.FORBIDDEN?'text-warning':'text-primary'"
+                       @click="toggleForbiddenRow(row)">{{ row.state!==APARTMENT_STATE.FORBIDDEN ? '禁用' : '启用' }}</el-button>
             <el-button v-if="hasPermission('apartment:delete')"
                        type="text"
                        class="text-danger"
@@ -111,8 +111,8 @@
 import { MODULE } from '@/store/constant';
 import { baseTableMixin } from '@/utils/mixins';
 import { PATH_MAP } from '@/router/modules/apartment';
+import { confirmMessage, toastWarning } from '@/utils/message';
 import { deepClone } from '@/utils/index';
-import { toastWarning } from '@/utils/message';
 
 export default {
   name: 'ApartmentManagementIndex',
@@ -148,11 +148,22 @@ export default {
     },
     toggleForbiddenRow(row) {
       const item = deepClone(row);
-      item.state =
-        item.state === this.APARTMENT_STATE.NORMAL
-          ? this.APARTMENT_STATE.FORBIDDEN
-          : this.APARTMENT_STATE.NORMAL;
-      this.saveRow(item);
+      const msg =
+        item.state === this.APARTMENT_STATE.FORBIDDEN
+          ? '是否确定启用公寓? 启用后可以直接接单.'
+          : '是否确定禁用当前公寓?';
+
+      confirmMessage(msg)
+        .then(() => {
+          item.state =
+            item.state === this.APARTMENT_STATE.FORBIDDEN
+              ? this.APARTMENT_STATE.NORMAL
+              : this.APARTMENT_STATE.FORBIDDEN;
+          this.saveRow(item);
+        })
+        .catch(() => {
+          // ignore
+        });
     },
     showMap() {
       toastWarning('地图查看: 敬请期待');

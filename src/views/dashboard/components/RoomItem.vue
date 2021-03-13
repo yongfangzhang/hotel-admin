@@ -25,7 +25,8 @@
       </el-dropdown>
     </div>
     <div :style="{backgroundColor: roomTheme, height: roomSetting.rowHeight+'px'}"
-         class="px-2 py-1">
+         class="px-2 py-1"
+         :class="{'remain-warning': remainTime.diff===0}">
       <el-popover v-if="room.relatedOrderItem"
                   placement="top-start"
                   title="详情"
@@ -41,7 +42,7 @@
           <div class="my-2"><span class="room-item-tip-title">入住类型:</span> {{ room.relatedOrderItem.lodgingTypeName }}</div>
           <div class="my-2"><span class="room-item-tip-title">入住时间:</span> {{ room.relatedOrderItem.liveAt }}</div>
           <div class="my-2"><span class="room-item-tip-title">退房时间:</span> {{ room.relatedOrderItem.leaveAt }}</div>
-          <div class="my-2"><span class="room-item-tip-title">剩余时间:</span> {{ remainTime }}</div>
+          <div class="my-2"><span class="room-item-tip-title">剩余时间:</span> {{ remainTime.text }}</div>
         </div>
         <div slot="reference">
           <div class="py-3 d-flex justify-content-between">
@@ -87,7 +88,7 @@ export default {
   },
   data() {
     return {
-      remainTime: EMPTY_TEXT
+      remainTime: { diff: -1, text: EMPTY_TEXT }
     };
   },
   computed: {
@@ -109,10 +110,18 @@ export default {
       return this.ROOM_STATE_THEME_MAP[this.room.state];
     }
   },
+  watch: {
+    room() {
+      this.calcRemainTime();
+    }
+  },
+  mounted() {
+    this.calcRemainTime();
+  },
   methods: {
     calcRemainTime() {
       if (!this.room || !this.room.relatedOrderItem) {
-        this.remainTime = EMPTY_TEXT;
+        this.remainTime = { diff: -1, text: EMPTY_TEXT };
       } else {
         this.remainTime = formatDuration(
           Date.now(),

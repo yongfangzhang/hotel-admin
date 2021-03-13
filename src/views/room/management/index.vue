@@ -144,8 +144,9 @@
 import { ACTIONS, MODULE } from '@/store/constant';
 import { baseTableMixin } from '@/utils/mixins';
 import { PATH_MAP } from '@/router/modules/room';
-import { list2Map } from '@/utils/index';
+import { deepClone, list2Map } from '@/utils/index';
 import { mapGetters } from 'vuex';
+import { confirmMessage } from '@/utils/message';
 
 export default {
   name: 'RoomManagementIndex',
@@ -199,12 +200,23 @@ export default {
       this.queries.createdAtStop = this.createdRange[1];
     },
     toggleForbiddenRow(row) {
-      if (row.state === this.ROOM_STATE.FORBIDDEN) {
-        // TODO: 当前禁用, 改为可用, 状态由用户输入
-      } else {
-        // TODO: 提示是否确认禁用
-      }
-      this.saveRow(row);
+      const item = deepClone(row);
+      const msg =
+        item.state === this.ROOM_STATE.FORBIDDEN
+          ? '是否确定启用房间? 启用后可以直接接单.'
+          : '是否确定禁用当前房间?';
+
+      confirmMessage(msg)
+        .then(() => {
+          item.state =
+            item.state === this.ROOM_STATE.FORBIDDEN
+              ? this.ROOM_STATE.EMPTY_CLEAN
+              : this.ROOM_STATE.FORBIDDEN;
+          this.saveRow(item);
+        })
+        .catch(() => {
+          // ignore
+        });
     }
   }
 };
