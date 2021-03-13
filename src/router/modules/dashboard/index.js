@@ -13,7 +13,7 @@ export const PATH_MAP = {
 };
 
 export default {
-  path: '',
+  path: ROOT_PATH,
   component: Layout,
   meta: { title: '首页', icon: 'home', sequence: SEQUENCE.DASHBOARD },
   redirect: PATH_MAP.INDEX,

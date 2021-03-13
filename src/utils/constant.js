@@ -153,4 +153,28 @@ export const CONTENT_TYPE = {
   URI: 100 // "链接"
 };
 
+export const DATE_TYPE = {
+  // TODAY: 0,
+  SEVEN_DAY: 1,
+  MONTH: 2,
+  YEAR: 3
+};
+
+export const DATE_TYPE_MAP = {
+  // TODAY: 0,
+  [DATE_TYPE.SEVEN_DAY]: '近七日',
+  [DATE_TYPE.MONTH]: '本月',
+  [DATE_TYPE.YEAR]: '本年度'
+};
+
 export const MAX_DATE_TIME = '9999-12-31 23:59:59';
+
+export const WEEK_DAY = [
+  '周日',
+  '周一',
+  '周二',
+  '周三',
+  '周四',
+  '周五',
+  '周六'
+];

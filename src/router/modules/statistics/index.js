@@ -13,7 +13,7 @@ export const PATH_MAP = {
 };
 
 export default {
-  path: '',
+  path: ROOT_PATH,
   component: Layout,
   meta: { title: '统计分析', icon: 'home', sequence: SEQUENCE.STATISTICS },
   redirect: PATH_MAP.INDEX,

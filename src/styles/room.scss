@@ -22,3 +22,19 @@
   display: inline-block;
   min-width: 60px;
 }
+
+.statistics-container {
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 12px 0px;
+}
+
+.statistics-card-panel {
+  .el-card__header {
+    padding: 0 !important;
+    border: none;
+    font-size: 14px;
+    background-color: #dddddd;
+  }
+  .el-card__body {
+    padding: 0;
+  }
+}

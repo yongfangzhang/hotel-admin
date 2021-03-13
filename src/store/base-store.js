@@ -9,7 +9,7 @@ import {
   updateModule
 } from '@/api/base-api';
 import { ACTIONS, MUTATIONS } from '@/store/constant';
-import { deepExtend, validateId, objectMerge } from '@/utils/index';
+import { deepExtend, validateId } from '@/utils/index';
 import { confirmMessage, toastSuccess } from '@/utils/message';
 
 export const createBaseStore = (store, options) => {
@@ -48,10 +48,10 @@ export const createBaseStore = (store, options) => {
     },
     actions: {
       [ACTIONS.FETCH_PAGE_DATA](ctx, params) {
-        return getModulePage(
-          options.contextPath,
-          objectMerge(params, options.orderParams)
-        ).then(d => {
+        return getModulePage(options.contextPath, {
+          ...options.orderParams,
+          ...(params || {})
+        }).then(d => {
           if (options.formatPageData) {
             d = options.formatPageData(d);
           }
@@ -63,10 +63,10 @@ export const createBaseStore = (store, options) => {
           return Promise.resolve(state.list);
         }
         const doCommit = !params || params.commit !== 0;
-        return getModuleList(
-          options.contextPath,
-          objectMerge(params, options.orderParams)
-        ).then(d => {
+        return getModuleList(options.contextPath, {
+          ...options.orderParams,
+          ...(params || {})
+        }).then(d => {
           if (options.formatList) {
             d = options.formatList(d);
           }
@@ -77,10 +77,10 @@ export const createBaseStore = (store, options) => {
         });
       },
       [ACTIONS.FETCH_XS_LIST](ctx, params) {
-        return getModuleXsList(
-          options.contextPath,
-          objectMerge(params, options.orderParams)
-        );
+        return getModuleXsList(options.contextPath, {
+          ...options.orderParams,
+          ...(params || {})
+        });
       },
       [ACTIONS.FETCH_VIEW_INFO]({ commit }, id) {
         if (!options.validateId) {

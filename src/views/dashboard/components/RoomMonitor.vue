@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="h-100">
     <div class="h-100 py-3 d-flex flex-column">
       <room-filter ref="filter"
                    class="px-3"
