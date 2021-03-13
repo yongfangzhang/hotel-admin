@@ -44,7 +44,7 @@
         <el-table-column prop="ip"
                          label="IP"
                          align="center"
-                         :min-width="colWidth.nm" />
+                         :min-width="colWidth.sm" />
         <el-table-column prop="target"
                          label="操作目标"
                          align="center"
@@ -63,7 +63,12 @@
         </el-table-column>
         <el-table-column prop="content"
                          label="操作详细"
-                         header-align="center" />
+                         align="center">
+          <template slot-scope="{ row }">
+            <el-button type="text"
+                       @click="showDetail(row)">查看</el-button>
+          </template>
+        </el-table-column>
         <el-table-column prop="createdAt"
                          label="操作时间"
                          align="center"
@@ -114,6 +119,9 @@ export default {
       this.queries.createdAtStart = data ? data[0] : '';
       this.queries.createdAtStop = data ? data[1] : '';
       this.$nextTick(() => this.doFilter());
+    },
+    showDetail(row) {
+      this.$alert(row.content, '详细日志');
     }
   }
 };
