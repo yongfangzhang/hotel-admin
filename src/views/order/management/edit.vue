@@ -469,19 +469,21 @@ export default {
 
       const errEl = [];
       const h = this.$createElement;
-      this.viewInfo.items.forEach((item) => {
-        const room = this.roomFullMap[item.roomUuid];
-        const state = room.state;
-        if (state !== this.ROOM_STATE.EMPTY_CLEAN) {
-          errEl.push(
-            h(
-              'div',
-              null,
-              `房间${room.name}状态为【${room.stateName}】, 不允许创建订单`
-            )
-          );
-        }
-      });
+      if (this.newAdded) {
+        this.viewInfo.items.forEach((item) => {
+          const room = this.roomFullMap[item.roomUuid];
+          const state = room.state;
+          if (state !== this.ROOM_STATE.EMPTY_CLEAN) {
+            errEl.push(
+              h(
+                'div',
+                null,
+                `房间${room.name}状态为【${room.stateName}】, 不允许创建订单`
+              )
+            );
+          }
+        });
+      }
 
       if (errEl.length > 0) {
         alertMessage(h('div', null, errEl));
