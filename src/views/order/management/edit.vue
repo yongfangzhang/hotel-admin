@@ -219,7 +219,8 @@ export default {
             map: this.mobileMap,
             allowCreate: true,
             change: this.onMobileChange,
-            disabled: !this.newAdded
+            disabled: !this.newAdded,
+            placeholder: '请输入或选择'
           },
           { key: 'name', label: '客户姓名', disabled: !this.newAdded },
           {
