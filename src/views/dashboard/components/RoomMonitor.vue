@@ -22,6 +22,7 @@
                     :span="24 / roomSetting.colSpan"
                     class="pt-3">
               <room-item :room="room"
+                         :apartment-map="apartmentMap"
                          @filter="doFilter"
                          @create-order="createOrder"
                          @change-state="changeRoomState" />

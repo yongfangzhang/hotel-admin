@@ -34,6 +34,7 @@
                   trigger="hover"
                   @show="calcRemainTime">
         <div class="font-12">
+          <div class="my-2"><span class="room-item-tip-title">公寓:</span> {{ apartmentName }}</div>
           <div class="my-2"><span class="room-item-tip-title">订单号:</span> {{ room.relatedOrder.number }}</div>
           <div class="my-2"><span class="room-item-tip-title">订单渠道:</span> {{ room.relatedOrder.channelName }}</div>
           <div class="my-2"><span class="room-item-tip-title">渠道单号:</span> {{ room.relatedOrder.bizNumber || '-' }}</div>
@@ -81,6 +82,10 @@ import { formatDuration, str2DateTimestamp } from '@/utils/index';
 export default {
   name: 'RoomItem',
   props: {
+    apartmentMap: {
+      type: Object,
+      default: null
+    },
     room: {
       type: Object,
       default: null
@@ -93,6 +98,14 @@ export default {
   },
   computed: {
     ...mapState(MODULE.ROOM, ['roomSetting']),
+    apartmentName() {
+      if (!this.apartmentMap || !this.room) {
+        return EMPTY_TEXT;
+      }
+      const apartment = this.apartmentMap[this.room.apartmentUuid];
+      if (!apartment) return EMPTY_TEXT;
+      return apartment.shortName;
+    },
     cardTtitle() {
       if (!this.room) return '';
       let title = '';
