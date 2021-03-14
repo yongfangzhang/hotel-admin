@@ -96,7 +96,8 @@
                          :min-width="colWidth.xs">
           <template slot-scope="{ row }">
             <m-view :value="getPrice(row.prices, priceType)"
-                    type="currency" />
+                    type="currency"
+                    @click.native="updateRoomPrice(row, priceType)" />
           </template>
         </el-table-column>
         <el-table-column label="销售次数"
@@ -164,7 +165,7 @@ export default {
       showMoreFilter: false,
       qStates: [],
       createdRange: [],
-      apartmentMap: null,
+      apartmentMap: {},
       queries: {
         state: null,
         number: null,
@@ -199,7 +200,7 @@ export default {
     },
     getPrice(prices, type) {
       if (!prices || !prices.length) return 0;
-      const priceItem = prices.filter((p) => +p.type === type)[0];
+      const priceItem = prices.filter((p) => +p.type === +type)[0];
       return priceItem ? priceItem.price : 0;
     },
     beforeFetch() {
@@ -221,6 +222,36 @@ export default {
               ? this.ROOM_STATE.EMPTY_CLEAN
               : this.ROOM_STATE.FORBIDDEN;
           this.saveRow(item);
+        })
+        .catch(() => {
+          // ignore
+        });
+    },
+    updateRoomPrice(room, type) {
+      if (!this.hasPermission('room:price:update')) return;
+
+      const name = this.ROOM_PRICE_TYPE_MAP[type];
+
+      this.$prompt(`请输入${name}`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        inputPattern: /^\d+(\.\d+)?$/,
+        inputErrorMessage: '价格无效',
+        inputType: 'number',
+        inputValue: this.getPrice(room.prices, type),
+        inputPlaceholder: `请输入${name}`
+      })
+        .then(({ value }) => {
+          return this.doAction(MODULE.ROOM, ACTIONS.UPDATE_ROOM_PRICE, {
+            uuid: room.uuid,
+            model: {
+              type: +type,
+              price: value
+            }
+          });
+        })
+        .then(() => {
+          this.doFilter();
         })
         .catch(() => {
           // ignore

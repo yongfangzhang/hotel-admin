@@ -45,7 +45,7 @@ export default createBaseStore(
       }
     },
     actions: {
-      [ACTIONS.UPDATE_ROOM_PRICE](uuid, model) {
+      [ACTIONS.UPDATE_ROOM_PRICE](ctx, { uuid, model }) {
         return updateRoomPrice(uuid, model);
       }
     },
