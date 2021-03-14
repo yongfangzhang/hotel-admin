@@ -37,14 +37,14 @@
         <el-table-column label="角色编码"
                          align="center"
                          prop="code"
-                         :min-width="colWidth.xs" />
+                         :width="colWidth.xs" />
         <el-table-column label="角色名称"
                          align="center"
                          prop="name"
-                         :min-width="colWidth.sm" />
+                         :width="colWidth.sm" />
         <el-table-column label="权限"
                          align="center"
-                         :min-width="colWidth.xs">
+                         :width="colWidth.xs">
           <template slot-scope="{ row }">
             <el-button type="text"
                        @click="viewRoutes(row)">查看</el-button>
@@ -69,7 +69,7 @@
         </el-table-column>
         <el-table-column label="操作"
                          align="center"
-                         :min-width="colWidth.op3">
+                         :width="colWidth.op2">
           <template slot-scope="{ row }">
             <div>
               <el-button type="text"
