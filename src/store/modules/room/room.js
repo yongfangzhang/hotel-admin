@@ -23,7 +23,7 @@ export const createModel = (model = {}) => {
     floorNumber: null,
     unitNumber: null,
     number: null,
-    price: null,
+    price: 100,
     state: null,
     saleTimes: null,
     income: null,

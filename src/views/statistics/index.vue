@@ -159,7 +159,7 @@ export default {
     init() {
       this.doAction(MODULE.APARTMENT, ACTIONS.FETCH_LIST)
         .then((list) => {
-          this.apartmentMap = list2Map(list, 'uuid', 'name');
+          this.apartmentMap = list2Map(list, 'uuid', 'shortName');
           return this.doAction(MODULE.ROOM, ACTIONS.FETCH_LIST);
         })
         .then((list) => {

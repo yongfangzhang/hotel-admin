@@ -21,10 +21,10 @@
         </el-col>
         <el-col :xs="24"
                 :sm="12">
-          <m-form-item key="price"
+          <!-- <m-form-item key="price"
                        label="基础价格"
                        :item="{ key: 'price', label: '基础价格', type: 'number' }"
-                       :entity="viewInfo" />
+                       :entity="viewInfo" /> -->
           <el-form-item v-for="(priceName, priceType) in ROOM_PRICE_TYPE_MAP"
                         :key="priceType"
                         :label="priceName"
@@ -115,10 +115,10 @@ export default {
         ],
         number: [
           { required: true, message: '房间号不能为空', trigger: 'blur' }
-        ],
-        price: [
-          { required: true, message: '基础价格不能为空', trigger: 'blur' }
         ]
+        // price: [
+        //   { required: true, message: '基础价格不能为空', trigger: 'blur' }
+        // ]
       };
     }
   },

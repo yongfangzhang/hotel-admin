@@ -8,7 +8,7 @@
         <div v-for="(rooms,apartment) in roomGroupList"
              :key="apartment">
           <div class="font-18 p-3 border-bottom border-top d-flex align-items-center">
-            <div class="font-weight-bold">{{ apartmentMap[apartment].name }}</div>
+            <div class="font-weight-bold">{{ apartmentMap[apartment].shortName }}</div>
             <div class="font-weight-bold">【{{ apartmentMap[apartment].address }}】</div>
             <!-- <div>【联系人】{{ apartmentMap[apartment].contactor }}</div>
             <div> (</div>

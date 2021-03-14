@@ -52,6 +52,14 @@
         </div>
       </div>
       <template slot="columns">
+        <el-table-column label="公寓"
+                         align="center"
+                         prop="apartmentUuid"
+                         :min-width="colWidth.xs">
+          <template slot-scope="{ row }">
+            <m-view :value="apartmentMap[row.apartmentUuid]" />
+          </template>
+        </el-table-column>
         <el-table-column label="楼号"
                          align="center"
                          prop="floorNumber"
@@ -72,7 +80,7 @@
             <m-view :value="ROOM_TYPE_MAP[row.typeUuid]" />
           </template>
         </el-table-column>
-        <el-table-column label="基础价格"
+        <!-- <el-table-column label="基础价格"
                          align="center"
                          prop="price"
                          :min-width="colWidth.xs">
@@ -80,7 +88,7 @@
             <m-view :value="row.price"
                     type="currency" />
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column v-for="(priceName, priceType) in ROOM_PRICE_TYPE_MAP"
                          :key="priceType"
                          :label="priceName"
@@ -186,7 +194,7 @@ export default {
   methods: {
     init() {
       this.doAction(MODULE.APARTMENT, ACTIONS.FETCH_LIST).then((list) => {
-        this.apartmentMap = list2Map(list, 'uuid', 'name');
+        this.apartmentMap = list2Map(list, 'uuid', 'shortName');
       });
     },
     getPrice(prices, type) {
