@@ -15,7 +15,8 @@
           <ve-line :data="saleTimesData"
                    :legend-visible="false"
                    :height="chartHeight"
-                   :width="chartWidth" />
+                   :width="chartWidth"
+                   :extend="chartExtend" />
         </el-card>
       </el-col>
       <el-col :xs="24"
@@ -32,7 +33,8 @@
           <ve-line :data="incomeData"
                    :legend-visible="false"
                    :height="chartHeight"
-                   :width="chartWidth" />
+                   :width="chartWidth"
+                   :extend="chartExtend" />
         </el-card>
       </el-col>
     </el-row>

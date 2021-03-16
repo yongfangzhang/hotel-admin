@@ -7,6 +7,11 @@ export default {
   },
   data() {
     return {
+      chartExtend: {
+        series: {
+          smooth: false
+        }
+      },
       chartHeight: '400px',
       chartWidth: null
     };

@@ -14,8 +14,10 @@
           </div>
           <ve-line :data="saleTimesData"
                    :legend-visible="false"
+                   :tooltip-visible="false"
                    :height="chartHeight"
-                   :width="chartWidth" />
+                   :width="chartWidth"
+                   :extend="chartExtend" />
         </el-card>
       </el-col>
       <el-col :xs="24"
@@ -33,7 +35,8 @@
                    :legend-visible="false"
                    :tooltip-visible="false"
                    :height="chartHeight"
-                   :width="chartWidth" />
+                   :width="chartWidth"
+                   :extend="chartExtend" />
         </el-card>
       </el-col>
     </el-row>
