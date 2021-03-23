@@ -190,7 +190,7 @@ export default {
             type: 'selector',
             map: this.ORDER_STATE_MAP
           },
-          { key: 'bizNumber', label: '第三方订单号', disabled: !this.newAdded },
+          { key: 'bizNumber', label: '渠道订单号', disabled: !this.newAdded },
           { key: 'number', label: '订单号', isView: true },
           { key: 'canceledAt', label: '取消时间', isView: true },
           { key: 'finishedAt', label: '完成时间', isView: true }
@@ -376,7 +376,7 @@ export default {
                 state: null,
                 lodgingType: this.LODGING_TYPE.SHORT,
                 room: roomUuid && data ? data[roomUuid] : null,
-                saveUser: false,
+                saveUser: true,
                 ...this.presetLiveAndLeave()
               }
             ]
@@ -448,7 +448,7 @@ export default {
         state: null,
         lodgingType: this.LODGING_TYPE.SHORT,
         room: null,
-        saveUser: false,
+        saveUser: true,
         ...this.presetLiveAndLeave()
       });
       this.activeNames = ['item'];

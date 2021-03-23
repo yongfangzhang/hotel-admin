@@ -25,7 +25,9 @@
                          :apartment-map="apartmentMap"
                          @filter="doFilter"
                          @create-order="createOrder"
-                         @change-state="changeRoomState" />
+                         @change-state="changeRoomState"
+                         @update-order="updateOrder"
+                         @renew-order="renewOrder" />
             </el-col>
           </el-row>
         </div>
@@ -59,6 +61,16 @@
         </el-form-item>
       </el-form>
     </m-dialog>
+    <m-dialog v-model="showOrderDialog"
+              title="修改订单"
+              :close-on-confirm="true"
+              :has-close="true"
+              :has-confirm="true"
+              :append-to-body="true"
+              width="md"
+              @confirm="confirmUpdateOrder">
+      <order-edit :room="currentRoom" />
+    </m-dialog>
   </div>
 </template>
 <script>
@@ -66,16 +78,18 @@ import { ACTIONS, MODULE } from '@/store/constant';
 import RoomFilter from './RoomFilter.vue';
 import RoomItem from './RoomItem.vue';
 import RoomPanelSetting from './RoomPanelSetting.vue';
+import OrderEdit from './OrderEdit.vue';
 import { mapState } from 'vuex';
 import { deepClone, list2Map } from '@/utils/index';
 import { confirmMessage } from '@/utils/message';
 import { PATH_MAP } from '@/router/modules/order/index';
 export default {
   name: 'RoomMonitor',
-  components: { RoomFilter, RoomItem, RoomPanelSetting },
+  components: { RoomFilter, RoomItem, RoomPanelSetting, OrderEdit },
   data() {
     return {
       currentRoom: null,
+      showOrderDialog: false,
       showStateDialog: false,
       showSetting: false
     };
@@ -121,6 +135,7 @@ export default {
       this.doAction(MODULE.APARTMENT, ACTIONS.FETCH_LIST).then(this.doFilter);
     },
     doFilter() {
+      this.currentRoom = null;
       this.$refs.filter.doFilter();
     },
     // createRoom() {},
@@ -134,9 +149,25 @@ export default {
         }
       });
     },
+    updateOrder(room) {
+      this.currentRoom = { renew: false, ...deepClone(room) };
+      this.showOrderDialog = true;
+    },
+    renewOrder(room) {
+      this.currentRoom = { renew: true, ...deepClone(room) };
+      this.showOrderDialog = true;
+    },
     changeRoomState(room) {
       this.currentRoom = deepClone(room);
       this.showStateDialog = true;
+    },
+    confirmUpdateOrder() {
+      this.showOrderDialog = false;
+      if (!this.currentRoom) {
+        return;
+      }
+      const { relatedOrder, relatedOrderItem } = this.currentRoom;
+      console.log(relatedOrder, relatedOrderItem);
     },
     confirmChangeState() {
       this.showStateDialog = false;

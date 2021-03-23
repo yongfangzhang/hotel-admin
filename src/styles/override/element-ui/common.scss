@@ -1,5 +1,5 @@
 //覆盖一些element-ui样式
-#app {
+.hotel-body {
   .el-breadcrumb__inner,
   .el-breadcrumb__inner a {
     font-weight: 400 !important;
@@ -84,8 +84,8 @@
     }
   }
 
-  .el-drawer{
-    transition: width .3s;
+  .el-drawer {
+    transition: width 0.3s;
     will-change: width;
 
     .fold-btn {
@@ -101,16 +101,16 @@
     }
   }
 }
-#app {
+.hotel-body {
   // .m-form-item {
   //   .el-form-item--mini {
   //     margin-bottom: $spacer-xl * 0.75;
   //   }
   // }
   $font-size-xs: 12px;
-  $font-size-sm: .7rem;
-  $font-size-md: .8rem;
-  $font-size-lg: .9rem;
+  $font-size-sm: 0.7rem;
+  $font-size-md: 0.8rem;
+  $font-size-lg: 0.9rem;
   $font-size-xl: 1rem;
 
   $spacer-xs: 0.6rem;
@@ -119,8 +119,7 @@
   $spacer-lg: 0.9rem;
   $spacer-xl: 1rem;
 
-
-  $color-theme: #42B983;
+  $color-theme: #42b983;
   $color-active: #409eff;
   $color-title: #222;
   $color-sub-title: #333;
@@ -128,16 +127,15 @@
   $color-content: #666;
   $color-subText: #999999;
   $color-disable: #b2b2b2;
-  $color-remind: #F39C12;
-  $color-inner-footer: #A0A0A0;
-  $color-theme-active-back: #E8F1FA; // 活跃的主题背景色
+  $color-remind: #f39c12;
+  $color-inner-footer: #a0a0a0;
+  $color-theme-active-back: #e8f1fa; // 活跃的主题背景色
   // chat
-  $color-chat-box: #ECF5FF;
+  $color-chat-box: #ecf5ff;
   // border
-  $color-border: #D8D8D8;
+  $color-border: #d8d8d8;
   // background
   $color-background: rgb(245, 245, 245);
-
 
   .m-form-item.el-form-item--mini {
     .el-form-item__label {
@@ -149,16 +147,18 @@
   .m-form-item.el-form-item--mini,
   .m-view-item {
     // margin-bottom: 14px;
-    @include media-breakpoint-size($px-14);
+    // @include media-breakpoint-size($px-14);
     // .el-form-item__label,
     .label {
-      margin-right: $spacer-xl * 0.75;
+      // margin-right: $spacer-xl * 0.75;
       // text-align: justify;
-      float: left;
-      width: 5.5rem;
-      height: 2rem;
+      // float: left;
+      display: inline-block;
+      vertical-align: middle;
+      width: 60px;
+      height: 30px;
       overflow: hidden;
-      line-height: 2rem;
+      line-height: 30px;
       font-weight: bold;
       color: $color-sub-title;
       &:after {
@@ -170,10 +170,11 @@
     }
     .content {
       white-space: normal;
-      line-height: 2rem;
+      height: 30px;
+      line-height: 30px;
       color: $color-content;
       display: inline-block;
-      vertical-align: top;
+      vertical-align: middle;
     }
   }
 
@@ -183,7 +184,7 @@
     color: $color-title;
   }
 }
-#app {
+.hotel-body {
   .el-collapse-item.is-disabled {
     .el-collapse-item__header {
       color: inherit;
@@ -194,7 +195,7 @@
     }
   }
 }
-#app {
+.hotel-body {
   .el-upload {
     display: inline;
   }

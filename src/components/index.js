@@ -2,6 +2,7 @@ import Vue from 'vue';
 import MSelector from '@/components/MSelector';
 import MRadio from '@/components/MRadio';
 import MView from '@/components/MView';
+// import MViewItem from '@/components/MViewItem';
 import MRemark from '@/components/MRemark';
 import MFormEdit from '@/components/MFormEdit';
 import MFormItem from '@/components/MFormItem';
@@ -22,6 +23,7 @@ import QueryButton from '@/components/QueryButton';
 
 Vue.component(MSelector.name, MSelector);
 Vue.component(MRadio.name, MRadio);
+// Vue.component(MViewItem.name, MViewItem);
 Vue.component(MView.name, MView);
 Vue.component(MRemark.name, MRemark);
 Vue.component(MFormEdit.name, MFormEdit);

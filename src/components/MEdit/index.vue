@@ -50,7 +50,7 @@
   </div>
   <div v-else-if="type === 'selector'">
     <span v-if="isView"
-          v-text="map[currentValue] || '--'" />
+          v-text="map ? (map[currentValue] || '--') : '--'" />
     <m-selector v-else
                 v-model="currentValue"
                 :disabled="disabled"

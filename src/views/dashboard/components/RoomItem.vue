@@ -19,15 +19,17 @@
                             command="notifyClean">通知打扫</el-dropdown-item>
           <el-dropdown-item :disabled="room.state!==ROOM_STATE.STAY_CLEAN && room.state!==ROOM_STATE.STAY_DARTY"
                             command="roomCheckOut">退房</el-dropdown-item>
+          <el-dropdown-item :disabled="room.state!==ROOM_STATE.STAY_CLEAN && room.state!==ROOM_STATE.STAY_DARTY"
+                            command="renewOrder">续住</el-dropdown-item>
           <el-dropdown-item command="changeRoomState"
                             divided>修改房态</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
     <div :style="{backgroundColor: roomTheme, height: roomSetting.rowHeight+'px'}"
-         class="px-2 py-1"
+         class="px-2 py-1 cursor-pointer"
          :class="{'remain-warning': remainTime.diff===0}">
-      <el-popover v-if="room.relatedOrderItem"
+      <!-- <el-popover v-if="room.relatedOrderItem"
                   placement="top-start"
                   title="详情"
                   width="260"
@@ -44,31 +46,34 @@
           <div class="my-2"><span class="room-item-tip-title">入住时间:</span> {{ room.relatedOrderItem.liveAt }}</div>
           <div class="my-2"><span class="room-item-tip-title">退房时间:</span> {{ room.relatedOrderItem.leaveAt }}</div>
           <div class="my-2"><span class="room-item-tip-title">剩余时间:</span> {{ remainTime.text }}</div>
+        </div> -->
+      <div v-if="room.relatedOrderItem"
+           @click="updateOrder">
+        <div class="py-3 d-flex justify-content-between">
+          <div class="text-overflow-ellipsis">入住人</div>
+          <div class="text-overflow-ellipsis">{{ room.relatedOrderItem.name }}</div>
         </div>
-        <div slot="reference">
-          <div class="py-3 d-flex justify-content-between">
-            <div class="text-overflow-ellipsis">入住人</div>
-            <div class="text-overflow-ellipsis">{{ room.relatedOrderItem.name }}</div>
-          </div>
-          <div class="pb-3 d-flex justify-content-between">
-            <div class="text-overflow-ellipsis">电话</div>
-            <div class="text-overflow-ellipsis">{{ room.relatedOrderItem.mobile }}</div>
-          </div>
-          <div class="pb-3 d-flex justify-content-between">
-            <div class="text-overflow-ellipsis">订单渠道</div>
-            <div class="text-overflow-ellipsis">{{ room.relatedOrder.channelName }}</div>
-          </div>
+        <div class="pb-3 d-flex justify-content-between">
+          <div class="text-overflow-ellipsis">电话</div>
+          <div class="text-overflow-ellipsis">{{ room.relatedOrderItem.mobile }}</div>
         </div>
-      </el-popover>
-      <div v-else
-           class="text-center h-100 d-flex align-items-center justify-content-center">
-        <el-button v-if="room.state===ROOM_STATE.EMPTY_CLEAN"
-                   type="text"
+        <div class="pb-3 d-flex justify-content-between">
+          <div class="text-overflow-ellipsis">订单渠道</div>
+          <div class="text-overflow-ellipsis">{{ room.relatedOrder.channelName }}</div>
+        </div>
+      </div>
+      <!-- </el-popover> -->
+      <div v-else-if="room.state===ROOM_STATE.EMPTY_CLEAN"
+           class="text-center h-100 d-flex align-items-center justify-content-center"
+           @click="createOrder">
+        <el-button type="text"
                    @click="createOrder">接单</el-button>
-        <el-button v-else-if="room.state===ROOM_STATE.EMPTY_DARTY"
-                   type="text"
-                   class="text-muted"
-                   @click="notifyClean">通知打扫</el-button>
+      </div>
+      <div v-else-if="room.state===ROOM_STATE.EMPTY_DARTY"
+           class="text-center h-100 d-flex align-items-center justify-content-center"
+           @click="notifyClean">
+        <el-button type="text"
+                   class="text-muted">通知打扫</el-button>
       </div>
     </div>
   </el-card>
@@ -167,6 +172,12 @@ export default {
         .catch(() => {
           // ignore
         });
+    },
+    updateOrder() {
+      this.$emit('update-order', this.room);
+    },
+    renewOrder() {
+      this.$emit('renew-order', this.room);
     },
     createOrder() {
       this.$emit('create-order', this.room);
