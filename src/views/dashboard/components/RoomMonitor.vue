@@ -167,7 +167,8 @@ export default {
       if (!this.currentRoom) {
         return;
       }
-      const { relatedOrder, relatedOrderItem } = this.currentRoom;
+      const { renew, relatedOrder, relatedOrderItem } = this.currentRoom;
+      relatedOrder.renew = renew;
       relatedOrder.items = [relatedOrderItem];
 
       this.doAction(MODULE.ORDER, ACTIONS.UPDATE_ITEM, relatedOrder)

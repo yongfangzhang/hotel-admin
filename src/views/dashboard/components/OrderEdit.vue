@@ -189,13 +189,13 @@ export default {
             key: 'liveAt',
             label: '入住时间',
             type: 'datetime',
-            disabled: this.orderLocked
+            disabled: !this.renew || this.orderLocked
           },
           {
             key: 'leaveAt',
             label: '退房时间',
             type: 'datetime',
-            disabled: this.orderLocked
+            disabled: !this.renew || this.orderLocked
           }
         ],
         right: [
@@ -222,6 +222,9 @@ export default {
     },
     orderItem() {
       return this.room ? this.room.relatedOrderItem : null;
+    },
+    renew() {
+      return this.room && this.room.renew;
     }
   },
   watch: {
