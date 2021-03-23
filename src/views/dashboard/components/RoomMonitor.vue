@@ -69,7 +69,8 @@
               :append-to-body="true"
               width="md"
               @confirm="confirmUpdateOrder">
-      <order-edit :room="currentRoom" />
+      <order-edit v-if="showOrderDialog"
+                  :room="currentRoom" />
     </m-dialog>
   </div>
 </template>
@@ -167,7 +168,15 @@ export default {
         return;
       }
       const { relatedOrder, relatedOrderItem } = this.currentRoom;
-      console.log(relatedOrder, relatedOrderItem);
+      relatedOrder.items = [relatedOrderItem];
+
+      this.doAction(MODULE.ORDER, ACTIONS.UPDATE_ITEM, relatedOrder)
+        .then(() => {
+          this.doFilter();
+        })
+        .catch(() => {
+          // ignore
+        });
     },
     confirmChangeState() {
       this.showStateDialog = false;
