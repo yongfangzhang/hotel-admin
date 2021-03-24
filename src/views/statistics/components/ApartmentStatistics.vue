@@ -41,7 +41,7 @@
   </div>
 </template>
 <script>
-import chartMixins from './mixins';
+import { chartMixins } from './mixins';
 
 export default {
   name: 'ApartmentStatistics',

@@ -87,8 +87,8 @@
 </template>
 <script>
 import { DATE_TYPE, DATE_TYPE_MAP } from '@/utils/constant';
-import ApartmentStatistics from './ApartmentStatistics.vue';
-import RoomStatistics from './RoomStatistics.vue';
+import ApartmentStatistics from './components/ApartmentStatistics.vue';
+import RoomStatistics from './components/RoomStatistics.vue';
 import { ACTIONS, MODULE } from '@/store/constant';
 import { list2Map, parseTime } from '@/utils/index';
 export default {

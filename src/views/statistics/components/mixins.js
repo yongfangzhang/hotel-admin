@@ -1,7 +1,7 @@
 import { str2Date } from '@/utils/index';
 import { DATE_TYPE, WEEK_DAY } from '@/utils/constant';
 
-export default {
+export const chartMixins = {
   props: {
     visible: { type: Boolean, default: false }
   },
@@ -69,5 +69,11 @@ export default {
           return dateStr;
       }
     }
+  }
+};
+
+export const reportMixins = {
+  props: {
+    visible: { type: Boolean, default: false }
   }
 };
