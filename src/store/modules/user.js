@@ -81,8 +81,8 @@ const actions = {
     });
   },
 
-  [ACTIONS.FETCH_LIST]() {
-    return fetchUserXsList();
+  [ACTIONS.FETCH_LIST](ctx, params) {
+    return fetchUserXsList(params);
   }
 };
 

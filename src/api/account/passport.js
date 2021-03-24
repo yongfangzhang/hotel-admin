@@ -27,8 +27,9 @@ export function logout() {
   });
 }
 
-export function fetchUserXsList() {
+export function fetchUserXsList(params = {}) {
   return request({
-    url: '/user/list/xs'
+    url: '/user/list/xs',
+    params
   });
 }

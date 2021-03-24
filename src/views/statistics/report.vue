@@ -44,7 +44,7 @@ export default {
       this.doAction(MODULE.APARTMENT, ACTIONS.FETCH_LIST).then((list) => {
         this.apartmentMap = list2Map(list, 'uuid', 'shortName');
       });
-      this.doAction(MODULE.USER, ACTIONS.FETCH_XS_LIST, {
+      this.doAction(MODULE.USER, ACTIONS.FETCH_LIST, {
         channel: this.CUSTOMER_CHANNEL.BACKEND
       }).then((list) => {
         this.operatorMap = list2Map(list, 'uuid', 'name');

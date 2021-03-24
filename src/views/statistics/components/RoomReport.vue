@@ -37,6 +37,7 @@
                         @keydown.enter.native="doFilter" />
             </el-form-item>
             <datetime-filter v-model="createdRange"
+                             label="接单时间"
                              @change="doFilter" />
           </div>
         </el-form>
@@ -99,8 +100,8 @@ export default {
         number: null,
         operatorUuid: null,
         apartmentUuid: null,
-        createdAtStart: null,
-        createdAtStop: null
+        orderCreatedAtStart: null,
+        orderCreatedAtStop: null
       }
     };
   },
@@ -123,8 +124,8 @@ export default {
   methods: {
     init() {},
     beforeFetch() {
-      this.queries.createdAtStart = this.createdRange[0];
-      this.queries.createdAtStop = this.createdRange[1];
+      this.queries.orderCreatedAtStart = this.createdRange[0];
+      this.queries.orderCreatedAtStop = this.createdRange[1];
     },
     printReport() {}
   }
