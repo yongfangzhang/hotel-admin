@@ -11,7 +11,7 @@
                  inline
                  @submit.native.prevent>
           <div>
-            <el-form-item label="员工">
+            <el-form-item label="接单人">
               <m-selector v-model="queries.operatorUuid"
                           :map="operatorMap"
                           filterable
