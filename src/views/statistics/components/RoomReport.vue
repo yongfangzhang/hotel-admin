@@ -1,5 +1,5 @@
 <template>
-  <div class="h-100 py-3 d-flex flex-column">
+  <div class="h-100 pb-3 d-flex flex-column">
     <simple-table ref="table"
                   :module="mParam.module"
                   :queries="queries"
@@ -11,9 +11,9 @@
                  inline
                  @submit.native.prevent>
           <div>
-            <el-form-item label="接单人">
-              <m-selector v-model="queries.operatorUuid"
-                          :map="operatorMap"
+            <el-form-item label="渠道">
+              <m-selector v-model="queries.channel"
+                          :map="ORDER_CHANNEL_MAP"
                           filterable
                           clearable
                           @keydown.enter.native="doFilter"
@@ -29,6 +29,22 @@
                           @change="doFilter"
                           @clear="doFilter" />
             </el-form-item>
+            <datetime-filter v-model="createdRange"
+                             label="接单时间"
+                             @change="doFilter" />
+            <el-button type="text"
+                       @click="showMoreFilter=!showMoreFilter">更多查询</el-button>
+          </div>
+          <div v-show="showMoreFilter">
+            <el-form-item label="接单人">
+              <m-selector v-model="queries.operatorUuid"
+                          :map="operatorMap"
+                          filterable
+                          clearable
+                          @keydown.enter.native="doFilter"
+                          @change="doFilter"
+                          @clear="doFilter" />
+            </el-form-item>
             <el-form-item label="房间号">
               <el-input v-model="queries.number"
                         placeholder="请输入"
@@ -36,9 +52,6 @@
                         @clear="doFilter"
                         @keydown.enter.native="doFilter" />
             </el-form-item>
-            <datetime-filter v-model="createdRange"
-                             label="接单时间"
-                             @change="doFilter" />
           </div>
         </el-form>
         <div class="text-nowrap">
@@ -80,6 +93,19 @@
             <m-view :value="ROOM_TYPE_MAP[row.typeUuid]" />
           </template>
         </el-table-column>
+        <el-table-column label="销售次数"
+                         align="center"
+                         prop="saleTimes"
+                         :min-width="colWidth.xs" />
+        <el-table-column label="总收益"
+                         align="center"
+                         prop="income"
+                         :min-width="colWidth.sm">
+          <template slot-scope="{ row }">
+            <m-view :value="row.income"
+                    type="currency" />
+          </template>
+        </el-table-column>
       </template>
     </simple-table>
   </div>
@@ -95,9 +121,10 @@ export default {
   mixins: [baseTableMixin, reportMixins],
   data() {
     return {
-      createdRange: [],
       queries: {
         number: null,
+        channel: null,
+        report: true,
         operatorUuid: null,
         apartmentUuid: null,
         orderCreatedAtStart: null,

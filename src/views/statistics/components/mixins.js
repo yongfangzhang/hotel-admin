@@ -1,5 +1,5 @@
 import { DATE_TYPE, WEEK_DAY } from '@/utils/constant';
-import { str2Date } from '@/utils/index';
+import { str2Date, parseTime } from '@/utils/index';
 
 export const chartMixins = {
   props: {
@@ -77,5 +77,14 @@ export const reportMixins = {
     visible: { type: Boolean, default: false },
     apartmentMap: { type: Object, required: true },
     operatorMap: { type: Object, required: true }
+  },
+  data() {
+    return {
+      showMoreFilter: false,
+      createdRange: [
+        parseTime(new Date().setMonth(new Date().getMonth() - 1)),
+        parseTime(new Date())
+      ]
+    };
   }
 };
