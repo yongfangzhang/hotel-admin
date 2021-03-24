@@ -62,12 +62,11 @@
       </el-form>
     </m-dialog>
     <m-dialog v-model="showOrderDialog"
-              title="修改订单"
+              :title="currentRoom && currentRoom.renew ? '续住' : '修改订单'"
               :close-on-confirm="true"
               :has-close="true"
               :has-confirm="true"
               :append-to-body="true"
-              width="md"
               @confirm="confirmUpdateOrder">
       <order-edit v-if="showOrderDialog"
                   :room="currentRoom" />

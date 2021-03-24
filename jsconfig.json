@@ -6,7 +6,8 @@
   "typeAcquisition": {
     "exclude": [
       "adler-32",
-      "cfb"
+      "cfb",
+      "codepage"
     ]
   },
   "compilerOptions": {

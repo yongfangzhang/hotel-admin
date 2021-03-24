@@ -1,6 +1,7 @@
 <template>
   <div>
-    <el-form ref="form"
+    <el-form v-if="!renew"
+             ref="form"
              :model="order"
              :label-width="formLabelWidth.w6"
              label-position="left"

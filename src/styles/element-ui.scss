@@ -1,6 +1,6 @@
 // cover some element-ui styles
 .el-row {
-  margin: 0 -.5rem;
+  margin: 0 -0.5rem;
 }
 .el-breadcrumb__inner,
 .el-breadcrumb__inner a {
@@ -17,24 +17,24 @@
   display: none;
 }
 
-.el-dialog__body{
+.el-dialog__body {
   padding: 1rem;
 }
 
-.el-dialog__header{
-  padding:17px;
-  background: #F4F4F4;
+.el-dialog__header {
+  padding: 17px;
+  background: #f4f4f4;
 }
 
-.el-dialog__title{
+.el-dialog__title {
   font-weight: bold;
 }
 
-.el-dialog__footer{
+.el-dialog__footer {
   padding-top: 0;
 }
 
-.el-message-box__content{
+.el-message-box__content {
   max-height: 200px;
   overflow-y: scroll;
 }
@@ -52,14 +52,14 @@
   }
 }
 
-.el-drawer{
+.el-drawer {
   :focus {
     outline: 0;
   }
-  .el-drawer__body{
+  .el-drawer__body {
     height: 100%;
   }
-  .el-drawer__header{
+  .el-drawer__header {
     padding: 1rem;
     margin-bottom: 0;
   }
@@ -124,41 +124,43 @@
   }
 }
 
-.el-menu-item, #app .el-submenu__title, #app .el-submenu .el-menu-item {
-  height: 2.8rem!important;
-  line-height: 2.8rem!important;
+.el-menu-item,
+#app .el-submenu__title,
+#app .el-submenu .el-menu-item {
+  height: 2.8rem !important;
+  line-height: 2.8rem !important;
 }
 // inner navbar 样式调整
 .inner-navbar {
-  height: 50px!important;
+  height: 50px !important;
   .hamburger-container {
-    line-height: 50px!important;
+    line-height: 50px !important;
   }
 }
 
 .el-breadcrumb.app-breadcrumb {
-  height: 50px!important;
-  line-height: 50px!important;
+  height: 50px !important;
+  line-height: 50px !important;
 }
 
 .tags-view-container {
-  height: 46px!important;
+  height: 46px !important;
   .tags-view-wrapper .tags-view-item {
-    height: 28px!important;
-    line-height: 28px!important;
+    height: 28px !important;
+    line-height: 28px !important;
     //font-size: $font-size-xs!important;
     @include media-breakpoint-size($px-12);
     margin-top: 9px !important;
   }
 }
 
-.hasTagsView .fixed-header+.app-main {
-  padding-top: 106px!important;
-  padding-bottom: 2.6rem!important;
+.hasTagsView .fixed-header + .app-main {
+  padding-top: 106px !important;
+  padding-bottom: 2.6rem !important;
 }
 .scroll-container {
   .el-scrollbar__wrap {
-    height: 46px!important;
+    height: 46px !important;
   }
 }
 .simple-table-container {
@@ -172,7 +174,7 @@
 
 .simple-table-header {
   background-color: #fafafa !important;
-  color: rgba(0,0,0,.85);
+  color: rgba(0, 0, 0, 0.85);
   text-align: center !important;
 }
 
@@ -180,16 +182,16 @@
   .warning-row {
     background: rgba(245, 108, 108, 0.2) !important;
   }
-  .lost-row{
+  .lost-row {
     background: rgba(192, 196, 204, 0.2) !important;
   }
-  .success-row{
+  .success-row {
     background: rgba(103, 194, 58, 0.2) !important;
   }
-  .border-edge{
-    border-right: 1px solid #E4E7ED;
+  .border-edge {
+    border-right: 1px solid #e4e7ed;
   }
-  .border-b{
+  .border-b {
     border-bottom: 2px dotted #909399;
   }
 }
@@ -217,7 +219,7 @@
 #app {
   .el-tabs__nav-wrap::after {
     // cover element-ui
-    height: 0!important;
+    height: 0 !important;
   }
   .el-tabs__header {
     margin-bottom: 15px;
@@ -273,13 +275,14 @@
     }
     .el-form-item__label,
     .el-input__inner,
-    .el-checkbox__label{
+    .el-checkbox__label {
       // @include media-breakpoint-height();
       // @include media-breakpoint-line-height();
       @include media-breakpoint-size($px-14);
     }
   }
-  .el-date-editor.el-input, .el-date-editor.el-input__inner {
+  .el-date-editor.el-input,
+  .el-date-editor.el-input__inner {
     width: 100%;
     // @include media-breakpoint-height();
     // @include media-breakpoint-line-height();
@@ -301,10 +304,10 @@
   //     overflow-y: auto;
   //   }
   // }
-  .el-icon-check{
+  .el-icon-check {
     font-weight: bold;
   }
-  .el-icon-close{
+  .el-icon-close {
     font-weight: bold;
   }
 }
@@ -342,20 +345,22 @@
   box-shadow: none !important;
 }
 
-
 .el-form-item.is-success .el-input__inner,
 .el-form-item.is-success .el-input__inner:focus,
 .el-form-item.is-success .el-textarea__inner,
 .el-form-item.is-success .el-textarea__inner:focus {
-  border-color:#67C23A
+  border-color: #67c23a;
 }
 .el-form-item.is-success .el-input-group__append .el-input__inner,
 .el-form-item.is-success .el-input-group__prepend .el-input__inner {
-  border-color:transparent
+  border-color: transparent;
 }
 .el-form-item.is-success .el-input__validateIcon {
-  color:#67C23A
+  color: #67c23a;
 }
 
-
-
+.hotel-body {
+  .el-form-item--mini.el-form-item {
+    margin-bottom: $spacer;
+  }
+}
