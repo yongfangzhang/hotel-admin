@@ -86,9 +86,11 @@
   </div>
 </template>
 <script>
-import { MODULE } from '@/store/constant';
+import { ACTIONS, MODULE } from '@/store/constant';
 import { reportMixins } from './mixins';
 import { baseTableMixin } from '@/utils/mixins';
+import printJS from 'print-js';
+
 export default {
   name: 'ApartmentReport',
   mixins: [reportMixins, baseTableMixin],
@@ -118,7 +120,27 @@ export default {
       this.queries.orderCreatedAtStart = this.createdRange[0];
       this.queries.orderCreatedAtStop = this.createdRange[1];
     },
-    printReport() {}
+    printReport() {
+      const queries = this.queries || {};
+      this.doAction(MODULE.APARTMENT, ACTIONS.FETCH_PAGE_DATA, {
+        limit: -1,
+        page: 1,
+        ...queries
+      }).then((d) => {
+        printJS({
+          documentTitle: '公寓报表',
+          printable: d.list,
+          properties: [
+            { field: 'name', displayName: '公寓' },
+            { field: 'contactor', displayName: '联系人' },
+            { field: 'contactorMobile', displayName: '联系人手机' },
+            { field: 'saleTimes', displayName: '销售次数' },
+            { field: 'income', displayName: '总收益' }
+          ],
+          type: 'json'
+        });
+      });
+    }
   }
 };
 </script>

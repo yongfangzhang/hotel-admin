@@ -111,10 +111,11 @@
   </div>
 </template>
 <script>
-import { MODULE } from '@/store/constant';
+import { ACTIONS, MODULE } from '@/store/constant';
 import { reportMixins } from './mixins';
 import { baseTableMixin } from '@/utils/mixins';
 import { mapGetters } from 'vuex';
+import printJS from 'print-js';
 
 export default {
   name: 'RoomReport',
@@ -154,7 +155,33 @@ export default {
       this.queries.orderCreatedAtStart = this.createdRange[0];
       this.queries.orderCreatedAtStop = this.createdRange[1];
     },
-    printReport() {}
+    printReport() {
+      const queries = this.queries || {};
+      this.doAction(MODULE.ROOM, ACTIONS.FETCH_PAGE_DATA, {
+        limit: -1,
+        page: 1,
+        ...queries
+      }).then((d) => {
+        d.list.forEach((item) => {
+          item.apartmentName = this.apartmentMap[item.apartmentUuid];
+          item.typeName = this.ROOM_TYPE_MAP[item.typeUuid];
+        });
+        printJS({
+          documentTitle: '房间报表',
+          printable: d.list,
+          properties: [
+            { field: 'apartmentName', displayName: '公寓' },
+            { field: 'floorNumber', displayName: '楼号' },
+            { field: 'unitNumber', displayName: '单元号' },
+            { field: 'number', displayName: '房间号' },
+            { field: 'typeName', displayName: '房间类型' },
+            { field: 'saleTimes', displayName: '销售次数' },
+            { field: 'income', displayName: '总收益' }
+          ],
+          type: 'json'
+        });
+      });
+    }
   }
 };
 </script>
