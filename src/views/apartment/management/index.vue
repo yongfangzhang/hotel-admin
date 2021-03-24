@@ -11,7 +11,7 @@
                  inline
                  @submit.native.prevent>
           <div>
-            <el-form-item label="公寓名称">
+            <el-form-item label="公寓">
               <el-input v-model="queries.name"
                         placeholder="请输入"
                         clearable
@@ -42,7 +42,7 @@
         </div>
       </div>
       <template slot="columns">
-        <el-table-column label="公寓名称"
+        <el-table-column label="公寓"
                          align="center"
                          prop="name"
                          :min-width="colWidth.nm" />

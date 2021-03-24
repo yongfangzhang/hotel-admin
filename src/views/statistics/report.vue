@@ -5,11 +5,13 @@
       <el-tab-pane label="公寓"
                    name="apartment">
         <apartment-report :apartment-map="apartmentMap"
+                          :operator-map="operatorMap"
                           :visible="activeName==='apartment'" />
       </el-tab-pane>
       <el-tab-pane label="房间"
                    name="room">
         <room-report :apartment-map="apartmentMap"
+                     :operator-map="operatorMap"
                      :visible="activeName==='room'" />
       </el-tab-pane>
     </el-tabs>
@@ -27,7 +29,8 @@ export default {
   data() {
     return {
       activeName: 'apartment',
-      apartmentMap: {}
+      apartmentMap: {},
+      operatorMap: {}
     };
   },
   mounted() {
@@ -40,6 +43,11 @@ export default {
     init() {
       this.doAction(MODULE.APARTMENT, ACTIONS.FETCH_LIST).then((list) => {
         this.apartmentMap = list2Map(list, 'uuid', 'shortName');
+      });
+      this.doAction(MODULE.USER, ACTIONS.FETCH_XS_LIST, {
+        channel: this.CUSTOMER_CHANNEL.BACKEND
+      }).then((list) => {
+        this.operatorMap = list2Map(list, 'uuid', 'name');
       });
     }
   }

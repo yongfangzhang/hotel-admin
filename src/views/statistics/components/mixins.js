@@ -1,5 +1,5 @@
-import { str2Date } from '@/utils/index';
 import { DATE_TYPE, WEEK_DAY } from '@/utils/constant';
+import { str2Date } from '@/utils/index';
 
 export const chartMixins = {
   props: {
@@ -74,6 +74,8 @@ export const chartMixins = {
 
 export const reportMixins = {
   props: {
-    visible: { type: Boolean, default: false }
+    visible: { type: Boolean, default: false },
+    apartmentMap: { type: Object, required: true },
+    operatorMap: { type: Object, required: true }
   }
 };

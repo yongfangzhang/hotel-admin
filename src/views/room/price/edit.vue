@@ -50,7 +50,7 @@ export default {
     },
     baseFormItems() {
       return {
-        left: [{ key: 'name', label: '公寓名称' }],
+        left: [{ key: 'name', label: '公寓' }],
         right: [
           {
             key: 'state',
