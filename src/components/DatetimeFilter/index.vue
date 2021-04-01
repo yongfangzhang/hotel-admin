@@ -6,6 +6,7 @@
                     range-separator="-"
                     start-placeholder="起始时间"
                     end-placeholder="结束时间"
+                    :style="{width: width}"
                     @change="$emit('change',$event)" />
   </el-form-item>
 </template>
@@ -15,6 +16,7 @@ export default {
   name: 'DatetimeFilter',
   mixins: [sync],
   props: {
+    width: { type: String, default: null },
     label: {
       type: String,
       default: '创建时间'

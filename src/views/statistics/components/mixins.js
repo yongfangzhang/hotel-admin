@@ -1,5 +1,7 @@
+import { MODULE } from '@/store/constant';
 import { DATE_TYPE, WEEK_DAY } from '@/utils/constant';
-import { str2Date, parseTime } from '@/utils/index';
+import { str2Date, parseTime, isNotBlank } from '@/utils/index';
+import { mapGetters } from 'vuex';
 
 export const chartMixins = {
   props: {
@@ -79,12 +81,46 @@ export const reportMixins = {
     operatorMap: { type: Object, required: true }
   },
   data() {
+    const begin = new Date();
+    begin.setMonth(begin.getMonth() - 1);
+    const end = new Date();
     return {
       showMoreFilter: false,
-      createdRange: [
-        parseTime(new Date().setMonth(new Date().getMonth() - 1)),
-        parseTime(new Date())
-      ]
+      shiftValue: null,
+      createdRange: [parseTime(begin), parseTime(end)]
     };
+  },
+  computed: {
+    channelFilterWidth() {
+      return '100px';
+    },
+    shiftFilterWidth() {
+      return '160px';
+    },
+    dateFilterWidth() {
+      return '220px';
+    },
+    ...mapGetters(MODULE.DICT, ['ROOM_TYPE_MAP', 'SHIFT_TYPE_MAP'])
+  },
+  methods: {
+    mergeCreatedAt() {
+      if (this.createdRange) {
+        this.queries.orderCreatedAtStart =
+          this.createdRange[0].substring(0, 10) + ' 00:00:00';
+        this.queries.orderCreatedAtStop =
+          this.createdRange[1].substring(0, 10) + ' 23:59:59';
+      } else {
+        this.queries.orderCreatedAtStart = null;
+        this.queries.orderCreatedAtStop = null;
+      }
+      if (isNotBlank(this.shiftValue)) {
+        const times = this.shiftValue.split('-');
+        this.queries.orderShiftStart = `${times[0]}:00`;
+        this.queries.orderShiftStop = `${times[1]}:00`;
+      } else {
+        this.queries.orderShiftStart = null;
+        this.queries.orderShiftStop = null;
+      }
+    }
   }
 };

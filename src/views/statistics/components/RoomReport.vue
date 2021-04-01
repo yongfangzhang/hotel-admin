@@ -14,6 +14,34 @@
             <el-form-item label="渠道">
               <m-selector v-model="queries.channel"
                           :map="ORDER_CHANNEL_MAP"
+                          :width="channelFilterWidth"
+                          filterable
+                          clearable
+                          @keydown.enter.native="doFilter"
+                          @change="doFilter"
+                          @clear="doFilter" />
+            </el-form-item>
+            <datetime-filter v-model="createdRange"
+                             label="接单日期"
+                             :width="dateFilterWidth"
+                             @change="doFilter" />
+            <el-form-item label="班次">
+              <m-selector v-model="shiftValue"
+                          :map="SHIFT_TYPE_MAP"
+                          :width="shiftFilterWidth"
+                          filterable
+                          clearable
+                          @keydown.enter.native="doFilter"
+                          @change="doFilter"
+                          @clear="doFilter" />
+            </el-form-item>
+            <el-button type="text"
+                       @click="showMoreFilter=!showMoreFilter">更多查询</el-button>
+          </div>
+          <div v-show="showMoreFilter">
+            <el-form-item label="接单人">
+              <m-selector v-model="queries.operatorUuid"
+                          :map="operatorMap"
                           filterable
                           clearable
                           @keydown.enter.native="doFilter"
@@ -23,22 +51,6 @@
             <el-form-item label="公寓">
               <m-selector v-model="queries.apartmentUuid"
                           :map="apartmentMap"
-                          filterable
-                          clearable
-                          @keydown.enter.native="doFilter"
-                          @change="doFilter"
-                          @clear="doFilter" />
-            </el-form-item>
-            <datetime-filter v-model="createdRange"
-                             label="接单时间"
-                             @change="doFilter" />
-            <el-button type="text"
-                       @click="showMoreFilter=!showMoreFilter">更多查询</el-button>
-          </div>
-          <div v-show="showMoreFilter">
-            <el-form-item label="接单人">
-              <m-selector v-model="queries.operatorUuid"
-                          :map="operatorMap"
                           filterable
                           clearable
                           @keydown.enter.native="doFilter"
@@ -114,7 +126,6 @@
 import { ACTIONS, MODULE } from '@/store/constant';
 import { reportMixins } from './mixins';
 import { baseTableMixin } from '@/utils/mixins';
-import { mapGetters } from 'vuex';
 import printJS from 'print-js';
 
 export default {
@@ -128,13 +139,14 @@ export default {
         report: true,
         operatorUuid: null,
         apartmentUuid: null,
+        orderShiftStart: null,
+        orderShiftStop: null,
         orderCreatedAtStart: null,
         orderCreatedAtStop: null
       }
     };
   },
   computed: {
-    ...mapGetters(MODULE.DICT, ['ROOM_TYPE_MAP']),
     mParam() {
       return {
         paramMode: true,
@@ -152,8 +164,7 @@ export default {
   methods: {
     init() {},
     beforeFetch() {
-      this.queries.orderCreatedAtStart = this.createdRange[0];
-      this.queries.orderCreatedAtStop = this.createdRange[1];
+      this.mergeCreatedAt();
     },
     printReport() {
       const queries = this.queries || {};

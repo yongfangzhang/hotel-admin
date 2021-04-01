@@ -471,11 +471,13 @@ const getValueByKey = (obj, key) => {
   return ret;
 };
 
-export const list2Map = (list, k, v) => {
+export const list2Map = (list, k, v, ignoredKey = null) => {
   const map = {};
   if (!list || !list.length) return map;
   list.forEach(item => {
-    map[getValueByKey(item, k)] =
+    const key = getValueByKey(item, k);
+    if (key === ignoredKey) return;
+    map[key] =
       typeof v === 'undefined' || v === null ? item : getValueByKey(item, v);
   });
   return map;

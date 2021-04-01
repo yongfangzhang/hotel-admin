@@ -16,7 +16,8 @@ const LOCAL_KEY = {
 };
 
 export const DICT_TYPE = {
-  ROOM_TYPE: 1
+  ROOM_TYPE: 1,
+  SHIFT_TYPE: 2
 };
 
 function sortDictTree(array) {
@@ -48,6 +49,16 @@ export default createBaseStore(
       ROOM_TYPE_MAP(state, getters) {
         const list = getters.dictGroupMap[DICT_TYPE.ROOM_TYPE] || [];
         return list2Map(list, 'uuid', 'name');
+      },
+      SHIFT_TYPE_MAP(state, getters) {
+        const list = getters.dictGroupMap[DICT_TYPE.SHIFT_TYPE] || [];
+        const reg = /^\d{2}:\d{2}-\d{2}:\d{2}$/;
+        const map = {};
+        list.forEach(item => {
+          if (!reg.test(item.value)) return;
+          map[item.value] = `${item.name}(${item.value})`;
+        });
+        return map;
       }
     },
     mutations: {
@@ -78,8 +89,8 @@ export default createBaseStore(
       d.description = d.description || '';
       d.parentUuid = null;
       d.code = null;
-      d.value = null;
-      d.type = null;
+      // d.value = null;
+      // d.type = null;
       d.children = null;
       d.createdAt = null;
       return d;

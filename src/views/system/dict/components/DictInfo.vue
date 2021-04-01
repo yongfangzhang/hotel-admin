@@ -17,6 +17,15 @@
       </el-row>
       <el-row>
         <el-col>
+          <el-form-item label="值"
+                        prop="value">
+            <el-input v-model="model.value"
+                      type="text" />
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col>
           <el-form-item label="编码"
                         prop="code">
             <span>
@@ -24,16 +33,6 @@
             </span>
           </el-form-item>
           <el-col />
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col>
-          <el-form-item label="值"
-                        prop="value">
-            <span>
-              {{ model.value }}
-            </span>
-          </el-form-item>
         </el-col>
       </el-row>
       <el-row>
