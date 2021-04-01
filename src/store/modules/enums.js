@@ -76,6 +76,9 @@ export default {
     LODGING_TYPE(state) {
       return state.enum.LodgingType;
     },
+    DEPOSIT_STATE(state) {
+      return state.enum.DepositState;
+    },
     ACCOUNT_TYPE_MAP(state) {
       return state.enumMap.AccountType;
     },
@@ -136,6 +139,9 @@ export default {
     LODGING_TYPE_MAP(state) {
       return state.enumMap.LodgingType;
     },
+    DEPOSIT_STATE_MAP(state) {
+      return state.enumMap.DepositState;
+    },
 
     // extral
     USER_STATE_THEME_MAP(state, getters) {
@@ -188,6 +194,25 @@ export default {
         [getters.ROOM_STATE.STAY_DARTY]: '#409eff',
         [getters.ROOM_STATE.FORBIDDEN]: '#ff4139',
         ...state.roomStateThemeMap
+      };
+    },
+    DEPOSIT_STATE_THEME_MAP(state, getters) {
+      return {
+        [getters.DEPOSIT_STATE.NONE]: 'info',
+        [getters.DEPOSIT_STATE.PAID]: 'primary',
+        [getters.DEPOSIT_STATE.UNPAID]: 'danger',
+        [getters.DEPOSIT_STATE.FULL_REFUNDED]: 'success',
+        [getters.DEPOSIT_STATE.PARTIAL_REFUNDED]: 'warning'
+      };
+    },
+    ORDER_STATE_THEME_MAP(state, getters) {
+      return {
+        [getters.ORDER_STATE.UNPAID]: 'danger',
+        [getters.ORDER_STATE.UNUSED]: 'warning',
+        [getters.ORDER_STATE.USED]: 'primary',
+        [getters.ORDER_STATE.FINISHED]: 'success',
+        [getters.ORDER_STATE.CANCELD]: 'info',
+        [getters.ORDER_STATE.ABANDON]: 'info'
       };
     }
   },

@@ -54,6 +54,7 @@ export const baseMixin = {
       'ROUTE_TYPE',
       'USER_STATE',
       'LODGING_TYPE',
+      'DEPOSIT_STATE',
       'ACCOUNT_TYPE_MAP',
       'APARTMENT_STATE_MAP',
       'BASE_ENUM_MAP',
@@ -74,6 +75,7 @@ export const baseMixin = {
       'ROUTE_TYPE_MAP',
       'USER_STATE_MAP',
       'LODGING_TYPE_MAP',
+      'DEPOSIT_STATE_MAP',
       // extral
       'USER_STATE_THEME_MAP',
       'GENDER_THEME_MAP',
@@ -81,7 +83,9 @@ export const baseMixin = {
       'BOOLEAN_FLAG_MAP',
       'APARTMENT_STATE_THEME_MAP',
       'OPERATION_THEME_MAP',
-      'ROOM_STATE_THEME_MAP'
+      'ROOM_STATE_THEME_MAP',
+      'DEPOSIT_STATE_THEME_MAP',
+      'ORDER_STATE_THEME_MAP'
     ]),
     formWidth() {
       // 基础留白50px, 单个字12px

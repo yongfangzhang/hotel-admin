@@ -70,7 +70,7 @@
             <el-tag :type="APARTMENT_STATE_THEME_MAP[row.state]"> {{ row.stateName }} </el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="销售次数"
+        <!-- <el-table-column label="销售次数"
                          align="center"
                          prop="saleTimes"
                          :min-width="colWidth.xs" />
@@ -82,7 +82,7 @@
             <m-view :value="row.income"
                     type="currency" />
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column label="创建时间"
                          prop="createdAt"
                          align="center"

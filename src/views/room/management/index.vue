@@ -100,7 +100,7 @@
                     @click.native="updateRoomPrice(row, priceType)" />
           </template>
         </el-table-column>
-        <el-table-column label="销售次数"
+        <!-- <el-table-column label="销售次数"
                          align="center"
                          prop="saleTimes"
                          :min-width="colWidth.xs" />
@@ -112,7 +112,7 @@
             <m-view :value="row.income"
                     type="currency" />
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column label="状态"
                          prop="stateName"
                          align="center"

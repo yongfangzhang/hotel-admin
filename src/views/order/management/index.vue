@@ -63,7 +63,7 @@
         <el-table-column label="订单号"
                          align="center"
                          prop="number"
-                         :min-width="colWidth.nm" />
+                         :min-width="colWidth.md" />
         <el-table-column label="渠道"
                          align="center"
                          prop="channelName"
@@ -77,7 +77,7 @@
                          align="center"
                          :min-width="colWidth.xs">
           <template slot-scope="{ row }">
-            <el-tag :type="APARTMENT_STATE_THEME_MAP[row.state]"> {{ row.stateName }} </el-tag>
+            <el-tag :type="ORDER_STATE_THEME_MAP[row.state]"> {{ row.stateName }} </el-tag>
           </template>
         </el-table-column>
         <el-table-column label="支付价格"
@@ -87,6 +87,32 @@
           <template slot-scope="{ row }">
             <m-view :value="row.paidPrice"
                     type="currency" />
+          </template>
+        </el-table-column>
+        <el-table-column label="押金"
+                         align="center"
+                         prop="deposit"
+                         :min-width="colWidth.xs">
+          <template slot-scope="{ row }">
+            <m-view :value="row.deposit"
+                    type="currency" />
+          </template>
+        </el-table-column>
+        <el-table-column label="扣除押金"
+                         align="center"
+                         prop="depositDeduction"
+                         :min-width="colWidth.xs">
+          <template slot-scope="{ row }">
+            <m-view :value="row.depositDeduction"
+                    type="currency" />
+          </template>
+        </el-table-column>
+        <el-table-column label="押金状态"
+                         align="center"
+                         prop="depositState"
+                         :min-width="colWidth.sm">
+          <template slot-scope="{ row }">
+            <el-tag :type="DEPOSIT_STATE_THEME_MAP[row.depositState]"> {{ row.depositStateName }} </el-tag>
           </template>
         </el-table-column>
         <el-table-column label="创建时间"
