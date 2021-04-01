@@ -56,7 +56,8 @@
                          :min-width="colWidth.sm" />
         <el-table-column label="地址"
                          align="center"
-                         prop="address">
+                         prop="address"
+                         :min-width="colWidth.longName">
           <template slot-scope="{ row }">
             <el-button type="text"
                        @click="showMap">{{ row.address }}</el-button>
@@ -86,7 +87,7 @@
         <el-table-column label="创建时间"
                          prop="createdAt"
                          align="center"
-                         :min-width="colWidth.datetime" />
+                         :width="colWidth.datetime" />
         <el-table-column label="操作"
                          align="center"
                          :min-width="colWidth.op3">
