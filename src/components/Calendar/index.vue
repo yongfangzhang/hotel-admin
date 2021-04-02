@@ -30,15 +30,15 @@
           <div v-for="(d,idx) in days"
                :key="d"
                :class="{'notCurrentMonth': notCurrentMonth((row - 1) * 7 + idx), 'isCurDay': isCurDay((row - 1) * 7 + idx) }"
-               class="border-left border-top flex-fill day-content">
+               class="cursor-pointer border-left border-top flex-fill day-content"
+               @click="$emit('selected', parseSlotName((row - 1) * 7 + idx))">
             <div class="day-number">
               <span>
                 {{ parseDay((row - 1) * 7 + idx) }}
               </span>
-              <span class="is_current-day ml-2">
-                今
-              </span>
+              <span class="is_current-day ml-2"> 今 </span>
             </div>
+            <slot :name="parseSlotName((row - 1) * 7 + idx)" />
           </div>
         </div>
       </div>
@@ -58,6 +58,9 @@ export default {
     };
   },
   computed: {
+    currentYear() {
+      return parseTime(this.selectedDate, PARSE_TIME_TYPE.YEAR);
+    },
     currentMonth() {
       return parseTime(this.selectedDate, PARSE_TIME_TYPE.MONTH);
     },
@@ -95,6 +98,7 @@ export default {
     },
     _addMonth(v, d) {
       const date = this.createDate(d);
+      date.setDate(1);
       return this.createDate(date.setMonth(date.getMonth() + v));
     },
     createDate(d) {
@@ -158,14 +162,17 @@ export default {
     },
     parseSlotName(position) {
       let currentDay = position - this.firstDay + 1;
+      let date = null;
       let month = this.currentMonth;
       // 上个月的
       if (currentDay < 1) {
-        month = parseTime(this._addMonth(-1), PARSE_TIME_TYPE.MONTH);
+        date = this._addMonth(-1);
+        month = parseTime(date, PARSE_TIME_TYPE.MONTH);
         currentDay = this.lastTotalDate + currentDay;
       } else if (currentDay > this.totalDate) {
         //   下个月的
-        month = parseTime(this._addMonth(1), PARSE_TIME_TYPE.MONTH);
+        date = this._addMonth(1);
+        month = parseTime(date, PARSE_TIME_TYPE.MONTH);
         currentDay = currentDay - this.totalDate;
       }
       return `${month}-${('0' + currentDay).slice(-2)}`;

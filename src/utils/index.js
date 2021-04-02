@@ -477,8 +477,12 @@ export const list2Map = (list, k, v, ignoredKey = null) => {
   list.forEach(item => {
     const key = getValueByKey(item, k);
     if (key === ignoredKey) return;
-    map[key] =
-      typeof v === 'undefined' || v === null ? item : getValueByKey(item, v);
+    if (Array.isArray(v)) {
+      map[key] = v.map(a => getValueByKey(item, a)).join(',');
+    } else {
+      map[key] =
+        typeof v === 'undefined' || v === null ? item : getValueByKey(item, v);
+    }
   });
   return map;
 };

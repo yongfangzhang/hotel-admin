@@ -5,6 +5,7 @@ import system from './modules/system/index';
 import apartment from './modules/apartment/index';
 import order from './modules/order/index';
 import room from './modules/room/index';
+import statistics from './modules/statistics/index';
 
 Vue.use(Vuex);
 
@@ -27,7 +28,8 @@ const store = new Vuex.Store({
     ...system,
     ...apartment,
     ...order,
-    ...room
+    ...room,
+    ...statistics
   },
   getters
 });

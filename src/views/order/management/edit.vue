@@ -394,7 +394,7 @@ export default {
       });
       this.doAction(MODULE.USER, ACTIONS.FETCH_LIST).then((d) => {
         const list = deepClone(d);
-        this.userMap = list2Map(list, 'uuid', 'name');
+        this.userMap = list2Map(list, 'uuid', ['name', 'mobile']);
         this.mobileMap = list2Map(list, 'mobile', 'mobile');
         this.userFullMap = list2Map(list, 'uuid');
         this.mobileFullMap = list2Map(list, 'mobile');

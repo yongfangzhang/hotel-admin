@@ -7,6 +7,7 @@ export const ACCOUNT_TYPE = 2;
 
 export const PARSE_TIME_TYPE = {
   YEAR: '{yyyy}',
+  MONTH: '{yyyy}-{mm}',
   DATE: '{yyyy}-{mm}-{dd}',
   DATETIME: '{yyyy}-{mm}-{dd} {hh}:{ii}:{ss}'
 };

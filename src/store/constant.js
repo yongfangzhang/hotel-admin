@@ -13,6 +13,7 @@ export const MODULE = {
   ROOM_PRICE: 'roomPrice',
   ORDER: 'order',
   ORDER_ITEM: 'orderItem',
+  DAILY_STATISTICS: 'dailyStatistics',
 
   SYSTEM_LOG: 'systemLog',
   SYSTEM_ACCOUNT: 'systemAccount',
