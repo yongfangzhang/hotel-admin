@@ -1,0 +1,97 @@
+// calendar
+
+$calendar_line: #d7d8d9;
+$calendar-other-month: #f8f8f8;
+$color-title-second: #666;
+$color-title-first: #222;
+$color-subtitle: #999;
+$color-tag-member: #b2b2b2;
+$color-info: #0084ff;
+
+.calendar-container {
+  padding: 0 2rem;
+  .calendar_header {
+    height: 3.8rem;
+    flex: 0 0 3.8rem;
+    @include border-bottom($calendar_line);
+
+    .calendar_tab-btn {
+      color: $color-title-second;
+      @include media-breakpoint-size($px-14);
+    }
+  }
+  .calendar_title {
+    @include media-breakpoint-size($px-24);
+    color: $color-title-first;
+    font-weight: bold;
+  }
+  .calendar_weekdays {
+    height: 3rem;
+    color: $color-subtitle;
+    @include media-breakpoint-size($px-24);
+    @include border-bottom($calendar_line);
+  }
+  .calendar_days {
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    color: $color-title-first;
+    margin-top: -1px;
+    .day-content {
+      padding: $spacer-xs;
+      min-height: 6.4rem;
+      width: 14.28%;
+      .day-number {
+        font-weight: bold;
+        color: $color-subtitle;
+        @include media-breakpoint-size($px-24);
+      }
+      .is_current-day {
+        display: none;
+      }
+      &.notCurrentMonth {
+        background-color: $calendar-other-month;
+      }
+      &.isCurDay {
+        color: $white;
+        background-color: $color-theme;
+        .day-number {
+          color: $white;
+          .is_current-day {
+            display: inline-block;
+          }
+        }
+      }
+      .oi-list {
+        .oi-item {
+          cursor: pointer;
+          line-height: 1;
+          margin-top: $spacer-xs;
+          @include media-breakpoint-size($px-14);
+          .finished {
+            color: $color-tag-member;
+          }
+          .oi-state {
+            color: $white;
+            line-height: 1;
+            padding: 2px 3px;
+            border-radius: 2px;
+            flex: 0 0 50px;
+            text-align: center;
+            &.on {
+              background-color: $color-info;
+            }
+            &.off {
+              color: $color-tag-member;
+              background-color: transparent;
+              border: 1px solid $color-tag-member;
+            }
+            &.waiting {
+              background-color: $--color-warning;
+            }
+          }
+        }
+      }
+    }
+  }
+}

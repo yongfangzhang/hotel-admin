@@ -11,6 +11,7 @@ export const chartMixins = {
     return {
       chartExtend: {
         series: {
+          type: 'line',
           smooth: false
         }
       },

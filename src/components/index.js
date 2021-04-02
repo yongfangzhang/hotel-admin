@@ -20,6 +20,7 @@ import SimpleTable from '@/components/SimpleTable';
 import Pagination from '@/components/Pagination';
 import PageTitle from '@/components/PageTitle';
 import QueryButton from '@/components/QueryButton';
+import Calendar from '@/components/Calendar';
 
 Vue.component(MSelector.name, MSelector);
 Vue.component(MRadio.name, MRadio);
@@ -42,3 +43,4 @@ Vue.component(Pagination.name, Pagination);
 Vue.component(SimpleTable.name, SimpleTable);
 Vue.component(PageTitle.name, PageTitle);
 Vue.component(QueryButton.name, QueryButton);
+Vue.component(Calendar.name, Calendar);
