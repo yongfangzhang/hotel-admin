@@ -8,7 +8,8 @@
       "adler-32",
       "cfb",
       "codepage",
-      "crc-32"
+      "crc-32",
+      "frac"
     ]
   },
   "compilerOptions": {
