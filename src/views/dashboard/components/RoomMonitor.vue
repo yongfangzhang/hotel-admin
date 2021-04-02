@@ -3,7 +3,9 @@
     <div class="h-100 py-3 d-flex flex-column">
       <room-filter ref="filter"
                    class="px-3"
-                   @show-setting="showSetting=true" />
+                   @show-setting="showSetting=true"
+                   @room-list="roomList=$event"
+                   @apartment-list="apartmentList=$event" />
       <div class="flex-fill scrollable-y room-item-panel">
         <div v-for="(rooms,apartment) in roomGroupList"
              :key="apartment">
@@ -89,6 +91,8 @@ export default {
   data() {
     return {
       currentRoom: null,
+      apartmentList: [],
+      roomList: [],
       showOrderDialog: false,
       showStateDialog: false,
       showSetting: false
@@ -96,12 +100,8 @@ export default {
   },
   computed: {
     ...mapState(MODULE.ROOM, ['roomSetting']),
-    roomList() {
-      return this.$store.state[MODULE.ROOM].list || [];
-    },
     apartmentMap() {
-      const apartmentList = this.$store.state[MODULE.APARTMENT].list || [];
-      return list2Map(apartmentList, 'uuid');
+      return list2Map(this.apartmentList, 'uuid');
     },
     availableRoomStateMap() {
       const ROOM_STATE = this.ROOM_STATE;
@@ -132,7 +132,7 @@ export default {
   },
   methods: {
     init() {
-      this.doAction(MODULE.APARTMENT, ACTIONS.FETCH_LIST).then(this.doFilter);
+      this.$refs.filter.init();
     },
     doFilter() {
       this.currentRoom = null;

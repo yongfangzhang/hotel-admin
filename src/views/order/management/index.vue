@@ -183,7 +183,8 @@ export default {
   },
   methods: {
     init() {
-      this.doAction(MODULE.APARTMENT, ACTIONS.FETCH_LIST).then((list) => {
+      this.doAction(MODULE.APARTMENT, ACTIONS.FETCH_LIST).then((d) => {
+        const list = deepClone(d);
         this.apartmentMap = list2Map(list, 'uuid', 'shortName');
       });
     },

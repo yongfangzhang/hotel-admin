@@ -16,6 +16,32 @@
                        :entity="order"
                        :allow-create="item.allowCreate"
                        :disabled="item.disabled" />
+
+          <el-form-item v-if="order"
+                        label="押金状态"
+                        prop="depositState"
+                        class="m-form-item">
+            <div class="d-flex">
+              <m-selector v-model="order.depositState"
+                          :map="DEPOSIT_STATE_MAP"
+                          placeholder="请选择"
+                          filterable />
+              <el-input v-if="order.depositState===DEPOSIT_STATE.PAID||order.depositState===DEPOSIT_STATE.UNPAID"
+                        v-model="order.deposit"
+                        class="ml-2"
+                        type="number"
+                        placeholder="收押金额" />
+              <el-input v-else-if="order.depositState===DEPOSIT_STATE.REFUNDED"
+                        v-model="order.depositRefunded"
+                        class="ml-2"
+                        type="number"
+                        placeholder="退押金额" />
+              <el-input v-else
+                        class="ml-2"
+                        disabled
+                        placeholder="无押金" />
+            </div>
+          </el-form-item>
         </el-col>
         <el-col :xs="24"
                 :sm="12">
@@ -63,7 +89,7 @@
 </template>
 <script>
 import { ACTIONS, MODULE } from '@/store/constant';
-import { list2Map, parseTime } from '@/utils/index';
+import { deepClone, list2Map, parseTime } from '@/utils/index';
 export default {
   name: 'OrderEdit',
   props: {
@@ -127,6 +153,11 @@ export default {
             type: 'datetime',
             placeholder: '请选择',
             disabled: true,
+            isView: true
+          },
+          {
+            key: 'deposit',
+            label: '押金',
             isView: true
           }
         ],
@@ -231,6 +262,12 @@ export default {
   watch: {
     room() {
       this.init();
+    },
+    'order.depositRefunded'() {
+      this.updateDepositDeduction();
+    },
+    'order.deposit'() {
+      this.updateDepositDeduction();
     }
   },
   mounted() {
@@ -240,15 +277,24 @@ export default {
     this.init();
   },
   methods: {
+    updateDepositDeduction() {
+      const order = this.order;
+      if (!order) return;
+
+      order.depositDeduction =
+        Number(order.deposit) - Number(order.depositRefunded);
+    },
     init() {
       if (!this.room) return;
       this.fetchRoomMap(this.room.apartmentUuid);
       this.doAction(MODULE.APARTMENT, ACTIONS.FETCH_LIST, {
         state: this.APARTMENT_STATE.NORMAL
-      }).then((list) => {
+      }).then((d) => {
+        const list = deepClone(d);
         this.apartmentMap = list2Map(list, 'uuid', 'shortName');
       });
-      this.doAction(MODULE.USER, ACTIONS.FETCH_LIST).then((list) => {
+      this.doAction(MODULE.USER, ACTIONS.FETCH_LIST).then((d) => {
+        const list = deepClone(d);
         this.userMap = list2Map(list, 'uuid', 'name');
         this.mobileMap = list2Map(list, 'mobile', 'mobile');
         this.userFullMap = list2Map(list, 'uuid');
@@ -292,7 +338,8 @@ export default {
       return this.doAction(MODULE.ROOM, ACTIONS.FETCH_LIST, {
         apartmentUuid: this.room.apartmentUuid,
         state: this.ROOM_STATE.NORMAL
-      }).then((list) => {
+      }).then((d) => {
+        const list = deepClone(d);
         this.roomMap = list2Map(list, 'uuid', 'name');
         this.roomFullMap = list2Map(list, 'uuid');
         return Promise.resolve(this.roomFullMap);

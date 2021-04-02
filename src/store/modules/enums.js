@@ -201,8 +201,7 @@ export default {
         [getters.DEPOSIT_STATE.NONE]: 'info',
         [getters.DEPOSIT_STATE.PAID]: 'primary',
         [getters.DEPOSIT_STATE.UNPAID]: 'danger',
-        [getters.DEPOSIT_STATE.FULL_REFUNDED]: 'success',
-        [getters.DEPOSIT_STATE.PARTIAL_REFUNDED]: 'warning'
+        [getters.DEPOSIT_STATE.REFUNDED]: 'success'
       };
     },
     ORDER_STATE_THEME_MAP(state, getters) {

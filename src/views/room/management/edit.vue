@@ -48,7 +48,7 @@
 import { ACTIONS, MODULE, MUTATIONS } from '@/store/constant';
 import { formEditMixin } from '@/utils/mixins';
 import { mapGetters } from 'vuex';
-import { list2Map } from '@/utils';
+import { deepClone, list2Map } from '@/utils';
 export default {
   name: 'RoomManagementEdit',
   mixins: [formEditMixin],
@@ -113,9 +113,7 @@ export default {
         unitNumber: [
           { required: true, message: '单元号不能为空', trigger: 'blur' }
         ],
-        number: [
-          { required: true, message: '房间号不能为空', trigger: 'blur' }
-        ]
+        number: [{ required: true, message: '房间号不能为空', trigger: 'blur' }]
         // price: [
         //   { required: true, message: '基础价格不能为空', trigger: 'blur' }
         // ]
@@ -137,7 +135,8 @@ export default {
     init() {
       this.doAction(MODULE.APARTMENT, ACTIONS.FETCH_LIST, {
         state: this.APARTMENT_STATE.NORMAL
-      }).then((list) => {
+      }).then((d) => {
+        const list = deepClone(d);
         this.apartmentList = list;
       });
       this.initPriceMap();

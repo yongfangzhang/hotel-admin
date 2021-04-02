@@ -90,7 +90,7 @@ import { DATE_TYPE, DATE_TYPE_MAP } from '@/utils/constant';
 import ApartmentStatistics from './components/ApartmentStatistics.vue';
 import RoomStatistics from './components/RoomStatistics.vue';
 import { ACTIONS, MODULE } from '@/store/constant';
-import { list2Map, parseTime } from '@/utils/index';
+import { deepClone, list2Map, parseTime } from '@/utils/index';
 export default {
   name: 'Statistics',
   components: { ApartmentStatistics, RoomStatistics },
@@ -158,11 +158,13 @@ export default {
   methods: {
     init() {
       this.doAction(MODULE.APARTMENT, ACTIONS.FETCH_LIST)
-        .then((list) => {
+        .then((d) => {
+          const list = deepClone(d);
           this.apartmentMap = list2Map(list, 'uuid', 'shortName');
           return this.doAction(MODULE.ROOM, ACTIONS.FETCH_LIST);
         })
-        .then((list) => {
+        .then((d) => {
+          const list = deepClone(d);
           const map = {};
           list.forEach((room) => {
             map[room.uuid] =
@@ -183,7 +185,8 @@ export default {
           this.ORDER_STATE.USED,
           this.ORDER_STATE.FINISHED
         ].join(',')
-      }).then((orders) => {
+      }).then((d) => {
+        const orders = deepClone(d);
         this.orderItems = orders.flatMap((order) => order.items);
       });
     },

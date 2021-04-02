@@ -102,6 +102,7 @@ import { ACTIONS, MODULE } from '@/store/constant';
 import { reportMixins } from './mixins';
 import { baseTableMixin } from '@/utils/mixins';
 import printJS from 'print-js';
+import { deepClone } from '@/utils';
 
 export default {
   name: 'ApartmentReport',
@@ -139,7 +140,8 @@ export default {
         limit: -1,
         page: 1,
         ...queries
-      }).then((d) => {
+      }).then((data) => {
+        const d = deepClone(data);
         printJS({
           documentTitle: '公寓报表',
           printable: d.list,

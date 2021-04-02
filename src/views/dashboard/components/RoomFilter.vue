@@ -42,11 +42,14 @@
 <script>
 import { ACTIONS, MODULE } from '@/store/constant';
 import { mapGetters } from 'vuex';
+import { deepClone } from '@/utils';
 export default {
   name: 'RoomFilter',
   data() {
     return {
       qStates: [],
+      apartmentList: [],
+      roomList: [],
       queries: {
         states: null,
         number: null,
@@ -55,15 +58,22 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(MODULE.DICT, ['ROOM_TYPE_MAP']),
-    apartmentList() {
-      return this.$store.state.apartment.list || [];
-    }
+    ...mapGetters(MODULE.DICT, ['ROOM_TYPE_MAP'])
   },
   methods: {
+    init() {
+      this.doAction(MODULE.APARTMENT, ACTIONS.FETCH_LIST).then((d) => {
+        this.apartmentList = deepClone(d);
+        this.$emit('apartment-list', this.apartmentList);
+        return this.doFilter();
+      });
+    },
     doFilter() {
       this.beforeFetch();
-      this.doAction(MODULE.ROOM, ACTIONS.FETCH_LIST, this.queries);
+      this.doAction(MODULE.ROOM, ACTIONS.FETCH_LIST, this.queries).then((d) => {
+        this.roomList = deepClone(d);
+        this.$emit('room-list', this.roomList);
+      });
     },
     resetFilter() {
       this.queries = this.$options.data().queries;

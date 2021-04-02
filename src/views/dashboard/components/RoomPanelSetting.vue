@@ -55,7 +55,7 @@ export default {
   mixins: [sync],
   data() {
     return {
-      spanArr: [3, 4, 6, 8, 12, 24]
+      spanArr: [1, 2, 3, 4, 6, 8, 12, 24]
     };
   },
   computed: {

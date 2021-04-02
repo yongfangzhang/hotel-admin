@@ -22,7 +22,7 @@ import ApartmentReport from './components/ApartmentReport';
 import RoomReport from './components/RoomReport';
 
 import { ACTIONS, MODULE } from '@/store/constant';
-import { list2Map } from '@/utils';
+import { deepClone, list2Map } from '@/utils';
 export default {
   name: 'StatisticsReport',
   components: { ApartmentReport, RoomReport },
@@ -41,12 +41,14 @@ export default {
   },
   methods: {
     init() {
-      this.doAction(MODULE.APARTMENT, ACTIONS.FETCH_LIST).then((list) => {
+      this.doAction(MODULE.APARTMENT, ACTIONS.FETCH_LIST).then((d) => {
+        const list = deepClone(d);
         this.apartmentMap = list2Map(list, 'uuid', 'shortName');
       });
       this.doAction(MODULE.USER, ACTIONS.FETCH_LIST, {
         channel: this.CUSTOMER_CHANNEL.BACKEND
-      }).then((list) => {
+      }).then((d) => {
+        const list = deepClone(d);
         this.operatorMap = list2Map(list, 'uuid', 'name');
       });
     }

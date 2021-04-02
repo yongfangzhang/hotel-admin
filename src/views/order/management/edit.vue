@@ -24,6 +24,31 @@
                            :entity="viewInfo"
                            :allow-create="item.allowCreate"
                            :disabled="!item.alwaysEnable && (vDisabled || item.disabled)" />
+              <el-form-item v-if="viewInfo"
+                            label="押金状态"
+                            prop="depositState"
+                            class="m-form-item">
+                <div class="d-flex">
+                  <m-selector v-model="viewInfo.depositState"
+                              :map="DEPOSIT_STATE_MAP"
+                              placeholder="请选择"
+                              filterable />
+                  <el-input v-if="viewInfo.depositState===DEPOSIT_STATE.PAID||viewInfo.depositState===DEPOSIT_STATE.UNPAID"
+                            v-model="viewInfo.deposit"
+                            class="ml-2"
+                            type="number"
+                            placeholder="收押金额" />
+                  <el-input v-else-if="viewInfo.depositState===DEPOSIT_STATE.REFUNDED"
+                            v-model="viewInfo.depositRefunded"
+                            class="ml-2"
+                            type="number"
+                            placeholder="退押金额" />
+                  <el-input v-else
+                            class="ml-2"
+                            disabled
+                            placeholder="无押金" />
+                </div>
+              </el-form-item>
             </el-col>
             <el-col :xs="24"
                     :sm="12">
@@ -103,7 +128,7 @@
 import { ACTIONS, MODULE, MUTATIONS } from '@/store/constant';
 import { formEditMixin } from '@/utils/mixins';
 import { alertMessage, toastWarning } from '@/utils/message';
-import { list2Map, parseTime, validateId } from '@/utils/index';
+import { deepClone, list2Map, parseTime, validateId } from '@/utils/index';
 export default {
   name: 'OrderManagementEdit',
   mixins: [formEditMixin],
@@ -163,6 +188,12 @@ export default {
               this.viewInfo.userType === this.ORDER_USER_TYPE.SOCIAL
           },
           {
+            key: 'state',
+            label: '状态',
+            type: 'selector',
+            map: this.ORDER_STATE_MAP
+          },
+          {
             key: 'paidAt',
             label: '支付时间',
             type: 'datetime',
@@ -170,10 +201,9 @@ export default {
             disabled: !this.newAdded
           },
           {
-            key: 'remarkContent',
-            label: '备注',
-            type: 'remark',
-            alwaysEnable: true
+            key: 'deposit',
+            label: '押金',
+            isView: true
           }
         ],
         right: [
@@ -184,16 +214,16 @@ export default {
             map: this.ORDER_CHANNEL_MAP,
             disabled: !this.newAdded
           },
-          {
-            key: 'state',
-            label: '状态',
-            type: 'selector',
-            map: this.ORDER_STATE_MAP
-          },
           { key: 'bizNumber', label: '渠道订单号', disabled: !this.newAdded },
           { key: 'number', label: '订单号', isView: true },
           { key: 'canceledAt', label: '取消时间', isView: true },
-          { key: 'finishedAt', label: '完成时间', isView: true }
+          { key: 'finishedAt', label: '完成时间', isView: true },
+          {
+            key: 'remarkContent',
+            label: '备注',
+            type: 'remark',
+            alwaysEnable: true
+          }
           // { key: 'commentedAt', label: '评价时间', isView: true }
         ]
       };
@@ -333,7 +363,13 @@ export default {
       if (!this.viewInfo) return;
       this.fetchRoomMap(v);
     },
-    'viewInfo.priceType'() {}
+    'viewInfo.priceType'() {},
+    'viewInfo.depositRefunded'() {
+      this.updateDepositDeduction();
+    },
+    'viewInfo.deposit'() {
+      this.updateDepositDeduction();
+    }
   },
   mounted() {
     this.init();
@@ -342,14 +378,22 @@ export default {
     this.init();
   },
   methods: {
+    updateDepositDeduction() {
+      const viewInfo = this.viewInfo;
+      if (!viewInfo) return;
+
+      viewInfo.depositDeduction =
+        Number(viewInfo.deposit) - Number(viewInfo.depositRefunded);
+    },
     init() {
       this.parseQuery();
       this.doAction(MODULE.APARTMENT, ACTIONS.FETCH_LIST, {
         state: this.APARTMENT_STATE.NORMAL
-      }).then((list) => {
-        this.apartmentList = list;
+      }).then((d) => {
+        this.apartmentList = deepClone(d);
       });
-      this.doAction(MODULE.USER, ACTIONS.FETCH_LIST).then((list) => {
+      this.doAction(MODULE.USER, ACTIONS.FETCH_LIST).then((d) => {
+        const list = deepClone(d);
         this.userMap = list2Map(list, 'uuid', 'name');
         this.mobileMap = list2Map(list, 'mobile', 'mobile');
         this.userFullMap = list2Map(list, 'uuid');
@@ -421,7 +465,8 @@ export default {
       return this.doAction(MODULE.ROOM, ACTIONS.FETCH_LIST, {
         apartmentUuid: this.viewInfo.apartmentUuid,
         state: this.ROOM_STATE.NORMAL
-      }).then((list) => {
+      }).then((d) => {
+        const list = deepClone(d);
         this.roomMap = list2Map(list, 'uuid', 'name');
         this.roomFullMap = list2Map(list, 'uuid');
         return Promise.resolve(this.roomFullMap);
