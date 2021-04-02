@@ -5,66 +5,79 @@
                   :queries="queries"
                   :before-fetch="beforeFetch"
                   class="px-3 flex-fill">
-      <div slot="header"
-           class="d-flex justify-content-between">
-        <el-form label-position="left"
-                 inline
-                 @submit.native.prevent>
-          <div>
-            <el-form-item label="渠道">
-              <m-selector v-model="queries.channel"
-                          :map="ORDER_CHANNEL_MAP"
-                          :width="channelFilterWidth"
-                          filterable
+      <div slot="header">
+        <div class="d-flex justify-content-between">
+          <el-form label-position="left"
+                   inline
+                   @submit.native.prevent>
+            <div>
+              <el-form-item label="渠道">
+                <m-selector v-model="queries.channel"
+                            :map="ORDER_CHANNEL_MAP"
+                            :width="channelFilterWidth"
+                            filterable
+                            clearable
+                            @keydown.enter.native="doFilter"
+                            @change="doFilter"
+                            @clear="doFilter" />
+              </el-form-item>
+              <datetime-filter v-model="createdRange"
+                               label="接单日期"
+                               :width="dateFilterWidth"
+                               @change="doFilter" />
+              <el-form-item label="班次">
+                <m-selector v-model="shiftValue"
+                            :map="SHIFT_TYPE_MAP"
+                            :width="shiftFilterWidth"
+                            filterable
+                            clearable
+                            @keydown.enter.native="doFilter"
+                            @change="doFilter"
+                            @clear="doFilter" />
+              </el-form-item>
+              <el-button type="text"
+                         @click="showMoreFilter=!showMoreFilter">更多查询</el-button>
+            </div>
+            <div v-show="showMoreFilter">
+              <el-form-item label="接单人">
+                <m-selector v-model="queries.operatorUuid"
+                            :map="operatorMap"
+                            filterable
+                            clearable
+                            @keydown.enter.native="doFilter"
+                            @change="doFilter"
+                            @clear="doFilter" />
+              </el-form-item>
+              <el-form-item label="公寓">
+                <el-input v-model="queries.name"
+                          placeholder="请输入"
                           clearable
-                          @keydown.enter.native="doFilter"
-                          @change="doFilter"
-                          @clear="doFilter" />
-            </el-form-item>
-            <datetime-filter v-model="createdRange"
-                             label="接单日期"
-                             :width="dateFilterWidth"
-                             @change="doFilter" />
-            <el-form-item label="班次">
-              <m-selector v-model="shiftValue"
-                          :map="SHIFT_TYPE_MAP"
-                          :width="shiftFilterWidth"
-                          filterable
-                          clearable
-                          @keydown.enter.native="doFilter"
-                          @change="doFilter"
-                          @clear="doFilter" />
-            </el-form-item>
-            <el-button type="text"
-                       @click="showMoreFilter=!showMoreFilter">更多查询</el-button>
+                          @clear="doFilter"
+                          @keydown.enter.native="doFilter" />
+              </el-form-item>
+            </div>
+          </el-form>
+          <div class="text-nowrap">
+            <query-button type="query"
+                          @click="doFilter" />
+            <query-button type="reset"
+                          @click="resetFilter" />
+            <el-button type="primary"
+                       plain
+                       @click="printReport">打印</el-button>
           </div>
-          <div v-show="showMoreFilter">
-            <el-form-item label="接单人">
-              <m-selector v-model="queries.operatorUuid"
-                          :map="operatorMap"
-                          filterable
-                          clearable
-                          @keydown.enter.native="doFilter"
-                          @change="doFilter"
-                          @clear="doFilter" />
-            </el-form-item>
-            <el-form-item label="公寓">
-              <el-input v-model="queries.name"
-                        placeholder="请输入"
-                        clearable
-                        @clear="doFilter"
-                        @keydown.enter.native="doFilter" />
-            </el-form-item>
-          </div>
-        </el-form>
-        <div class="text-nowrap">
-          <query-button type="query"
-                        @click="doFilter" />
-          <query-button type="reset"
-                        @click="resetFilter" />
-          <el-button type="primary"
-                     plain
-                     @click="printReport">打印</el-button>
+        </div>
+        <div class="pb-3">
+          <span>时间查询区间: </span>
+          <span v-if="queries.orderCreatedAtStart"
+                class="text-primary">{{ queries.orderCreatedAtStart }} ~ {{ queries.orderCreatedAtStop }}, </span>
+          <span v-else
+                class="text-primary">无</span>
+          <span>班次查询区间: </span>
+          <span v-if="queries.orderShiftStart"
+                class="text-primary">{{ queries.orderShiftStart }} ~ {{ queries.orderShiftStop }}</span>
+          <span v-else
+                class="text-primary">无</span>
         </div>
       </div>
       <template slot="columns">
