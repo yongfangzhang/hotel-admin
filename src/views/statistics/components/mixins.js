@@ -115,7 +115,6 @@ export const reportMixins = {
         this.queries.orderShiftStop = shiftStop;
       }
 
-
       if (!this.createdRange) {
         this.queries.orderCreatedAtStart = null;
         this.queries.orderCreatedAtStop = null;
