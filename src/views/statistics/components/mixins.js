@@ -111,13 +111,14 @@ export const reportMixins = {
         const times = this.shiftValue.split('-');
         shiftStart = `${times[0]}:00`;
         shiftStop = `${times[1]}:00`;
+        this.queries.orderShiftStart = shiftStart;
+        this.queries.orderShiftStop = shiftStop;
       }
+
 
       if (!this.createdRange) {
         this.queries.orderCreatedAtStart = null;
         this.queries.orderCreatedAtStop = null;
-        this.queries.orderShiftStart = shiftStart;
-        this.queries.orderShiftStop = shiftStop;
         return;
       }
 
