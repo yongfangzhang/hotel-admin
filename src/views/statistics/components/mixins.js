@@ -105,22 +105,32 @@ export const reportMixins = {
   },
   methods: {
     mergeCreatedAt() {
-      if (this.createdRange) {
-        this.queries.orderCreatedAtStart =
-          this.createdRange[0].substring(0, 10) + ' 00:00:00';
-        this.queries.orderCreatedAtStop =
-          this.createdRange[1].substring(0, 10) + ' 23:59:59';
-      } else {
-        this.queries.orderCreatedAtStart = null;
-        this.queries.orderCreatedAtStop = null;
-      }
+      let shiftStart = '00:00:00';
+      let shiftStop = '23:59:59';
       if (isNotBlank(this.shiftValue)) {
         const times = this.shiftValue.split('-');
-        this.queries.orderShiftStart = `${times[0]}:00`;
-        this.queries.orderShiftStop = `${times[1]}:00`;
-      } else {
-        this.queries.orderShiftStart = null;
-        this.queries.orderShiftStop = null;
+        shiftStart = `${times[0]}:00`;
+        shiftStop = `${times[1]}:00`;
+      }
+
+      if (!this.createdRange) {
+        this.queries.orderCreatedAtStart = null;
+        this.queries.orderCreatedAtStop = null;
+        this.queries.orderShiftStart = shiftStart;
+        this.queries.orderShiftStop = shiftStop;
+        return;
+      }
+
+      this.queries.orderCreatedAtStart =
+        this.createdRange[0].substring(0, 10) + ` ${shiftStart}`;
+      this.queries.orderCreatedAtStop =
+        this.createdRange[1].substring(0, 10) + ` ${shiftStop}`;
+
+      if (+shiftStart.substring(0, 2) > +shiftStop.substring(0, 2)) {
+        // 如果 班次跨天, 修改结束时间 为第二天的;
+        const stopDate = str2Date(this.queries.orderCreatedAtStop);
+        stopDate.setDate(stopDate.getDate() + 1);
+        this.queries.orderCreatedAtStop = parseTime(stopDate);
       }
     }
   }

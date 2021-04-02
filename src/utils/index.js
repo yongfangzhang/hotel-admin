@@ -544,12 +544,12 @@ export const str2Date = str => {
   try {
     const strArr = str.split(/-|\s|:/g);
     const d = new Date(
-      strArr[0], // y
-      strArr[1] - 1 || 0, // m - 1
-      strArr[2] || 0, // d
-      strArr[3] || 0, // h
-      strArr[4] || 0, // m
-      strArr[5] || 0 // s
+      +strArr[0], // y
+      +strArr[1] - 1 || 0, // m - 1
+      +strArr[2] || 1, // d
+      +strArr[3] || 0, // h
+      +strArr[4] || 0, // m
+      +strArr[5] || 0 // s
     );
     return d;
   } catch (ex) {
