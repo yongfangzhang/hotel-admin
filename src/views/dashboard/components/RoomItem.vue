@@ -67,6 +67,7 @@
            class="text-center h-100 d-flex align-items-center justify-content-center"
            @click="createOrder">
         <el-button type="text"
+                   size="md"
                    @click="createOrder">接单</el-button>
       </div>
       <div v-else-if="room.state===ROOM_STATE.EMPTY_DARTY"
