@@ -102,7 +102,7 @@ export const baseMixin = {
         w3: '45px',
         w4: '60px',
         w5: '80px',
-        w6: '90px',
+        w6: '100px',
         w7: '110px',
         w8: '120px'
       };

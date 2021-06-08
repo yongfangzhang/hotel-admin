@@ -16,6 +16,15 @@
       <el-form-item label="显示单元号">
         <el-switch v-model="roomSetting.showUnitNumber" />
       </el-form-item>
+      <el-form-item label="字体大小">
+        <el-select v-model="roomSetting.fontSize"
+                   placeholder="请选择">
+          <el-option v-for="v in fontArr"
+                     :key="v"
+                     :label="v"
+                     :value="v" />
+        </el-select>
+      </el-form-item>
       <el-form-item label="每行房间数">
         <el-select v-model="roomSetting.colSpan"
                    placeholder="请选择">
@@ -55,7 +64,8 @@ export default {
   mixins: [sync],
   data() {
     return {
-      spanArr: [1, 2, 3, 4, 6, 8, 12, 24]
+      spanArr: [1, 2, 3, 4, 6, 8, 12, 24],
+      fontArr: ['12px', '14px', '16px', '18px', '20px']
     };
   },
   computed: {

@@ -5,7 +5,8 @@
              :model="order"
              :label-width="formLabelWidth.w6"
              label-position="left"
-             class="p-3">
+             class="p-3"
+             :class="'font-size-'+roomSetting.fontSize">
       <el-row :gutter="6">
         <el-col :xs="24"
                 :sm="12">
@@ -59,7 +60,8 @@
              :model="orderItem"
              :label-width="formLabelWidth.w6"
              label-position="left"
-             class="p-3">
+             class="p-3"
+             :class="'font-size-'+roomSetting.fontSize">
       <el-row :gutter="6">
         <el-col :xs="24"
                 :sm="12">
@@ -90,6 +92,7 @@
 <script>
 import { ACTIONS, MODULE } from '@/store/constant';
 import { deepClone, list2Map, parseTime } from '@/utils/index';
+import { mapState } from 'vuex';
 export default {
   name: 'OrderEdit',
   props: {
@@ -108,6 +111,7 @@ export default {
     };
   },
   computed: {
+    ...mapState(MODULE.ROOM, ['roomSetting']),
     orderLocked() {
       return false;
     },

@@ -12,17 +12,28 @@
         <span class="text-primary cursor-pointer">
           操作<i class="el-icon-arrow-down" />
         </span>
-        <el-dropdown-menu slot="dropdown">
+        <el-dropdown-menu slot="dropdown"
+                          :style="{fontSize: roomSetting.fontSize}">
           <el-dropdown-item :disabled="room.state!==ROOM_STATE.EMPTY_CLEAN"
-                            command="createOrder">接单</el-dropdown-item>
+                            command="createOrder"
+                            class="my-1"
+                            :style="{fontSize: roomSetting.fontSize}">接单</el-dropdown-item>
           <el-dropdown-item :disabled="room.state!==ROOM_STATE.EMPTY_DARTY && room.state!==ROOM_STATE.STAY_DARTY"
-                            command="notifyClean">通知打扫</el-dropdown-item>
+                            command="notifyClean"
+                            class="my-1"
+                            :style="{fontSize: roomSetting.fontSize}">通知打扫</el-dropdown-item>
           <el-dropdown-item :disabled="room.state!==ROOM_STATE.STAY_CLEAN && room.state!==ROOM_STATE.STAY_DARTY"
-                            command="roomCheckOut">退房</el-dropdown-item>
+                            command="roomCheckOut"
+                            class="my-1"
+                            :style="{fontSize: roomSetting.fontSize}">退房</el-dropdown-item>
           <el-dropdown-item :disabled="room.state!==ROOM_STATE.STAY_CLEAN && room.state!==ROOM_STATE.STAY_DARTY"
-                            command="renewOrder">续住</el-dropdown-item>
+                            command="renewOrder"
+                            class="my-1"
+                            :style="{fontSize: roomSetting.fontSize}">续住</el-dropdown-item>
           <el-dropdown-item command="changeRoomState"
-                            divided>修改房态</el-dropdown-item>
+                            divided
+                            class="my-1"
+                            :style="{fontSize: roomSetting.fontSize}">修改房态</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
@@ -67,13 +78,14 @@
            class="text-center h-100 d-flex align-items-center justify-content-center"
            @click="createOrder">
         <el-button type="text"
-                   size="md"
+                   :style="{fontSize: roomSetting.fontSize}"
                    @click="createOrder">接单</el-button>
       </div>
       <div v-else-if="room.state===ROOM_STATE.EMPTY_DARTY"
            class="text-center h-100 d-flex align-items-center justify-content-center"
            @click="notifyClean">
         <el-button type="text"
+                   :style="{fontSize: roomSetting.fontSize}"
                    class="text-muted">通知打扫</el-button>
       </div>
     </div>

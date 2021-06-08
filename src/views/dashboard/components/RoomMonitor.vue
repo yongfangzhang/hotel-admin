@@ -6,7 +6,7 @@
                    @show-setting="showSetting=true"
                    @room-list="roomList=$event"
                    @apartment-list="apartmentList=$event" />
-      <div class="flex-fill scrollable-y room-item-panel">
+      <div class="flex-fill scrollable-y room-item-panel" :style="{fontSize: roomSetting.fontSize }">
         <div v-for="(rooms,apartment) in roomGroupList"
              :key="apartment">
           <div class="font-18 p-3 border-bottom border-top d-flex align-items-center">

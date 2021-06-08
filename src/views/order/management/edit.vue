@@ -13,7 +13,8 @@
                  :rules="formRules"
                  :label-width="formLabelWidth.w6"
                  label-position="left"
-                 class="p-3">
+                 class="p-3"
+                 :class="'font-size-'+roomSetting.fontSize">
           <el-row>
             <el-col :xs="24"
                     :sm="12">
@@ -81,7 +82,8 @@
                    :rules="itemFormRules"
                    :label-width="formLabelWidth.w6"
                    label-position="left"
-                   class="p-3">
+                   class="p-3"
+                   :class="'font-size-'+roomSetting.fontSize">
             <el-row>
               <el-col :xs="24"
                       :sm="12">
@@ -129,6 +131,7 @@ import { ACTIONS, MODULE, MUTATIONS } from '@/store/constant';
 import { formEditMixin } from '@/utils/mixins';
 import { alertMessage, toastWarning } from '@/utils/message';
 import { deepClone, list2Map, parseTime, validateId } from '@/utils/index';
+import { mapState } from 'vuex';
 export default {
   name: 'OrderManagementEdit',
   mixins: [formEditMixin],
@@ -143,6 +146,7 @@ export default {
     };
   },
   computed: {
+    ...mapState(MODULE.ROOM, ['roomSetting']),
     canUpdate() {
       return this.hasPermission('order:update');
     },

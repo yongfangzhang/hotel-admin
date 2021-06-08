@@ -11,6 +11,7 @@ const DEFAULT_SETTING = {
   showFloorNumber: true,
   showUnitNumber: true,
   colSpan: 6,
+  fontSize: '14px',
   rowHeight: 130
 };
 
