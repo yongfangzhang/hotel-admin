@@ -1,10 +1,10 @@
 <template>
-  <div class="h-100 py-3 d-flex flex-column">
+  <div class="h-100 py-3">
     <simple-table ref="table"
                   :module="mParam.module"
                   :queries="queries"
                   :before-fetch="beforeFetch"
-                  class="px-3 flex-fill">
+                  class="px-3 h-100">
       <div slot="header"
            class="d-flex justify-content-between">
         <el-form label-position="left"
@@ -63,7 +63,20 @@
         <el-table-column label="订单号"
                          align="center"
                          prop="number"
-                         :min-width="colWidth.md" />
+                         :min-width="colWidth.md">
+          <template slot-scope="{ row }">
+            <el-popover trigger="hover"
+                        placement="right">
+              <order-detail :current-order="row"
+                            :apartment-map="apartmentMap" />
+              <div slot="reference">
+                <el-button type="text">{{ row.number }}</el-button>
+              </div>
+            </el-popover>
+            <!-- <el-button type="text"
+                       @click="showDetail(row)">{{ row.number }}</el-button> -->
+          </template>
+        </el-table-column>
         <el-table-column label="渠道"
                          align="center"
                          prop="channelName"
@@ -138,6 +151,14 @@
         </el-table-column>
       </template>
     </simple-table>
+    <!-- <m-dialog v-model="showDetailDialog"
+              title="订单详情"
+              :has-close="true"
+              :has-confirm="false"
+              :append-to-body="true"
+              width="md">
+      <order-detail :current-order="currentOrder" />
+    </m-dialog> -->
   </div>
 </template>
 <script>
@@ -145,14 +166,18 @@ import { ACTIONS, MODULE } from '@/store/constant';
 import { baseTableMixin } from '@/utils/mixins';
 import { PATH_MAP } from '@/router/modules/order';
 import { deepClone, list2Map } from '@/utils/index';
+import OrderDetail from './components/OrderDetail';
 
 export default {
   name: 'OrderManagementIndex',
+  components: { OrderDetail },
   mixins: [baseTableMixin],
   data() {
     return {
       apartmentMap: null,
       showMoreFilter: false,
+      showDetailDialog: false,
+      currentOrder: null,
       qStates: [],
       createdRange: [],
       queries: {
@@ -197,6 +222,10 @@ export default {
       const item = deepClone(row);
       item.state = this.ORDER_STATE.ABANDON;
       this.saveRow(item);
+    },
+    showDetail(row) {
+      this.currentOrder = row;
+      this.showDetailDialog = true;
     }
   }
 };
