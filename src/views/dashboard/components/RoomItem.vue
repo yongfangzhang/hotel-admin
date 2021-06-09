@@ -93,9 +93,9 @@
   </el-card>
 </template>
 <script>
-import { ACTIONS, MODULE } from '@/store/constant';
+import { MODULE } from '@/store/constant';
 import { mapState } from 'vuex';
-import { confirmMessage, toastWarning } from '@/utils/message';
+import { toastWarning } from '@/utils/message';
 import { EMPTY_TEXT } from '@/utils/constant';
 import { formatDuration, str2DateTimestamp, isToday } from '@/utils/index';
 export default {
@@ -172,23 +172,24 @@ export default {
       toastWarning('通知保洁打扫房间的功能待实现');
     },
     roomCheckOut() {
-      confirmMessage(
-        `退房后房间状态自动切换为【${
-          this.ROOM_STATE_MAP[this.ROOM_STATE.EMPTY_DARTY]
-        }】, 是否继续?`
-      )
-        .then((_) => {
-          return this.doAction(MODULE.ROOM, ACTIONS.UPDATE_ITEM, {
-            uuid: this.room.uuid,
-            state: this.ROOM_STATE.EMPTY_DARTY
-          });
-        })
-        .then(() => {
-          this.$emit('filter');
-        })
-        .catch(() => {
-          // ignore
-        });
+      this.$emit('check-out', this.room);
+      // confirmMessage(
+      //   `退房后房间状态自动切换为【${
+      //     this.ROOM_STATE_MAP[this.ROOM_STATE.EMPTY_DARTY]
+      //   }】, 是否继续?`
+      // )
+      //   .then((_) => {
+      //     return this.doAction(MODULE.ROOM, ACTIONS.UPDATE_ITEM, {
+      //       uuid: this.room.uuid,
+      //       state: this.ROOM_STATE.EMPTY_DARTY
+      //     });
+      //   })
+      //   .then(() => {
+      //     this.$emit('filter');
+      //   })
+      //   .catch(() => {
+      //     // ignore
+      //   });
     },
     updateOrder() {
       this.$emit('update-order', this.room);

@@ -6,7 +6,8 @@
                    @show-setting="showSetting=true"
                    @room-list="roomList=$event"
                    @apartment-list="apartmentList=$event" />
-      <div class="flex-fill scrollable-y room-item-panel" :style="{fontSize: roomSetting.fontSize }">
+      <div class="flex-fill scrollable-y room-item-panel"
+           :style="{fontSize: roomSetting.fontSize }">
         <div v-for="(rooms,apartment) in roomGroupList"
              :key="apartment">
           <div class="font-18 p-3 border-bottom border-top d-flex align-items-center">
@@ -29,7 +30,8 @@
                          @create-order="createOrder"
                          @change-state="changeRoomState"
                          @update-order="updateOrder"
-                         @renew-order="renewOrder" />
+                         @renew-order="renewOrder"
+                         @check-out="roomCheckOut" />
             </el-col>
           </el-row>
         </div>
@@ -73,6 +75,30 @@
       <order-edit v-if="showOrderDialog"
                   :room="currentRoom" />
     </m-dialog>
+    <m-dialog v-model="showCheckOutDialog"
+              title="退房"
+              :close-on-confirm="true"
+              :has-close="true"
+              :has-confirm="true"
+              :append-to-body="true"
+              @confirm="confirmCheckOut">
+      <div>退房后房间状态自动切换为【{{ ROOM_STATE_MAP[ROOM_STATE.EMPTY_DARTY] }}】</div>
+      <div v-if="currentRoom && currentRoom.relatedOrder"
+           class="m-view-item">
+        <span class="label">应退押金</span>
+        <m-view class="order-detail-view"
+                type="currency"
+                :value="+currentRoom.relatedOrder.deposit || 0" />
+      </div>
+      <div v-if="currentRoom && currentRoom.relatedOrder"
+           class="m-view-item">
+        <span class="label">实退押金</span>
+        <el-input v-model="refundDeposit"
+                  class="order-detail-view w-auto"
+                  type="number"
+                  placeholder="请输入实退押金" />
+      </div>
+    </m-dialog>
   </div>
 </template>
 <script>
@@ -95,7 +121,9 @@ export default {
       roomList: [],
       showOrderDialog: false,
       showStateDialog: false,
-      showSetting: false
+      showSetting: false,
+      showCheckOutDialog: false,
+      refundDeposit: 0
     };
   },
   computed: {
@@ -156,6 +184,39 @@ export default {
     renewOrder(room) {
       this.currentRoom = { renew: true, ...deepClone(room) };
       this.showOrderDialog = true;
+    },
+    roomCheckOut(room) {
+      this.currentRoom = deepClone(room);
+      const order = this.currentRoom.relatedOrder;
+      if (order) {
+        this.refundDeposit = Number(order.deposit) || 0;
+      } else {
+        this.refundDeposit = 0;
+      }
+      this.showCheckOutDialog = true;
+    },
+    confirmCheckOut() {
+      this.showCheckOutDialog = false;
+      if (!this.currentRoom) {
+        return;
+      }
+      const order = this.currentRoom.relatedOrder;
+      let refundDeposit = Number(this.refundDeposit) || 0;
+      if (order) {
+        refundDeposit = Math.min(order.deposit, refundDeposit);
+        refundDeposit = Math.max(0, refundDeposit);
+      }
+      this.doAction(MODULE.ROOM, ACTIONS.UPDATE_ITEM, {
+        uuid: this.currentRoom.uuid,
+        state: this.ROOM_STATE.EMPTY_DARTY,
+        refundDeposit
+      })
+        .then(() => {
+          this.doFilter();
+        })
+        .catch(() => {
+          // ignore
+        });
     },
     changeRoomState(room) {
       this.currentRoom = deepClone(room);
