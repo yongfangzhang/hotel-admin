@@ -2,14 +2,15 @@
   <el-card v-if="room"
            shadow="hover">
     <div slot="header"
-         class="d-flex justify-content-between align-items-center px-2 py-1">
+         class="d-flex justify-content-between align-items-center px-2 py-1"
+         :class="{'bg-danger':isLeavingDay}">
       <div class="flex-fill text-overflow-ellipsis"
            :title="cardTtitle">{{ cardTtitle }}</div>
       <el-dropdown class="card-header-button py-2"
                    size="mini"
                    type="primary"
                    @command="handleDropdownCommand">
-        <span class="text-primary cursor-pointer">
+        <span class="text-primary cursor-pointer text-nowrap">
           操作<i class="el-icon-arrow-down" />
         </span>
         <el-dropdown-menu slot="dropdown"
@@ -96,7 +97,7 @@ import { ACTIONS, MODULE } from '@/store/constant';
 import { mapState } from 'vuex';
 import { confirmMessage, toastWarning } from '@/utils/message';
 import { EMPTY_TEXT } from '@/utils/constant';
-import { formatDuration, str2DateTimestamp } from '@/utils/index';
+import { formatDuration, str2DateTimestamp, isToday } from '@/utils/index';
 export default {
   name: 'RoomItem',
   props: {
@@ -111,7 +112,8 @@ export default {
   },
   data() {
     return {
-      remainTime: { diff: -1, text: EMPTY_TEXT }
+      remainTime: { diff: -1, text: EMPTY_TEXT },
+      isLeavingDay: false
     };
   },
   computed: {
@@ -153,12 +155,14 @@ export default {
     calcRemainTime() {
       if (!this.room || !this.room.relatedOrderItem) {
         this.remainTime = { diff: -1, text: EMPTY_TEXT };
+        this.isLeavingDay = false;
       } else {
         this.remainTime = formatDuration(
           Date.now(),
           str2DateTimestamp(this.room.relatedOrderItem.leaveAt),
           0
         );
+        this.isLeavingDay = isToday(this.room.relatedOrderItem.leaveAt);
       }
     },
     handleDropdownCommand(command) {

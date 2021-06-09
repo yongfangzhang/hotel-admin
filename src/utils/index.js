@@ -564,6 +564,17 @@ export const str2DateTimestamp = str => {
   return d.getTime();
 };
 
+export const isToday = str => {
+  const d = str2Date(str);
+  if (!d) return false;
+  const today = new Date();
+  return (
+    d.getFullYear() === today.getFullYear() &&
+    d.getMonth() === today.getMonth() &&
+    d.getDate() === today.getDate()
+  );
+};
+
 export const saveAs = (file, content) => {
   const data = new Blob([content], { type: 'text/plain;charset=UTF-8' });
   const downloadUrl = window.URL.createObjectURL(data);
