@@ -11,6 +11,33 @@
                  inline
                  @submit.native.prevent>
           <div>
+            <el-form-item label="入住人">
+              <el-input v-model="queries.mainName"
+                        placeholder="请输入"
+                        clearable
+                        @clear="doFilter"
+                        @keydown.enter.native="doFilter" />
+            </el-form-item>
+            <el-form-item label="入住人电话">
+              <el-input v-model="queries.mainMobile"
+                        placeholder="请输入"
+                        clearable
+                        @clear="doFilter"
+                        @keydown.enter.native="doFilter" />
+            </el-form-item>
+            <el-form-item label="渠道">
+              <m-selector v-model="queries.channel"
+                          :map="ORDER_CHANNEL_MAP"
+                          filterable
+                          clearable
+                          @keydown.enter.native="doFilter"
+                          @change="doFilter"
+                          @clear="doFilter" />
+            </el-form-item>
+            <el-button type="text"
+                       @click="showMoreFilter=!showMoreFilter">更多查询</el-button>
+          </div>
+          <div v-show="showMoreFilter">
             <el-form-item label="订单号">
               <el-input v-model="queries.number"
                         placeholder="请输入"
@@ -27,19 +54,6 @@
                           @change="doFilter"
                           @clear="doFilter" />
             </el-form-item>
-            <el-form-item label="渠道">
-              <m-selector v-model="queries.channel"
-                          :map="ORDER_CHANNEL_MAP"
-                          filterable
-                          clearable
-                          @keydown.enter.native="doFilter"
-                          @change="doFilter"
-                          @clear="doFilter" />
-            </el-form-item>
-            <el-button type="text"
-                       @click="showMoreFilter=!showMoreFilter">更多查询</el-button>
-          </div>
-          <div v-show="showMoreFilter">
             <datetime-filter v-model="createdRange"
                              @change="doFilter" />
             <state-filter v-model="qStates"
@@ -183,6 +197,8 @@ export default {
       queries: {
         state: null,
         number: null,
+        mainName: null,
+        mainMobile: null,
         apartmentUuid: null,
         channel: null,
         createdAtStart: null,
