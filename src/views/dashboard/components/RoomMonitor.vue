@@ -201,15 +201,16 @@ export default {
         return;
       }
       const order = this.currentRoom.relatedOrder;
+      const originDeposit = Number(order.deposit) || 0;
       let refundDeposit = Number(this.refundDeposit) || 0;
       if (order) {
-        refundDeposit = Math.min(order.deposit, refundDeposit);
+        refundDeposit = Math.min(originDeposit, refundDeposit);
         refundDeposit = Math.max(0, refundDeposit);
       }
       this.doAction(MODULE.ROOM, ACTIONS.UPDATE_ITEM, {
         uuid: this.currentRoom.uuid,
         state: this.ROOM_STATE.EMPTY_DARTY,
-        refundDeposit
+        depositDeduction: originDeposit - refundDeposit
       })
         .then(() => {
           this.doFilter();
