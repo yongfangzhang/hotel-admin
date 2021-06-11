@@ -5,9 +5,7 @@
       <div v-for="(items,date) in statisticsMap"
            :key="date"
            :slot="date">
-        <div class="d-flex justify-content-between text-primary"><span>销量:</span> <span>{{ items.length }}</span></div>
-        <div class="d-flex justify-content-between text-primary"><span>收益:</span> <span>{{ sumValue(items, 'paidPrice') }}</span></div>
-        <div class="d-flex justify-content-between text-primary"><span>押金:</span> <span>{{ sumValue(items, 'deposit') }}</span></div>
+        <daily-item :items="items" />
       </div>
     </calendar>
     <m-dialog v-model="detailDialog"
@@ -33,12 +31,21 @@
                          align="center"
                          prop="channelName"
                          :min-width="colWidth.xs" />
-        <el-table-column label="收益"
+        <el-table-column label="房间收益"
                          align="center"
                          prop="paidPrice"
                          :min-width="colWidth.xs">
           <template slot-scope="{ row }">
             <m-view :value="row.paidPrice"
+                    type="currency" />
+          </template>
+        </el-table-column>
+        <el-table-column label="商品收益"
+                         align="center"
+                         prop="productIncome"
+                         :min-width="colWidth.xs">
+          <template slot-scope="{ row }">
+            <m-view :value="row.productIncome"
                     type="currency" />
           </template>
         </el-table-column>
@@ -75,10 +82,12 @@
 </template>
 <script>
 import { deepClone, list2GroupMap, parseTime } from '@/utils';
-import { EMPTY_TEXT, PARSE_TIME_TYPE } from '@/utils/constant';
+import { PARSE_TIME_TYPE } from '@/utils/constant';
 import { ACTIONS, MODULE } from '@/store/constant';
+import DailyItem from './components/DailyItem.vue';
 export default {
   name: 'StatisticsDaily',
+  components: { DailyItem },
   data() {
     return {
       statisticsMap: {},
@@ -100,14 +109,6 @@ export default {
         const list = deepClone(d);
         this.statisticsMap = list2GroupMap(list, 'statisticsDate');
       });
-    },
-    sumValue(items, field) {
-      if (!items || !items.length) return EMPTY_TEXT;
-      let v = 0;
-      items.forEach((item) => {
-        v += Number(item[field]);
-      });
-      return v;
     },
     showDetail(date) {
       this.selectedItems = this.statisticsMap[date];

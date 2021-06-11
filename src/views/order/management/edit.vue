@@ -69,7 +69,8 @@
                         name="item">
         <div v-for="(vItem,idx) in viewInfo.items"
              :key="idx">
-          <div class="border-bottom ml-3 py-2">
+          <div v-if="enableAdd"
+               class="border-bottom ml-3 py-2">
             <span :id="'order-item-'+idx"
                   class="font-weight-bold mr-3">入住人 {{ idx + 1 }}</span>
             <el-button v-if="!vItem.uuid"
@@ -111,10 +112,57 @@
           </el-form>
         </div>
       </el-collapse-item>
+
+      <!-- 商品信息 -->
+      <el-collapse-item title="商品信息"
+                        name="product">
+        <div class="p-3">
+          <el-table :data="viewInfo.products"
+                    border
+                    stripe
+                    show-summary>
+            <el-table-column label="序号"
+                             :resizable="false"
+                             align="center"
+                             :width="colWidth.xxs">
+              <template slot-scope="{ $index }">
+                <span>{{ $index + 1 }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="商品名称"
+                             align="center"
+                             prop="productName"
+                             :min-width="colWidth.xs" />
+            <el-table-column label="单价"
+                             align="center"
+                             prop="productPrice"
+                             :min-width="colWidth.xs">
+              <template slot-scope="{ row }">
+                <m-view :value="row.productPrice"
+                        type="currency" />
+              </template>
+            </el-table-column>
+            <el-table-column label="商品数量"
+                             align="center"
+                             prop="productCount"
+                             :min-width="colWidth.xs" />
+            <el-table-column label="总价"
+                             align="center"
+                             prop="totalPrice"
+                             :min-width="colWidth.xs">
+              <template slot-scope="{ row }">
+                <m-view :value="row.totalPrice"
+                        type="currency" />
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+      </el-collapse-item>
     </el-collapse>
     <save-button v-if="canUpdate"
                  @save="createOrUpdate">
-      <el-button v-show="newAdded"
+      <el-button v-if="enableAdd"
+                 v-show="newAdded"
                  slot="before"
                  type="success"
                  class="mr-2"
@@ -137,7 +185,8 @@ export default {
   mixins: [formEditMixin],
   data() {
     return {
-      activeNames: ['basic', 'item'],
+      enableAdd: false,
+      activeNames: ['basic', 'item', 'product'],
       roomMap: null,
       roomFullMap: null,
       apartmentList: [],
@@ -481,7 +530,7 @@ export default {
       return this.roomFullMap[uuid].state !== this.ROOM_STATE.EMPTY_CLEAN;
     },
     addItem() {
-      if (!this.newAdded) return;
+      if (!this.enableAdd || !this.newAdded) return;
       const items = this.viewInfo.items || [];
       const userUuid = this.viewInfo.userUuid;
       const user =

@@ -115,12 +115,29 @@
             <el-tag :type="ORDER_STATE_THEME_MAP[row.state]"> {{ row.stateName }} </el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="支付价格"
+        <el-table-column label="房间收益"
                          align="center"
                          prop="paidPrice"
                          :min-width="colWidth.xs">
           <template slot-scope="{ row }">
             <m-view :value="row.paidPrice"
+                    type="currency" />
+          </template>
+        </el-table-column>
+        <el-table-column label="商品收益"
+                         align="center"
+                         prop="productIncome"
+                         :min-width="colWidth.xs">
+          <template slot-scope="{ row }">
+            <m-view :value="row.productIncome"
+                    type="currency" />
+          </template>
+        </el-table-column>
+        <el-table-column label="累计收益"
+                         align="center"
+                         :min-width="colWidth.xs">
+          <template slot-scope="{ row }">
+            <m-view :value="row.productIncome + row.paidPrice"
                     type="currency" />
           </template>
         </el-table-column>
