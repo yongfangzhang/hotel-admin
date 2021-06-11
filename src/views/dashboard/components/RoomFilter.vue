@@ -67,6 +67,7 @@ export default {
         this.$emit('apartment-list', this.apartmentList);
         return this.doFilter();
       });
+      this.doAction(MODULE.PRODUCT, ACTIONS.FETCH_LIST);
     },
     doFilter() {
       this.beforeFetch();

@@ -14,6 +14,7 @@ export const MODULE = {
   ORDER: 'order',
   ORDER_ITEM: 'orderItem',
   ORDER_PRODUCT: 'orderProduct',
+  PRODUCT: 'product',
   DAILY_STATISTICS: 'dailyStatistics',
 
   SYSTEM_LOG: 'systemLog',

@@ -17,11 +17,16 @@
       </el-table-column>
       <el-table-column label="商品名称"
                        align="center"
-                       prop="productName"
+                       prop="productUuid"
                        :min-width="colWidth.xs">
         <template slot-scope="{ row }">
-          <m-edit v-model="row.productName"
-                  placeholder="请输入或选择" />
+          <m-edit v-model="row.productUuid"
+                  type="selector"
+                  :list="productList"
+                  :kmap="{label: 'name', value: 'uuid'}"
+                  placeholder="请输入或选择"
+                  allow-create
+                  @change="uuid => productChanged(uuid, row)" />
         </template>
       </el-table-column>
       <el-table-column label="单价"
@@ -92,7 +97,10 @@ export default {
     }
   },
   computed: {
-    ...mapState(MODULE.ROOM, ['roomSetting'])
+    ...mapState(MODULE.ROOM, ['roomSetting']),
+    productList() {
+      return this.$store.state[MODULE.PRODUCT].list;
+    }
   },
   methods: {
     ...mapActions(MODULE.ORDER_PRODUCT, [
@@ -136,8 +144,19 @@ export default {
         productPrice: null,
         productCount: 1,
         paidByDeposit: Number(this.order.deposit) > 0,
-        totalPrice: null
+        totalPrice: null,
+        exsited: false
       });
+    },
+    productChanged(uuid, row) {
+      const product = this.productList.find((p) => p.uuid === uuid);
+      debugger;
+      row.exsited = !!product;
+      if (row.exsited) {
+        row.productUuid = product.uuid;
+        row.productPrice = product.price;
+        row.productName = product.name;
+      }
     }
   }
 };

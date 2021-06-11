@@ -9,7 +9,8 @@
       "cfb",
       "codepage",
       "crc-32",
-      "frac"
+      "frac",
+      "printj"
     ]
   },
   "compilerOptions": {
