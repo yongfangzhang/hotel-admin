@@ -91,6 +91,14 @@
                        @click="showDetail(row)">{{ row.number }}</el-button> -->
           </template>
         </el-table-column>
+        <el-table-column label="入住人"
+                         align="center"
+                         prop="mainName"
+                         :min-width="colWidth.xs" />
+        <el-table-column label="电话"
+                         align="center"
+                         prop="mainMobile"
+                         :min-width="colWidth.sm" />
         <el-table-column label="渠道"
                          align="center"
                          prop="channelName"
