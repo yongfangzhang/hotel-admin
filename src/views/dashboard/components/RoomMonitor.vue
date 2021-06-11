@@ -82,7 +82,8 @@
               :has-confirm="true"
               :append-to-body="true"
               width="md"
-              @confirm="confirmCheckOut">
+              @confirm="confirmCheckOut"
+              @on-close="doFilter">
       <div :class="'font-size-'+roomSetting.fontSize">
         <div>退房后房间状态自动切换为【{{ ROOM_STATE_MAP[ROOM_STATE.EMPTY_DARTY] }}】</div>
         <product-info v-if="currentRoom && currentRoom.relatedOrder "
@@ -291,6 +292,16 @@ export default {
           // ignore
         });
     }
+    // refreshRelatedOrder() {
+    //   if (!this.currentRoom || !this.currentRoom.relatedOrder) return;
+    //   this.doAction(
+    //     MODULE.ORDER,
+    //     ACTIONS.FETCH_VIEW_INFO,
+    //     this.currentRoom.relatedOrder.uuid
+    //   ).then((d) => {
+    //     this.currentRoom.relatedOrder = d;
+    //   });
+    // }
   }
 };
 </script>

@@ -59,6 +59,7 @@
                        :min-width="colWidth.xs">
         <template slot-scope="{ row }">
           <m-edit v-model="row.paidByDeposit"
+                  :disabled="order.deposit<=0"
                   type="switch" />
         </template>
       </el-table-column>
@@ -109,11 +110,11 @@ export default {
         // 后台删除
         this[ACTIONS.DELETE_ITEM](product.uuid).then(() => {
           this.order.products.splice(index, 1);
-          this.$emit('filter');
+          this.$emit('refresh');
         });
       } else {
         this.order.products.splice(index, 1);
-        this.$emit('filter');
+        this.$emit('refresh');
       }
     },
     saveProduct(index) {
@@ -122,7 +123,7 @@ export default {
       const method = product.uuid ? ACTIONS.UPDATE_ITEM : ACTIONS.CREATE_ITEM;
       this[method](product).then((d) => {
         this.order.products.splice(index, 1, d);
-        this.$emit('filter');
+        this.$emit('refresh');
       });
     },
     addProduct() {
