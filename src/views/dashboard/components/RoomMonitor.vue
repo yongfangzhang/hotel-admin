@@ -81,22 +81,27 @@
               :has-close="true"
               :has-confirm="true"
               :append-to-body="true"
+              width="md"
               @confirm="confirmCheckOut">
-      <div>退房后房间状态自动切换为【{{ ROOM_STATE_MAP[ROOM_STATE.EMPTY_DARTY] }}】</div>
-      <div v-if="currentRoom && currentRoom.relatedOrder"
-           class="m-view-item">
-        <span class="label">应退押金</span>
-        <m-view class="order-detail-view"
-                type="currency"
-                :value="+currentRoom.relatedOrder.deposit || 0" />
-      </div>
-      <div v-if="currentRoom && currentRoom.relatedOrder"
-           class="m-view-item">
-        <span class="label">实退押金</span>
-        <el-input v-model="refundDeposit"
-                  class="order-detail-view w-auto"
-                  type="number"
-                  placeholder="请输入实退押金" />
+      <div :class="'font-size-'+roomSetting.fontSize">
+        <div>退房后房间状态自动切换为【{{ ROOM_STATE_MAP[ROOM_STATE.EMPTY_DARTY] }}】</div>
+        <product-info v-if="currentRoom && currentRoom.relatedOrder "
+                      :order="currentRoom.relatedOrder" />
+        <div v-if="currentRoom && currentRoom.relatedOrder"
+             class="m-view-item">
+          <span class="label">应退押金</span>
+          <m-view class="order-detail-view"
+                  type="currency"
+                  :value="+currentRoom.relatedOrder.deposit || 0" />
+        </div>
+        <div v-if="currentRoom && currentRoom.relatedOrder"
+             class="m-view-item">
+          <span class="label">实退押金</span>
+          <el-input v-model="refundDeposit"
+                    class="order-detail-view w-auto"
+                    type="number"
+                    placeholder="请输入实退押金" />
+        </div>
       </div>
     </m-dialog>
   </div>
@@ -111,9 +116,17 @@ import { mapState } from 'vuex';
 import { deepClone, list2Map } from '@/utils/index';
 import { confirmMessage } from '@/utils/message';
 import { PATH_MAP } from '@/router/modules/order/index';
+import ProductInfo from './ProductInfo.vue';
+
 export default {
   name: 'RoomMonitor',
-  components: { RoomFilter, RoomItem, RoomPanelSetting, OrderEdit },
+  components: {
+    RoomFilter,
+    RoomItem,
+    RoomPanelSetting,
+    OrderEdit,
+    ProductInfo
+  },
   data() {
     return {
       currentRoom: null,

@@ -116,7 +116,8 @@
       <!-- 商品信息 -->
       <el-collapse-item title="商品信息"
                         name="product">
-        <div class="p-3">
+        <div class="p-3"
+             :class="'font-size-'+roomSetting.fontSize">
           <el-table :data="viewInfo.products"
                     border
                     stripe
@@ -153,6 +154,15 @@
               <template slot-scope="{ row }">
                 <m-view :value="row.totalPrice"
                         type="currency" />
+              </template>
+            </el-table-column>
+            <el-table-column label="押金支付"
+                             align="center"
+                             prop="paidByDeposit"
+                             :min-width="colWidth.xs">
+              <template slot-scope="{ row }">
+                <m-view :value="row.paidByDeposit"
+                        type="boolean" />
               </template>
             </el-table-column>
           </el-table>

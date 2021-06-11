@@ -87,6 +87,56 @@
         </el-col>
       </el-row>
     </el-form>
+    <el-table v-if="order"
+              :data="order.products"
+              border
+              stripe
+              show-summary
+              :class="'font-size-'+roomSetting.fontSize">
+      <el-table-column label="序号"
+                       :resizable="false"
+                       align="center"
+                       :width="colWidth.xxs">
+        <template slot-scope="{ $index }">
+          <span>{{ $index + 1 }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="商品名称"
+                       align="center"
+                       prop="productName"
+                       :min-width="colWidth.xs" />
+      <el-table-column label="单价"
+                       align="center"
+                       prop="productPrice"
+                       :min-width="colWidth.xs">
+        <template slot-scope="{ row }">
+          <m-view :value="row.productPrice"
+                  type="currency" />
+        </template>
+      </el-table-column>
+      <el-table-column label="商品数量"
+                       align="center"
+                       prop="productCount"
+                       :min-width="colWidth.xs" />
+      <el-table-column label="总价"
+                       align="center"
+                       prop="totalPrice"
+                       :min-width="colWidth.xs">
+        <template slot-scope="{ row }">
+          <m-view :value="row.totalPrice"
+                  type="currency" />
+        </template>
+      </el-table-column>
+      <el-table-column label="押金支付"
+                       align="center"
+                       prop="paidByDeposit"
+                       :min-width="colWidth.xs">
+        <template slot-scope="{ row }">
+          <m-view :value="row.paidByDeposit"
+                  type="boolean" />
+        </template>
+      </el-table-column>
+    </el-table>
   </div>
 </template>
 <script>

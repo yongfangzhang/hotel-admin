@@ -8,7 +8,8 @@
               :disabled="disabled"
               clearable
               :placeholder="placeholder"
-              @keyup.native.enter="onEnter">
+              @keyup.native.enter="onEnter"
+              @change="$emit('change', $event)">
       <template v-if="extral && extral.append"
                 slot="append">{{ extral.append }}</template>
     </el-input>
@@ -21,7 +22,8 @@
               type="number"
               :disabled="disabled"
               :placeholder="placeholder"
-              @keyup.native.enter="onEnter">
+              @keyup.native.enter="onEnter"
+              @change="$emit('change', $event)">
       <template v-if="extral && extral.append"
                 slot="append">{{ extral.append }}</template>
     </el-input>
@@ -35,7 +37,8 @@
               :rows="extral.rows || 3"
               :placeholder="placeholder"
               :disabled="disabled"
-              @keyup.native.enter="onEnter" />
+              @keyup.native.enter="onEnter"
+              @change="$emit('change', $event)" />
   </div>
   <div v-else-if="type == 'date' || type == 'datetime' || type === 'datetimerange' || type === 'daterange'">
     <span v-if="isView"
@@ -46,7 +49,8 @@
                     :type="type"
                     :value-format="valueFormat"
                     :disabled="disabled"
-                    :placeholder="placeholder" />
+                    :placeholder="placeholder"
+                    @change="$emit('change', $event)" />
   </div>
   <div v-else-if="type === 'selector'">
     <span v-if="isView"
@@ -63,7 +67,8 @@
                 :filterable="extral.filterable"
                 :remote-method="remoteMethod"
                 :allow-create="allowCreate"
-                :disabled-function="extral.disabledFunction" />
+                :disabled-function="extral.disabledFunction"
+                @change="$emit('change', $event)" />
   </div>
   <div v-else-if="type === 'radio'">
     <span v-if="isView"
@@ -73,14 +78,16 @@
              :disabled="disabled"
              :map="map"
              :list="list"
-             :kmap="kmap" />
+             :kmap="kmap"
+             @change="$emit('change', $event)" />
   </div>
   <div v-else-if="type === 'boolean'">
     <span v-if="isView"
           v-text="currentValue ? '是' : '否'" />
     <el-checkbox v-else
                  v-model="currentValue"
-                 :disabled="disabled" />
+                 :disabled="disabled"
+                 @change="$emit('change', $event)" />
   </div>
   <el-switch v-else-if="type === 'switch'"
              v-model="currentValue"
@@ -88,7 +95,8 @@
              :active-text="extral.activeText"
              :inactive-text="extral.inactiveText"
              :active-value="extral.activeValue"
-             :inactive-value="extral.inactiveValue" />
+             :inactive-value="extral.inactiveValue"
+             @change="$emit('change', $event)" />
   <m-address-form v-else-if="type === 'address'"
                   v-model="currentValue"
                   :disabled="disabled" />
