@@ -1,6 +1,6 @@
 <template>
-  <div class="h-100 pb-3 d-flex flex-column">
-    <div class="d-flex justify-content-between border-bottom">
+  <div class="h-100 d-flex flex-column">
+    <div class="d-flex justify-content-between">
       <el-form class="pt-3 px-3"
                label-position="left"
                inline
@@ -12,12 +12,11 @@
         </div>
       </el-form>
     </div>
-    <div class="d-flex p-3 flex-fill flex-column">
+    <div class="d-flex px-3 pb-3 flex-fill flex-column scrollable-y">
       <el-table :data="roomList"
                 border
                 stripe
-                height="1"
-                class="w-100 h-100 flex-fill">
+                class="w-100 h-100 flex-fill scrollable-y">
         <el-table-column label="公寓"
                          align="center"
                          prop="apartmentUuid"
@@ -43,8 +42,21 @@
                          :label="col"
                          header-align="center"
                          :min-width="colWidth.date">
-          <template slot-scope="{ row }">
-            <div>{{ row.uuid }}</div>
+          <template slot-scope="{ row, column}">
+            <div v-if="roomOrderMap[column.label] && roomOrderMap[column.label][row.uuid]">
+              <el-button v-for="item in roomOrderMap[column.label][row.uuid]"
+                         :key="item.uuid"
+                         type="text"
+                         class="m-0 text-left">
+                <div>姓名: {{ item.name }}</div>
+                <div>渠道: {{ item.order.channelName }}</div>
+                <div>房价: {{ item.order.paidPrice }}</div>
+                <div>商品: {{ item.order.productIncome }}</div>
+                <div>收益: {{ item.order.paidPrice + item.order.productIncome }}</div>
+              </el-button>
+            </div>
+            <div v-else
+                 class="text-center">--</div>
           </template>
         </el-table-column>
       </el-table>
@@ -69,15 +81,16 @@ export default {
     const end = new Date();
     return {
       queries: {
-        orderCreatedAtStart: null,
-        orderCreatedAtStop: null
+        createdAtStart: null,
+        createdAtStop: null
       },
       apartmentMap: {},
       createdRange: [
         parseTime(begin, PARSE_TIME_TYPE.DATE),
         parseTime(end, PARSE_TIME_TYPE.DATE)
       ],
-      roomList: []
+      roomList: [],
+      roomOrderMap: {}
     };
   },
   computed: {
@@ -109,7 +122,9 @@ export default {
           parseTime(begin, PARSE_TIME_TYPE.DATE),
           parseTime(end, PARSE_TIME_TYPE.DATE)
         ];
+        return;
       }
+      this.doFilter();
     }
   },
   mounted() {
@@ -124,11 +139,29 @@ export default {
         const list = deepClone(d);
         this.apartmentMap = list2Map(list, 'uuid', 'shortName');
       });
-      this.doFilter();
-    },
-    doFilter() {
       this.doAction(MODULE.ROOM, ACTIONS.FETCH_LIST).then((d) => {
         this.roomList = deepClone(d);
+        this.doFilter();
+      });
+    },
+    doFilter() {
+      this.queries.createdAtStart = this.createdRange[0];
+      this.queries.createdAtStop = this.createdRange[1];
+      this.doAction(MODULE.ORDER, ACTIONS.FETCH_LIST).then((d) => {
+        const orderList = deepClone(d);
+        const map = {};
+        orderList.forEach((order) => {
+          const createdAt = parseTime(order.createdAt, PARSE_TIME_TYPE.DATE);
+          if (!map[createdAt]) map[createdAt] = {};
+          const colMap = map[createdAt];
+          order.items.forEach((item) => {
+            item.order = order;
+            if (!colMap[item.roomUuid]) colMap[item.roomUuid] = [];
+            colMap[item.roomUuid].push(item);
+          });
+        });
+        console.log(map);
+        this.roomOrderMap = map;
       });
     }
   }
