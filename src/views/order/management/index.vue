@@ -91,14 +91,40 @@
                        @click="showDetail(row)">{{ row.number }}</el-button> -->
           </template>
         </el-table-column>
+        <el-table-column label="公寓"
+                         align="center"
+                         prop="apartmentUuid"
+                         :min-width="colWidth.xs">
+          <template slot-scope="{ row }">
+            <div>{{ apartmentMap ? apartmentMap[row.apartmentUuid] : '' }}</div>
+          </template>
+        </el-table-column>
+        <el-table-column label="房间"
+                         align="center"
+                         :min-width="colWidth.xs">
+          <template slot-scope="{ row }">
+            <div v-for="item in row.items"
+                 :key="item.uuid">{{ item.room ? item.room.number : '' }}</div>
+          </template>
+        </el-table-column>
         <el-table-column label="入住人"
                          align="center"
                          prop="mainName"
-                         :min-width="colWidth.xs" />
+                         :min-width="colWidth.xs">
+          <template slot-scope="{ row }">
+            <div v-for="item in row.items"
+                 :key="item.uuid">{{ item.name }}</div>
+          </template>
+        </el-table-column>
         <el-table-column label="电话"
                          align="center"
                          prop="mainMobile"
-                         :min-width="colWidth.sm" />
+                         :min-width="colWidth.sm">
+          <template slot-scope="{ row }">
+            <div v-for="item in row.items"
+                 :key="item.uuid">{{ item.mobile }}</div>
+          </template>
+        </el-table-column>
         <el-table-column label="渠道"
                          align="center"
                          prop="channelName"
