@@ -48,7 +48,7 @@
                 <el-button v-for="item in roomOrderMap[column.label][row.uuid]"
                            :key="item.uuid"
                            type="text"
-                           class="m-0 text-left"
+                           class="m-0 text-left d-block w-100"
                            @click="showOrderDetail(item.order)">
                   <div>姓名: {{ item.name }}</div>
                   <div>渠道: {{ item.order.channelName }}</div>
