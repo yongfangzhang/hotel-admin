@@ -10,6 +10,15 @@
             <datetime-filter v-model="createdRange"
                              label="接单日期(最大区间7天)"
                              :width="dateFilterWidth" />
+            <el-form-item label="公寓">
+              <m-selector v-model="queries.apartmentUuid"
+                          :map="apartmentMap"
+                          filterable
+                          clearable
+                          @keydown.enter.native="doFilter"
+                          @change="doFilter"
+                          @clear="doFilter" />
+            </el-form-item>
           </div>
         </el-form>
       </div>
@@ -98,6 +107,7 @@ export default {
       currentOrder: null,
       showDetailDialog: false,
       queries: {
+        apartmentUuid: null,
         createdAtStart: null,
         createdAtStop: null
       },
@@ -164,7 +174,16 @@ export default {
     doFilter() {
       this.queries.createdAtStart = this.createdRange[0];
       this.queries.createdAtStop = this.createdRange[1];
-      this.doAction(MODULE.ORDER, ACTIONS.FETCH_LIST).then((d) => {
+      this.doAction(MODULE.ORDER, ACTIONS.FETCH_LIST, {
+        ...this.queries,
+        desc: 'uuid',
+        states: [
+          this.ORDER_STATE.UNPAID,
+          this.ORDER_STATE.UNUSED,
+          this.ORDER_STATE.USED,
+          this.ORDER_STATE.FINISHED
+        ].join(',')
+      }).then((d) => {
         const orderList = deepClone(d);
         const map = {};
         orderList.forEach((order) => {
