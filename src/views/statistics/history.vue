@@ -116,7 +116,7 @@ export default {
         parseTime(begin, PARSE_TIME_TYPE.DATE),
         parseTime(end, PARSE_TIME_TYPE.DATE)
       ],
-      roomList: [],
+      roomFullList: [],
       roomOrderMap: {}
     };
   },
@@ -135,6 +135,12 @@ export default {
         begin.setDate(begin.getDate() + 1);
       }
       return columns;
+    },
+    roomList() {
+      if (!this.apartmentUuid) return this.roomFullList;
+      return this.roomFullList.filter(
+        (room) => room.apartmentUuid === this.apartmentUuid
+      );
     }
   },
   watch: {
@@ -167,7 +173,7 @@ export default {
         this.apartmentMap = list2Map(list, 'uuid', 'shortName');
       });
       this.doAction(MODULE.ROOM, ACTIONS.FETCH_LIST).then((d) => {
-        this.roomList = deepClone(d);
+        this.roomFullList = deepClone(d);
         this.doFilter();
       });
     },
