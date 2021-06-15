@@ -137,9 +137,9 @@ export default {
       return columns;
     },
     roomList() {
-      if (!this.apartmentUuid) return this.roomFullList;
+      if (!this.queries.apartmentUuid) return this.roomFullList;
       return this.roomFullList.filter(
-        (room) => room.apartmentUuid === this.apartmentUuid
+        (room) => room.apartmentUuid === this.queries.apartmentUuid
       );
     }
   },
