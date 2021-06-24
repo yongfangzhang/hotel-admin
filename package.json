@@ -8,11 +8,6 @@
     "preview": "node build/index.js --preview",
     "lint": "eslint --fix --ext .js,.vue src"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "lint-staged": {
     "src/**/*.{js,vue}": [
       "eslint --fix",
